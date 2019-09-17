@@ -26,6 +26,8 @@ dependencies {
 	runtimeOnly("org.postgresql:postgresql")
 	implementation("io.springfox:springfox-swagger2:2.9.2")
 	implementation("io.springfox:springfox-swagger-ui:2.9.2")
+	implementation("org.springframework.boot:spring-boot-starter-security")
+	implementation("org.apache.commons:commons-lang3:3.8.1")
 	testImplementation("org.springframework.boot:spring-boot-starter-test")
 }
 
