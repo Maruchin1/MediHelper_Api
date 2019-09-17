@@ -3,14 +3,14 @@ package com.example.medihelperapi.model
 import javax.persistence.*
 
 @Entity
-@Table(name = "app_user")
-data class AppUser(
+@Table(name = "registered_user")
+data class RegisteredUser(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val userID: Long = 0,
+        val registeredUserID: Long = 0,
 
         var email: String,
 
         var password: String,
 
-        var token: String = ""
+        var authToken: String = ""
 )

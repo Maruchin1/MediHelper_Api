@@ -1,6 +1,5 @@
 package com.example.medihelperapi.config
 
-import org.apache.commons.lang3.StringUtils
 import org.springframework.http.HttpHeaders.AUTHORIZATION
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
@@ -15,11 +14,8 @@ import javax.servlet.http.HttpServletResponse
 class AuthenticationFilter(requiresAuth: RequestMatcher) : AbstractAuthenticationProcessingFilter(requiresAuth) {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        val tokenParam = Optional.ofNullable(request?.getHeader(AUTHORIZATION))
-        var token = request?.getHeader(AUTHORIZATION)
-        if (token != null) {
-            token = StringUtils.removeStart(token, "Bearer").trim()
-        }
+        val token = request?.getHeader(AUTHORIZATION)
+        println("token = $token")
         val requestAuthentication = UsernamePasswordAuthenticationToken(token, token)
         return authenticationManager.authenticate(requestAuthentication)
     }

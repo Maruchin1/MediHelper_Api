@@ -10,9 +10,12 @@ import org.springframework.security.config.annotation.web.builders.WebSecurity
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter
 import org.springframework.security.config.http.SessionCreationPolicy
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
+import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
+import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
 
@@ -26,7 +29,10 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
     }
 
     override fun configure(web: WebSecurity?) {
-        web?.ignoring()?.antMatchers("/token/**")
+        web?.ignoring()?.antMatchers(
+                "/api/users/register",
+                "/api/users/login"
+        )
     }
 
     override fun configure(http: HttpSecurity?) {
@@ -37,28 +43,30 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                     .exceptionHandling()
                     .and()
                     .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(authenticationFilter(), AnonymousAuthenticationFilter::class.java)
+                    .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
                     .authorizeRequests()
-                    .requestMatchers(PROTECTED_URLS)
-                    .authenticated()
+                    .requestMatchers(PROTECTED_URLS).authenticated()
                     .and()
                     .csrf().disable()
                     .formLogin().disable()
                     .httpBasic().disable()
                     .logout().disable()
-        }
-    }
 
-    @Bean
-    fun authenticationFilter(): AuthenticationFilter {
-        val filter = AuthenticationFilter(PROTECTED_URLS)
-        filter.setAuthenticationManager(authenticationManager())
-        return filter
+        }
     }
 
     @Bean
     fun forbiddenEntryPoint(): AuthenticationEntryPoint {
         return HttpStatusEntryPoint(HttpStatus.FORBIDDEN)
+    }
+
+    @Bean
+    fun passwordEncoder(): PasswordEncoder {
+        return BCryptPasswordEncoder()
+    }
+
+    private fun authenticationFilter() = AuthenticationFilter(PROTECTED_URLS).apply {
+        setAuthenticationManager(authenticationManager())
     }
 
     companion object {

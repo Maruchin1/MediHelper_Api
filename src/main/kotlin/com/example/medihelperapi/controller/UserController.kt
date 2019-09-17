@@ -1,20 +1,34 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.model.AppUser
-import com.example.medihelperapi.service.UserService
+import com.example.medihelperapi.dto.UserRegistrationDto
+import com.example.medihelperapi.getCurrUser
+import com.example.medihelperapi.model.RegisteredUser
+import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PathVariable
-import org.springframework.web.bind.annotation.RestController
-import java.lang.RuntimeException
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.web.bind.annotation.*
+
 
 @RestController
-class UserController(private val userService: UserService) {
+@RequestMapping("/api/users")
+class UserController(private val registeredUserService: RegisteredUserService) {
+
+    @PostMapping("/register")
+    fun registerNewUser(@RequestBody registrationDto: UserRegistrationDto) {
+        registeredUserService.register(registrationDto)
+    }
+
+    @PostMapping("/login")
+    fun loginUser(@RequestParam("email") email: String, @RequestParam("password") password: String): String {
+        return registeredUserService.login(email, password)
+    }
 
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    @GetMapping("/api/users/user/{id}", produces = ["application/json"])
-    fun getUserDetails(@PathVariable("id") userID: Long): AppUser {
-        return userService.findByID(userID).map { user -> user }.orElseThrow { RuntimeException("UserNotFound") }
+    @GetMapping("/user", produces = ["application/json"])
+    fun getUserDetails(): RegisteredUser {
+        val user = SecurityContextHolder.getContext().getCurrUser()
+        println(user.username)
+        return registeredUserService.findByEmail(user.username)
     }
 }
