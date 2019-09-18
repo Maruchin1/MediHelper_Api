@@ -1,6 +1,6 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.dto.UserRegistrationDto
+import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.getCurrUser
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.service.RegisteredUserService
@@ -11,17 +11,17 @@ import org.springframework.web.bind.annotation.*
 
 
 @RestController
-@RequestMapping("/api/users")
-class UserController(private val registeredUserService: RegisteredUserService) {
+@RequestMapping("/registered-users")
+class RegisteredUserController(private val registeredUserService: RegisteredUserService) {
 
     @PostMapping("/register")
-    fun registerNewUser(@RequestBody registrationDto: UserRegistrationDto) {
-        registeredUserService.register(registrationDto)
+    fun registerNewUser(@RequestBody userCredentials: UserCredentialsDto) {
+        registeredUserService.register(userCredentials)
     }
 
     @PostMapping("/login")
-    fun loginUser(@RequestParam("email") email: String, @RequestParam("password") password: String): String {
-        return registeredUserService.login(email, password)
+    fun loginUser(@RequestBody userCredentials: UserCredentialsDto): String {
+        return registeredUserService.login(userCredentials)
     }
 
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))

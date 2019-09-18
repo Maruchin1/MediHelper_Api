@@ -30,8 +30,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     override fun configure(web: WebSecurity?) {
         web?.ignoring()?.antMatchers(
-                "/api/users/register",
-                "/api/users/login"
+                "/registered-users/register",
+                "/registered-users/login"
         )
     }
 
@@ -45,7 +45,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                     .authenticationProvider(authenticationProvider)
                     .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
                     .authorizeRequests()
-                    .requestMatchers(PROTECTED_URLS).authenticated()
+                    .requestMatchers(PROTECTED_URLS).hasAuthority("USER")
                     .and()
                     .csrf().disable()
                     .formLogin().disable()
@@ -70,6 +70,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
     }
 
     companion object {
-        private val PROTECTED_URLS = OrRequestMatcher(AntPathRequestMatcher("/api/**"))
+        private val PROTECTED_URLS = OrRequestMatcher(
+                AntPathRequestMatcher("/users/**")
+        )
     }
 }

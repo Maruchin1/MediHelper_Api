@@ -11,4 +11,6 @@ interface RegisteredUserRepository : JpaRepository<RegisteredUser, Long> {
     fun findByAuthToken(token: String): Optional<RegisteredUser>
 
     fun findByEmail(email: String): Optional<RegisteredUser>
+
+    fun existsByEmail(email: String): Boolean
 }

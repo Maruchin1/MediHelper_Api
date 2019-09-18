@@ -1,10 +1,8 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.UserRegistrationDto
+import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.RegisteredUserRepository
-import org.springframework.security.core.authority.AuthorityUtils
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -17,9 +15,9 @@ class RegisteredUserService(
 
     fun findByEmail(email: String) = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
 
-    fun login(email: String, password: String): String {
-        val registeredUser = findByEmail(email)
-        if (!passwordEncoder.matches(password, registeredUser.password)) {
+    fun login(userCredentials: UserCredentialsDto): String {
+        val registeredUser = findByEmail(userCredentials.email)
+        if (!passwordEncoder.matches(userCredentials.password, registeredUser.password)) {
             throw IncorrectCredentialsException()
         }
         val newAuthToken = UUID.randomUUID().toString()
@@ -28,14 +26,13 @@ class RegisteredUserService(
         return newAuthToken
     }
 
-    fun register(registrationDto: UserRegistrationDto) {
-        // todo rozważyć tutaj więcej walidacji
-        if (registrationDto.password != registrationDto.passwordConfirmation) {
-            throw PasswordConfirmationIncorrectException()
+    fun register(userCredentials: UserCredentialsDto) {
+        if (registeredUserRepository.existsByEmail(userCredentials.email)) {
+            throw RegisteredUserExistsException()
         }
         val newRegisteredUser = RegisteredUser(
-                email = registrationDto.email,
-                password = passwordEncoder.encode(registrationDto.password)
+                email = userCredentials.email,
+                password = passwordEncoder.encode(userCredentials.password)
         )
         registeredUserRepository.save(newRegisteredUser)
     }

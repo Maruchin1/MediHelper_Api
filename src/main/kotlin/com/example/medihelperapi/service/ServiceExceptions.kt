@@ -9,5 +9,5 @@ class UserNotFoundException : RuntimeException()
 @ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Incorrect user credentials")
 class IncorrectCredentialsException : RuntimeException()
 
-@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "Password confirmation don't match password")
-class PasswordConfirmationIncorrectException : RuntimeException()
+@ResponseStatus(value = HttpStatus.BAD_REQUEST, reason = "User with given email already exists in database")
+class RegisteredUserExistsException : RuntimeException()
