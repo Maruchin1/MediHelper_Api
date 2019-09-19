@@ -1,8 +1,7 @@
 package com.example.medihelperapi.controller
 
 import com.example.medihelperapi.dto.UserCredentialsDto
-import com.example.medihelperapi.getCurrUser
-import com.example.medihelperapi.model.RegisteredUser
+import com.example.medihelperapi.getAuthenticatedUserEmail
 import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
@@ -25,10 +24,10 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
     }
 
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    @GetMapping("/user", produces = ["application/json"])
-    fun getUserDetails(): RegisteredUser {
-        val user = SecurityContextHolder.getContext().getCurrUser()
-        println(user.username)
-        return registeredUserService.findByEmail(user.username)
+    @PutMapping("/change-password")
+    fun changeUserPassword(@RequestBody newPassword: String) {
+        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
+        println("UserEmail = $userEmail")
+        registeredUserService.changePassword(userEmail, newPassword)
     }
 }

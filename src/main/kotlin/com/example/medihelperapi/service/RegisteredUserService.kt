@@ -12,8 +12,16 @@ class RegisteredUserService(
         private val registeredUserRepository: RegisteredUserRepository,
         private val passwordEncoder: PasswordEncoder
 ) {
-
-    fun findByEmail(email: String) = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
+    fun register(userCredentials: UserCredentialsDto) {
+        if (registeredUserRepository.existsByEmail(userCredentials.email)) {
+            throw RegisteredUserExistsException()
+        }
+        val newRegisteredUser = RegisteredUser(
+                email = userCredentials.email,
+                password = passwordEncoder.encode(userCredentials.password)
+        )
+        registeredUserRepository.save(newRegisteredUser)
+    }
 
     fun login(userCredentials: UserCredentialsDto): String {
         val registeredUser = findByEmail(userCredentials.email)
@@ -26,14 +34,11 @@ class RegisteredUserService(
         return newAuthToken
     }
 
-    fun register(userCredentials: UserCredentialsDto) {
-        if (registeredUserRepository.existsByEmail(userCredentials.email)) {
-            throw RegisteredUserExistsException()
-        }
-        val newRegisteredUser = RegisteredUser(
-                email = userCredentials.email,
-                password = passwordEncoder.encode(userCredentials.password)
-        )
-        registeredUserRepository.save(newRegisteredUser)
+    fun changePassword(email: String, newPassword: String) {
+        val registeredUser = findByEmail(email)
+        registeredUser.password = passwordEncoder.encode(newPassword)
+        registeredUserRepository.save(registeredUser)
     }
+
+    fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
 }
