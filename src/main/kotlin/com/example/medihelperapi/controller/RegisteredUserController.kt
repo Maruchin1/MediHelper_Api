@@ -1,5 +1,6 @@
 package com.example.medihelperapi.controller
 
+import com.example.medihelperapi.dto.NewPasswordDto
 import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.getAuthenticatedUserEmail
 import com.example.medihelperapi.service.RegisteredUserService
@@ -25,7 +26,7 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
 
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     @PutMapping("/change-password")
-    fun changeUserPassword(@RequestBody newPassword: String) {
+    fun changeUserPassword(@RequestBody newPassword: NewPasswordDto) {
         val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
         println("UserEmail = $userEmail")
         registeredUserService.changePassword(userEmail, newPassword)

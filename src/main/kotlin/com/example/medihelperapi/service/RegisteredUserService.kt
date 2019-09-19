@@ -1,5 +1,6 @@
 package com.example.medihelperapi.service
 
+import com.example.medihelperapi.dto.NewPasswordDto
 import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.RegisteredUserRepository
@@ -34,9 +35,9 @@ class RegisteredUserService(
         return newAuthToken
     }
 
-    fun changePassword(email: String, newPassword: String) {
+    fun changePassword(email: String, newPassword: NewPasswordDto) {
         val registeredUser = findByEmail(email)
-        registeredUser.password = passwordEncoder.encode(newPassword)
+        registeredUser.password = passwordEncoder.encode(newPassword.value)
         registeredUserRepository.save(registeredUser)
     }
 
