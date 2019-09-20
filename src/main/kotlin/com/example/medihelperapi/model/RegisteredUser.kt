@@ -6,6 +6,7 @@ import javax.persistence.*
 @Table(name = "registered_user")
 data class RegisteredUser(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Column(name = "registered_user_id")
         val registeredUserID: Long = 0,
 
         var email: String,

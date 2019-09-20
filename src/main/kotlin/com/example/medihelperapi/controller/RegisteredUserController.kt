@@ -24,8 +24,8 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         return registeredUserService.login(userCredentials)
     }
 
+    @PatchMapping("/change-password")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    @PutMapping("/change-password")
     fun changeUserPassword(@RequestBody newPassword: NewPasswordDto) {
         val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
         println("UserEmail = $userEmail")
