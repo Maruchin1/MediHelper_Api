@@ -1,8 +1,10 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.MedicineDto
+import com.example.medihelperapi.dto.PostResponseDto
+import com.example.medihelperapi.dto.MedicineGetDto
+import com.example.medihelperapi.dto.MedicinePostDto
+import com.example.medihelperapi.dto.MedicinePutDto
 import com.example.medihelperapi.model.Medicine
-import com.example.medihelperapi.model.MedicineId
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
@@ -14,34 +16,64 @@ class MedicineService(
         private val registeredUserRepository: RegisteredUserRepository
 ) {
 
-    fun insertNewMedicine(registeredUserEmail: String, medicineDto: MedicineDto) {
+    fun insertNewMedicine(registeredUserEmail: String, medicinePostDto: MedicinePostDto): PostResponseDto {
         val registeredUser = findRegisteredUserByEmail(registeredUserEmail)
-        val existingMedicineOptional = medicineRepository.findById(MedicineId(registeredUser.registeredUserID, medicineDto.medicineName))
-        if (existingMedicineOptional.isPresent) {
-            val existingMedicine = existingMedicineOptional.get()
-            if (medicineDto.operationTime.isAfter(existingMedicine.lastModificationTime)) {
-                medicineRepository.delete(existingMedicine)
-                medicineRepository.save(createMedicineEntity(registeredUser.registeredUserID, medicineDto))
+        val newMedicineEntity = Medicine(
+                registeredUser = registeredUser,
+                medicineName = medicinePostDto.medicineName,
+                medicineUnit = medicinePostDto.medicineUnit,
+                expireDate = medicinePostDto.expireDate,
+                packageSize = medicinePostDto.packageSize,
+                currState = medicinePostDto.currState,
+                additionalInfo = medicinePostDto.additionalInfo,
+                lastModificationTime = medicinePostDto.operationTime
+        )
+        val savedMedicine = medicineRepository.save(newMedicineEntity)
+        return PostResponseDto(localId = medicinePostDto.medicineLocalId, remoteId = savedMedicine.medicineId)
+    }
+
+    fun updateMedicineData(medicineId: Long, medicinePutDto: MedicinePutDto) {
+        medicineRepository.findById(medicineId).map { existingMedicine ->
+            if (medicinePutDto.operationTime.isAfter(existingMedicine.lastModificationTime)) {
+                val updatedMedicine = existingMedicine.copy(
+                        medicineName = medicinePutDto.medicineName,
+                        medicineUnit = medicinePutDto.medicineUnit,
+                        expireDate = medicinePutDto.expireDate,
+                        packageSize = medicinePutDto.packageSize,
+                        currState = medicinePutDto.currState,
+                        additionalInfo = medicinePutDto.additionalInfo,
+                        lastModificationTime = medicinePutDto.operationTime
+                )
+                medicineRepository.save(updatedMedicine)
             }
-        } else {
-            medicineRepository.save(createMedicineEntity(registeredUser.registeredUserID, medicineDto))
+        }.orElseThrow {
+            MedicineNotFoundException()
         }
     }
 
-    fun updateMedicine(registeredUserEmail: String, medicineDto: MedicineDto) {
-        val registeredUser = findRegisteredUserByEmail(registeredUserEmail)
-
+    fun deleteMedicine(medicineId: Long) {
+        medicineRepository.findById(medicineId).map { existingMedicine ->
+            medicineRepository.delete(existingMedicine)
+        }.orElseThrow {
+            MedicineNotFoundException()
+        }
     }
 
-    private fun createMedicineEntity(registeredUserID: Long, medicineDto: MedicineDto) = Medicine(
-            medicineID = MedicineId(registeredUserID, medicineDto.medicineName),
-            medicineUnit = medicineDto.medicineUnit,
-            expireDate = medicineDto.expireDate,
-            packageSize = medicineDto.packageSize,
-            currState = medicineDto.currState,
-            additionalInfo = medicineDto.additionalInfo,
-            lastModificationTime = medicineDto.operationTime
-    )
+    fun getAllMedicines(registeredUserEmail: String): List<MedicineGetDto> {
+        val registeredUser = findRegisteredUserByEmail(registeredUserEmail)
+        val allMedicineList = medicineRepository.findAllByRegisteredUser(registeredUser)
+        return allMedicineList.map { medicine ->
+            MedicineGetDto(
+                  medicineId = medicine.medicineId,
+                    medicineName = medicine.medicineName,
+                    medicineUnit = medicine.medicineUnit,
+                    expireDate = medicine.expireDate,
+                    packageSize = medicine.packageSize,
+                    currState = medicine.currState,
+                    additionalInfo = medicine.additionalInfo
+            )
+        }
+    }
 
     private fun findRegisteredUserByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email)
             .orElseThrow { UserNotFoundException() }
