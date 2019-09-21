@@ -3,6 +3,7 @@ package com.example.medihelperapi.controller
 import com.example.medihelperapi.dto.MedicineGetDto
 import com.example.medihelperapi.dto.MedicinePostDto
 import com.example.medihelperapi.dto.MedicinePutDto
+import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.getAuthenticatedUserEmail
 import com.example.medihelperapi.service.MedicineService
 import io.swagger.annotations.ApiImplicitParam
@@ -15,9 +16,9 @@ class MedicineController(private val medicineService: MedicineService) {
 
     @PostMapping("/medicines")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    fun insertNewMedicine(@RequestBody medicinePostDto: MedicinePostDto) {
+    fun insertNewMedicine(@RequestBody medicinePostDto: MedicinePostDto): PostResponseDto {
         val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
-        medicineService.insertNewMedicine(userEmail, medicinePostDto)
+        return medicineService.insertNewMedicine(userEmail, medicinePostDto)
     }
 
     @PutMapping("/medicines/{id}")
