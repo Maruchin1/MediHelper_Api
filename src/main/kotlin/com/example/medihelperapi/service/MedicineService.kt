@@ -65,17 +65,7 @@ class MedicineService(
     fun getAllMedicines(email: String): List<MedicineGetDto> {
         val registeredUser = findRegisteredUserByEmail(email)
         val allMedicineList = medicineRepository.findAllByRegisteredUser(registeredUser)
-        return allMedicineList.map { medicine ->
-            MedicineGetDto(
-                  medicineId = medicine.medicineId,
-                    medicineName = medicine.medicineName,
-                    medicineUnit = medicine.medicineUnit,
-                    expireDate = medicine.expireDate,
-                    packageSize = medicine.packageSize,
-                    currState = medicine.currState,
-                    additionalInfo = medicine.additionalInfo
-            )
-        }
+        return allMedicineList.map { medicine -> MedicineGetDto(medicine) }
     }
 
     private fun findRegisteredUserByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email)

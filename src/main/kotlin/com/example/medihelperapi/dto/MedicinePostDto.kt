@@ -31,6 +31,9 @@ data class MedicinePostDto(
         @JsonProperty(value = "additionalInfo")
         val additionalInfo: String?,
 
+        @JsonProperty(value = "image")
+        val image: ByteArray,
+
         @JsonProperty(value = "operationTime")
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         val operationTime: LocalDateTime
@@ -43,6 +46,39 @@ data class MedicinePostDto(
                 packageSize = packageSize,
                 currState = currState,
                 additionalInfo = additionalInfo,
+                image = image,
                 lastModificationTime = operationTime
         )
+
+        override fun equals(other: Any?): Boolean {
+                if (this === other) return true
+                if (javaClass != other?.javaClass) return false
+
+                other as MedicinePostDto
+
+                if (medicineLocalId != other.medicineLocalId) return false
+                if (medicineName != other.medicineName) return false
+                if (medicineUnit != other.medicineUnit) return false
+                if (expireDate != other.expireDate) return false
+                if (packageSize != other.packageSize) return false
+                if (currState != other.currState) return false
+                if (additionalInfo != other.additionalInfo) return false
+                if (!image.contentEquals(other.image)) return false
+                if (operationTime != other.operationTime) return false
+
+                return true
+        }
+
+        override fun hashCode(): Int {
+                var result = medicineLocalId
+                result = 31 * result + medicineName.hashCode()
+                result = 31 * result + medicineUnit.hashCode()
+                result = 31 * result + (expireDate?.hashCode() ?: 0)
+                result = 31 * result + (packageSize?.hashCode() ?: 0)
+                result = 31 * result + (currState?.hashCode() ?: 0)
+                result = 31 * result + (additionalInfo?.hashCode() ?: 0)
+                result = 31 * result + image.contentHashCode()
+                result = 31 * result + operationTime.hashCode()
+                return result
+        }
 }
