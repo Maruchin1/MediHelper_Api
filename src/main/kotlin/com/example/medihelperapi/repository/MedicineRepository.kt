@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MedicineRepository : JpaRepository<Medicine, Long> {
     fun findAllByRegisteredUser(registeredUser: RegisteredUser): List<Medicine>
+
+    fun countByRegisteredUser(registeredUser: RegisteredUser): Long
 }

@@ -3,6 +3,7 @@ package com.example.medihelperapi.service
 import com.example.medihelperapi.dto.NewPasswordDto
 import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
+import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
@@ -11,6 +12,7 @@ import java.util.*
 @Service
 class RegisteredUserService(
         private val registeredUserRepository: RegisteredUserRepository,
+        private val medicineRepository: MedicineRepository,
         private val passwordEncoder: PasswordEncoder
 ) {
     fun register(userCredentials: UserCredentialsDto) {
@@ -41,5 +43,10 @@ class RegisteredUserService(
         registeredUserRepository.save(registeredUser)
     }
 
-    fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
+    fun hasData(email: String): Boolean {
+        val registeredUser = findByEmail(email)
+        return medicineRepository.countByRegisteredUser(registeredUser) > 0
+    }
+
+    private fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
 }

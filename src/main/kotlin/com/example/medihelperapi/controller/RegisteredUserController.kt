@@ -31,4 +31,11 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         println("UserEmail = $userEmail")
         registeredUserService.changePassword(userEmail, newPassword)
     }
+
+    @GetMapping("/has-data")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun hasData(): Boolean {
+        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
+        return registeredUserService.hasData(userEmail)
+    }
 }
