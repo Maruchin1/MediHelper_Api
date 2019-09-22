@@ -32,7 +32,7 @@ data class MedicinePostDto(
         val additionalInfo: String?,
 
         @JsonProperty(value = "image")
-        val image: ByteArray,
+        val image: ByteArray?,
 
         @JsonProperty(value = "operationTime")
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
@@ -63,7 +63,10 @@ data class MedicinePostDto(
                 if (packageSize != other.packageSize) return false
                 if (currState != other.currState) return false
                 if (additionalInfo != other.additionalInfo) return false
-                if (!image.contentEquals(other.image)) return false
+                if (image != null) {
+                        if (other.image == null) return false
+                        if (!image.contentEquals(other.image)) return false
+                } else if (other.image != null) return false
                 if (operationTime != other.operationTime) return false
 
                 return true
@@ -77,7 +80,7 @@ data class MedicinePostDto(
                 result = 31 * result + (packageSize?.hashCode() ?: 0)
                 result = 31 * result + (currState?.hashCode() ?: 0)
                 result = 31 * result + (additionalInfo?.hashCode() ?: 0)
-                result = 31 * result + image.contentHashCode()
+                result = 31 * result + (image?.contentHashCode() ?: 0)
                 result = 31 * result + operationTime.hashCode()
                 return result
         }

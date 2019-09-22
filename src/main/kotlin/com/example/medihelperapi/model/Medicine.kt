@@ -16,7 +16,6 @@ data class Medicine(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "registeredUserId")
         @OnDelete(action = OnDeleteAction.CASCADE)
-        @JsonIgnore
         var registeredUser: RegisteredUser,
 
         var medicineName: String,
