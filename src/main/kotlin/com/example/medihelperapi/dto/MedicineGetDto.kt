@@ -15,7 +15,7 @@ data class MedicineGetDto(
         val medicineUnit: String,
 
         @JsonProperty(value = "expireDate")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(pattern = "dd-MM-yyyy")
         val expireDate: LocalDate?,
 
         @JsonProperty(value = "packageSize")

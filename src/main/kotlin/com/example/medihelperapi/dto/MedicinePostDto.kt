@@ -16,7 +16,7 @@ data class MedicinePostDto(
         val medicineUnit: String,
 
         @JsonProperty(value = "expireDate")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE)
+        @DateTimeFormat(pattern = "dd-MM-yyyy")
         val expireDate: LocalDate?,
 
         @JsonProperty(value = "packageSize")
@@ -29,6 +29,6 @@ data class MedicinePostDto(
         val additionalInfo: String?,
 
         @JsonProperty(value = "operationTime")
-        @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME)
+        @DateTimeFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         val operationTime: LocalDateTime
 )
