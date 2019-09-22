@@ -21,15 +21,11 @@ class MedicineController(private val medicineService: MedicineService) {
         return medicineService.insertNewMedicine(userEmail, medicinePostDto)
     }
 
-    @PostMapping("/medicines/list")
+    @PostMapping("/medicines/overwrite")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    fun insertNewMedicineList(@RequestBody medicinePostDtoList: List<MedicinePostDto>): List<PostResponseDto> {
+    fun overwriteMedicines(@RequestBody medicinePostDtoList: List<MedicinePostDto>): List<PostResponseDto> {
         val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
-        val postResponseDtoList = mutableListOf<PostResponseDto>()
-        medicinePostDtoList.forEach { medicinePostDto ->
-            postResponseDtoList.add(medicineService.insertNewMedicine(userEmail, medicinePostDto))
-        }
-        return postResponseDtoList
+        return medicineService.overwriteMedicines(userEmail, medicinePostDtoList)
     }
 
     @PutMapping("/medicines/{id}")

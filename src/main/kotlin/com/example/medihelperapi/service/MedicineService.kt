@@ -4,7 +4,6 @@ import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.dto.MedicineGetDto
 import com.example.medihelperapi.dto.MedicinePostDto
 import com.example.medihelperapi.dto.MedicinePutDto
-import com.example.medihelperapi.model.Medicine
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
@@ -16,19 +15,23 @@ class MedicineService(
         private val registeredUserRepository: RegisteredUserRepository
 ) {
 
-    fun insertNewMedicine(registeredUserEmail: String, medicinePostDto: MedicinePostDto): PostResponseDto {
-        val registeredUser = findRegisteredUserByEmail(registeredUserEmail)
-        val newMedicineEntity = Medicine(
-                registeredUser = registeredUser,
-                medicineName = medicinePostDto.medicineName,
-                medicineUnit = medicinePostDto.medicineUnit,
-                expireDate = medicinePostDto.expireDate,
-                packageSize = medicinePostDto.packageSize,
-                currState = medicinePostDto.currState,
-                additionalInfo = medicinePostDto.additionalInfo,
-                lastModificationTime = medicinePostDto.operationTime
-        )
-        val savedMedicine = medicineRepository.save(newMedicineEntity)
+    fun overwriteMedicines(email: String, medicinePostDtoList: List<MedicinePostDto>): List<PostResponseDto> {
+        medicineRepository.deleteAll()
+        val registeredUser = findRegisteredUserByEmail(email)
+        val postResponseDtoList = mutableListOf<PostResponseDto>()
+        medicinePostDtoList.forEach { medicinePostDto ->
+            val newMedicine = medicinePostDto.toMedicineEntity(registeredUser)
+            val savedMedicine = medicineRepository.save(newMedicine)
+            val postResponseDto = PostResponseDto(localId = medicinePostDto.medicineLocalId, remoteId = savedMedicine.medicineId)
+            postResponseDtoList.add(postResponseDto)
+        }
+        return postResponseDtoList
+    }
+
+    fun insertNewMedicine(email: String, medicinePostDto: MedicinePostDto): PostResponseDto {
+        val registeredUser = findRegisteredUserByEmail(email)
+        val newMedicine = medicinePostDto.toMedicineEntity(registeredUser)
+        val savedMedicine = medicineRepository.save(newMedicine)
         return PostResponseDto(localId = medicinePostDto.medicineLocalId, remoteId = savedMedicine.medicineId)
     }
 
@@ -59,8 +62,8 @@ class MedicineService(
         }
     }
 
-    fun getAllMedicines(registeredUserEmail: String): List<MedicineGetDto> {
-        val registeredUser = findRegisteredUserByEmail(registeredUserEmail)
+    fun getAllMedicines(email: String): List<MedicineGetDto> {
+        val registeredUser = findRegisteredUserByEmail(email)
         val allMedicineList = medicineRepository.findAllByRegisteredUser(registeredUser)
         return allMedicineList.map { medicine ->
             MedicineGetDto(

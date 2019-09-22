@@ -1,5 +1,7 @@
 package com.example.medihelperapi.dto
 
+import com.example.medihelperapi.model.Medicine
+import com.example.medihelperapi.model.RegisteredUser
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.format.annotation.DateTimeFormat
@@ -32,4 +34,15 @@ data class MedicinePostDto(
         @JsonProperty(value = "operationTime")
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         val operationTime: LocalDateTime
-)
+) {
+        fun toMedicineEntity(registeredUser: RegisteredUser) = Medicine(
+                registeredUser = registeredUser,
+                medicineName = medicineName,
+                medicineUnit = medicineUnit,
+                expireDate = expireDate,
+                packageSize = packageSize,
+                currState = currState,
+                additionalInfo = additionalInfo,
+                lastModificationTime = operationTime
+        )
+}
