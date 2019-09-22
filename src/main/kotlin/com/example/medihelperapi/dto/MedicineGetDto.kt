@@ -1,5 +1,6 @@
 package com.example.medihelperapi.dto
 
+import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import org.springframework.format.annotation.DateTimeFormat
 import java.time.LocalDate
@@ -15,7 +16,7 @@ data class MedicineGetDto(
         val medicineUnit: String,
 
         @JsonProperty(value = "expireDate")
-        @DateTimeFormat(pattern = "dd-MM-yyyy")
+        @JsonFormat(pattern = "dd-MM-yyyy")
         val expireDate: LocalDate?,
 
         @JsonProperty(value = "packageSize")
