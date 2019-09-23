@@ -16,6 +16,9 @@ data class PersonPostDto(
         @JsonProperty(value = "personColorResId")
         val personColorResId: Int,
 
+        @JsonProperty(value = "isMainPerson")
+        val isMainPerson: Boolean,
+
         @JsonProperty(value = "operationTime")
         @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
         val operationTime: LocalDateTime
@@ -24,6 +27,7 @@ data class PersonPostDto(
                 registeredUser = registeredUser,
                 personName = personName,
                 personColorResId = personColorResId,
+                isMainPerson = isMainPerson,
                 lastModificationTime = operationTime
         )
 }

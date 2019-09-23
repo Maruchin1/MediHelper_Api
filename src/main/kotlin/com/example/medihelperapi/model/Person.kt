@@ -22,5 +22,7 @@ data class Person(
 
         var personColorResId: Int,
 
+        var isMainPerson: Boolean,
+
         var lastModificationTime: LocalDateTime
 )
