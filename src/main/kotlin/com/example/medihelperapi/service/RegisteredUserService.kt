@@ -48,5 +48,5 @@ class RegisteredUserService(
         return medicineRepository.countByRegisteredUser(registeredUser) > 0
     }
 
-    private fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
+    fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
 }

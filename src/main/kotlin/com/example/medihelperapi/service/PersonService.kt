@@ -20,8 +20,7 @@ class PersonService (
         personPostDtoList.forEach { personPostDto ->
             val newPerson = personPostDto.toPersonEntity(registeredUser)
             val savedPerson = personRepository.save(newPerson)
-            val postResponseDto = PostResponseDto(localId = personPostDto.personLocalId, remoteId = savedPerson.personId)
-            postResponseDtoList.add(postResponseDto)
+            postResponseDtoList.add(PostResponseDto(localId = personPostDto.personLocalId, remoteId = savedPerson.personId))
         }
         return postResponseDtoList
     }

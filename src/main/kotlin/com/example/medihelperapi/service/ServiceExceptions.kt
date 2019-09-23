@@ -14,3 +14,6 @@ class RegisteredUserExistsException : RuntimeException()
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Medicine not found in database")
 class MedicineNotFoundException : RuntimeException()
+
+@ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Person not found in database")
+class PersonNotFoundException : RuntimeException()

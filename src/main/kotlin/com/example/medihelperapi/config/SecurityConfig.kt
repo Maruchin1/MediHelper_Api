@@ -73,7 +73,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
         private val PROTECTED_URLS = OrRequestMatcher(
                 AntPathRequestMatcher("/registered-users/**"),
                 AntPathRequestMatcher("/medicines/**"),
-                AntPathRequestMatcher("/persons/**")
+                AntPathRequestMatcher("/persons/**"),
+                AntPathRequestMatcher("/medicines-plans/**")
         )
     }
 }
