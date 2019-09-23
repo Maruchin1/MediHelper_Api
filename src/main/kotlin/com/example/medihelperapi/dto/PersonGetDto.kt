@@ -13,13 +13,13 @@ data class PersonGetDto(
         @JsonProperty(value = "personColorResId")
         val personColorResId: Int,
 
-        @JsonProperty(value = "isMainPerson")
-        val isMainPerson: Boolean
+        @JsonProperty(value = "mainPerson")
+        val mainPerson: Boolean
 ) {
     constructor(person: Person) : this(
             personId = person.personId,
             personName = person.personName,
-            isMainPerson = person.isMainPerson,
+            mainPerson = person.mainPerson,
             personColorResId = person.personColorResId
     )
 }
