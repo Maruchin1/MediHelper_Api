@@ -13,20 +13,20 @@ import org.springframework.web.bind.annotation.PostMapping
 import org.springframework.web.bind.annotation.RequestBody
 import org.springframework.web.bind.annotation.RestController
 
-@RestController
-class PersonController(private val personService: PersonService) {
-
-    @PostMapping("/persons/overwrite")
-    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    fun overwritePersons(@RequestBody personPostDtoList: List<PersonPostDto>): List<PostResponseDto> {
-        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
-        return personService.overwritePersons(userEmail, personPostDtoList)
-    }
-
-    @GetMapping("/persons")
-    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    fun getAllPersons(): List<PersonGetDto> {
-        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
-        return personService.getAllPersons(userEmail)
-    }
-}
+//@RestController
+//class PersonController(private val personService: PersonService) {
+//
+//    @PostMapping("/persons/overwrite")
+//    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+//    fun overwritePersons(@RequestBody personPostDtoList: List<PersonPostDto>): List<PostResponseDto> {
+//        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
+//        return personService.overwritePersons(userEmail, personPostDtoList)
+//    }
+//
+//    @GetMapping("/persons")
+//    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+//    fun getAllPersons(): List<PersonGetDto> {
+//        val userEmail = SecurityContextHolder.getContext().getAuthenticatedUserEmail()
+//        return personService.getAllPersons(userEmail)
+//    }
+//}

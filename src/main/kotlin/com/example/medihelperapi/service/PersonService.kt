@@ -9,13 +9,9 @@ import com.example.medihelperapi.repository.RegisteredUserRepository
 import org.springframework.stereotype.Service
 
 @Service
-class PersonService (
-        private val personRepository: PersonRepository,
-        private val registeredUserRepository: RegisteredUserRepository
-) {
-    fun overwritePersons(email: String, personPostDtoList: List<PersonPostDto>): List<PostResponseDto> {
+class PersonService (private val personRepository: PersonRepository) {
+    fun overwritePersons(registeredUser: RegisteredUser, personPostDtoList: List<PersonPostDto>): List<PostResponseDto> {
         personRepository.deleteAll()
-        val registeredUser = findRegisteredUserByEmail(email)
         val postResponseDtoList = mutableListOf<PostResponseDto>()
         personPostDtoList.forEach { personPostDto ->
             val newPerson = personPostDto.toPersonEntity(registeredUser)
@@ -25,12 +21,8 @@ class PersonService (
         return postResponseDtoList
     }
 
-    fun getAllPersons(email: String): List<PersonGetDto> {
-        val registeredUser = findRegisteredUserByEmail(email)
+    fun getAllPersons(registeredUser: RegisteredUser): List<PersonGetDto> {
         val allPersonList = personRepository.findAllByRegisteredUser(registeredUser)
         return allPersonList.map { person -> PersonGetDto(person) }
     }
-
-    private fun findRegisteredUserByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email)
-            .orElseThrow { UserNotFoundException() }
 }
