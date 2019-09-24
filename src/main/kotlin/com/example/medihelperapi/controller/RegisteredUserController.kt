@@ -1,7 +1,7 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.dto.NewPasswordDto
-import com.example.medihelperapi.dto.UserCredentialsDto
+import com.example.medihelperapi.dto.registereduser.NewPasswordDto
+import com.example.medihelperapi.dto.registereduser.UserCredentialsDto
 import com.example.medihelperapi.getAuthenticatedUserEmail
 import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam

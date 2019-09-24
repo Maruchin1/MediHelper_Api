@@ -1,7 +1,7 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.dto.PersonGetDto
-import com.example.medihelperapi.dto.PersonPostDto
+import com.example.medihelperapi.dto.person.PersonGetDto
+import com.example.medihelperapi.dto.person.PersonPostDto
 import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.getAuthenticatedUserEmail
 import com.example.medihelperapi.service.PersonService

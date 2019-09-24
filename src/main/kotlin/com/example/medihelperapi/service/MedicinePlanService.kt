@@ -1,7 +1,7 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.MedicinePlanGetDto
-import com.example.medihelperapi.dto.MedicinePlanPostDto
+import com.example.medihelperapi.dto.medicineplan.MedicinePlanGetDto
+import com.example.medihelperapi.dto.medicineplan.MedicinePlanPostDto
 import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicinePlanRepository

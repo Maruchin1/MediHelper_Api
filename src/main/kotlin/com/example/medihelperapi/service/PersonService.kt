@@ -1,11 +1,10 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.PersonGetDto
-import com.example.medihelperapi.dto.PersonPostDto
+import com.example.medihelperapi.dto.person.PersonGetDto
+import com.example.medihelperapi.dto.person.PersonPostDto
 import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.PersonRepository
-import com.example.medihelperapi.repository.RegisteredUserRepository
 import org.springframework.stereotype.Service
 
 @Service

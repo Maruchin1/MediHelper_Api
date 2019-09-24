@@ -1,4 +1,4 @@
-package com.example.medihelperapi.dto
+package com.example.medihelperapi.dto.person
 
 import com.example.medihelperapi.model.Person
 import com.example.medihelperapi.model.RegisteredUser
@@ -17,17 +17,12 @@ data class PersonPostDto(
         val personColorResId: Int,
 
         @JsonProperty(value = "mainPerson")
-        val mainPerson: Boolean,
-
-        @JsonProperty(value = "operationTime")
-        @JsonFormat(pattern = "dd-MM-yyyy HH:mm:ss")
-        val operationTime: LocalDateTime
+        val mainPerson: Boolean
 ) {
-        fun toPersonEntity(registeredUser: RegisteredUser) = Person(
-                registeredUser = registeredUser,
-                personName = personName,
-                personColorResId = personColorResId,
-                mainPerson = mainPerson,
-                lastModificationTime = operationTime
-        )
+    fun toPersonEntity(registeredUser: RegisteredUser) = Person(
+            registeredUser = registeredUser,
+            personName = personName,
+            personColorResId = personColorResId,
+            mainPerson = mainPerson
+    )
 }

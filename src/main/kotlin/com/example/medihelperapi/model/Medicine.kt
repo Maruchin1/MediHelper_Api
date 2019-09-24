@@ -29,44 +29,41 @@ data class Medicine(
 
         var additionalInfo: String?,
 
-        var image: ByteArray?,
-
-        var lastModificationTime: LocalDateTime
+        var image: ByteArray?
 ) {
-        override fun equals(other: Any?): Boolean {
-                if (this === other) return true
-                if (javaClass != other?.javaClass) return false
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (javaClass != other?.javaClass) return false
 
-                other as Medicine
+        other as Medicine
 
-                if (medicineId != other.medicineId) return false
-                if (registeredUser != other.registeredUser) return false
-                if (medicineName != other.medicineName) return false
-                if (medicineUnit != other.medicineUnit) return false
-                if (expireDate != other.expireDate) return false
-                if (packageSize != other.packageSize) return false
-                if (currState != other.currState) return false
-                if (additionalInfo != other.additionalInfo) return false
-                if (image != null) {
-                        if (other.image == null) return false
-                        if (!image!!.contentEquals(other.image!!)) return false
-                } else if (other.image != null) return false
-                if (lastModificationTime != other.lastModificationTime) return false
+        if (medicineId != other.medicineId) return false
+        if (registeredUser != other.registeredUser) return false
+        if (medicineName != other.medicineName) return false
+        if (medicineUnit != other.medicineUnit) return false
+        if (expireDate != other.expireDate) return false
+        if (packageSize != other.packageSize) return false
+        if (currState != other.currState) return false
+        if (additionalInfo != other.additionalInfo) return false
+        if (image != null) {
+            if (other.image == null) return false
+            if (!image!!.contentEquals(other.image!!)) return false
+        } else if (other.image != null) return false
 
-                return true
-        }
+        return true
+    }
 
-        override fun hashCode(): Int {
-                var result = medicineId.hashCode()
-                result = 31 * result + registeredUser.hashCode()
-                result = 31 * result + medicineName.hashCode()
-                result = 31 * result + medicineUnit.hashCode()
-                result = 31 * result + (expireDate?.hashCode() ?: 0)
-                result = 31 * result + (packageSize?.hashCode() ?: 0)
-                result = 31 * result + (currState?.hashCode() ?: 0)
-                result = 31 * result + (additionalInfo?.hashCode() ?: 0)
-                result = 31 * result + (image?.contentHashCode() ?: 0)
-                result = 31 * result + lastModificationTime.hashCode()
-                return result
-        }
+    override fun hashCode(): Int {
+        var result = medicineId.hashCode()
+        result = 31 * result + registeredUser.hashCode()
+        result = 31 * result + medicineName.hashCode()
+        result = 31 * result + medicineUnit.hashCode()
+        result = 31 * result + (expireDate?.hashCode() ?: 0)
+        result = 31 * result + (packageSize?.hashCode() ?: 0)
+        result = 31 * result + (currState?.hashCode() ?: 0)
+        result = 31 * result + (additionalInfo?.hashCode() ?: 0)
+        result = 31 * result + (image?.contentHashCode() ?: 0)
+        return result
+    }
+
 }

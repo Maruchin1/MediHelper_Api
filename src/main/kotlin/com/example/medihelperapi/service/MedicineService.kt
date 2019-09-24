@@ -1,8 +1,8 @@
 package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.PostResponseDto
-import com.example.medihelperapi.dto.MedicineGetDto
-import com.example.medihelperapi.dto.MedicinePostDto
+import com.example.medihelperapi.dto.medicine.MedicineGetDto
+import com.example.medihelperapi.dto.medicine.MedicinePostDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicineRepository
 import org.springframework.stereotype.Service

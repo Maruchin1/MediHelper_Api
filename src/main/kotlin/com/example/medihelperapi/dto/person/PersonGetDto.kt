@@ -1,4 +1,4 @@
-package com.example.medihelperapi.dto
+package com.example.medihelperapi.dto.person
 
 import com.example.medihelperapi.model.Person
 import com.fasterxml.jackson.annotation.JsonProperty
