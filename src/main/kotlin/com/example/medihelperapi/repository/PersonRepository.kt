@@ -10,4 +10,6 @@ interface PersonRepository : JpaRepository<Person, Long> {
     fun findAllByRegisteredUser(registeredUser: RegisteredUser): List<Person>
 
     fun deleteAllByRegisteredUser(registeredUser: RegisteredUser)
+
+    fun countByRegisteredUser(registeredUser: RegisteredUser): Long
 }

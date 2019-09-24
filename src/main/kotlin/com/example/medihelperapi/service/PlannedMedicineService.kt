@@ -13,7 +13,6 @@ class PlannedMedicineService(
         private val plannedMedicineRepository: PlannedMedicineRepository,
         private val medicinePlanRepository: MedicinePlanRepository
 ) {
-
     fun overwritePlannedMedicines(registeredUser: RegisteredUser, postDtoList: List<PlannedMedicinePostDto>): List<PostResponseDto> {
         plannedMedicineRepository.deleteAllByMedicinePlanMedicineRegisteredUser(registeredUser)
         val postResponseDtoList = mutableListOf<PostResponseDto>()

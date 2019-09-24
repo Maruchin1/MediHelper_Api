@@ -10,4 +10,5 @@ interface PlannedMedicineRepository : JpaRepository<PlannedMedicine, Long> {
     fun findAllByMedicinePlanMedicineRegisteredUser(registeredUser: RegisteredUser): List<PlannedMedicine>
 
     fun deleteAllByMedicinePlanMedicineRegisteredUser(registeredUser: RegisteredUser)
+
 }

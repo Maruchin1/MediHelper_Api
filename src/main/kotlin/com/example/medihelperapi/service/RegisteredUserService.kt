@@ -3,8 +3,7 @@ package com.example.medihelperapi.service
 import com.example.medihelperapi.dto.registereduser.NewPasswordDto
 import com.example.medihelperapi.dto.registereduser.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
-import com.example.medihelperapi.repository.MedicineRepository
-import com.example.medihelperapi.repository.RegisteredUserRepository
+import com.example.medihelperapi.repository.*
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
@@ -15,6 +14,7 @@ import java.util.*
 class RegisteredUserService(
         private val registeredUserRepository: RegisteredUserRepository,
         private val medicineRepository: MedicineRepository,
+        private val personRepository: PersonRepository,
         private val passwordEncoder: PasswordEncoder
 ) {
     fun register(userCredentials: UserCredentialsDto) {
@@ -45,7 +45,8 @@ class RegisteredUserService(
     }
 
     fun hasData(registeredUser: RegisteredUser): Boolean {
-        return medicineRepository.countByRegisteredUser(registeredUser) > 0
+        return medicineRepository.countByRegisteredUser(registeredUser) > 0 ||
+                personRepository.countByRegisteredUser(registeredUser) > 0
     }
 
     fun getLoggedUser(): RegisteredUser {
