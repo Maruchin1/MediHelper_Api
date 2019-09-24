@@ -22,6 +22,8 @@ class MedicinePlanController(
     @PostMapping("/medicines-plans/overwrite")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun overwriteMedicinesPlans(@RequestBody medicinePlanPostDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
+        println("medicines-plans/overwrite")
+        println(medicinePlanPostDtoList.toString())
         val registeredUser = registeredUserService.findByEmail(SecurityContextHolder.getContext().getAuthenticatedUserEmail())
         return medicinePlanService.overWriteMedicinesPlans(registeredUser, medicinePlanPostDtoList)
     }

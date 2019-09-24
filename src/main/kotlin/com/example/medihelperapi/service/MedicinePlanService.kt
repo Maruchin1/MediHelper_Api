@@ -34,7 +34,13 @@ class MedicinePlanService(
         return allMedicinesPlans.map { medicinePlan -> MedicinePlanGetDto(medicinePlan) }
     }
 
-    private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow { MedicineNotFoundException() }
+    private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow {
+        println("MedicineNotFound")
+        MedicineNotFoundException()
+    }
 
-    private fun findPersonById(personId: Long) = personRepository.findById(personId).orElseThrow { PersonNotFoundException() }
+    private fun findPersonById(personId: Long) = personRepository.findById(personId).orElseThrow {
+        println("PersonNotFound")
+        PersonNotFoundException()
+    }
 }
