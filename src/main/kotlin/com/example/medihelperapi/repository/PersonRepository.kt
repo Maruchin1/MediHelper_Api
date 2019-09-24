@@ -8,4 +8,6 @@ import org.springframework.stereotype.Repository
 @Repository
 interface PersonRepository : JpaRepository<Person, Long> {
     fun findAllByRegisteredUser(registeredUser: RegisteredUser): List<Person>
+
+    fun deleteAllByRegisteredUser(registeredUser: RegisteredUser)
 }

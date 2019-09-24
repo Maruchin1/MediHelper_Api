@@ -5,6 +5,8 @@ import com.example.medihelperapi.dto.registereduser.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
+import org.springframework.security.core.context.SecurityContextHolder
+import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -37,16 +39,19 @@ class RegisteredUserService(
         return newAuthToken
     }
 
-    fun changePassword(email: String, newPassword: NewPasswordDto) {
-        val registeredUser = findByEmail(email)
+    fun changePassword(registeredUser: RegisteredUser, newPassword: NewPasswordDto) {
         registeredUser.password = passwordEncoder.encode(newPassword.value)
         registeredUserRepository.save(registeredUser)
     }
 
-    fun hasData(email: String): Boolean {
-        val registeredUser = findByEmail(email)
+    fun hasData(registeredUser: RegisteredUser): Boolean {
         return medicineRepository.countByRegisteredUser(registeredUser) > 0
     }
 
-    fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
+    fun getLoggedUser(): RegisteredUser {
+        val user = SecurityContextHolder.getContext().authentication.principal as User
+        return findByEmail(user.username)
+    }
+
+    private fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
 }

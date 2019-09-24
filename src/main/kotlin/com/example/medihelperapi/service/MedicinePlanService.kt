@@ -15,10 +15,10 @@ class MedicinePlanService(
         private val medicineRepository: MedicineRepository,
         private val personRepository: PersonRepository
 ) {
-    fun overWriteMedicinesPlans(registeredUser: RegisteredUser, medicinePlanPostDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
-        medicinePlanRepository.deleteAll()
+    fun overWriteMedicinesPlans(registeredUser: RegisteredUser, postDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
+        medicinePlanRepository.deleteAllByMedicineRegisteredUser(registeredUser)
         val postResponseDtoList = mutableListOf<PostResponseDto>()
-        medicinePlanPostDtoList.forEach { medicinePlanPostDto ->
+        postDtoList.forEach { medicinePlanPostDto ->
             val newMedicinePlan = medicinePlanPostDto.toMedicinePlanEntity(
                     medicine = findMedicineById(medicinePlanPostDto.medicineRemoteId),
                     person = findPersonById(medicinePlanPostDto.personRemoteId)

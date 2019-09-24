@@ -9,10 +9,10 @@ import org.springframework.stereotype.Service
 
 @Service
 class PersonService (private val personRepository: PersonRepository) {
-    fun overwritePersons(registeredUser: RegisteredUser, personPostDtoList: List<PersonPostDto>): List<PostResponseDto> {
-        personRepository.deleteAll()
+    fun overwritePersons(registeredUser: RegisteredUser, postDtoList: List<PersonPostDto>): List<PostResponseDto> {
+        personRepository.deleteAllByRegisteredUser(registeredUser)
         val postResponseDtoList = mutableListOf<PostResponseDto>()
-        personPostDtoList.forEach { personPostDto ->
+        postDtoList.forEach { personPostDto ->
             val newPerson = personPostDto.toPersonEntity(registeredUser)
             val savedPerson = personRepository.save(newPerson)
             postResponseDtoList.add(PostResponseDto(localId = personPostDto.personLocalId, remoteId = savedPerson.personId))

@@ -10,10 +10,10 @@ import org.springframework.stereotype.Service
 @Service
 class MedicineService(private val medicineRepository: MedicineRepository) {
 
-    fun overwriteMedicines(registeredUser: RegisteredUser, medicinePostDtoList: List<MedicinePostDto>): List<PostResponseDto> {
-        medicineRepository.deleteAll()
+    fun overwriteMedicines(registeredUser: RegisteredUser, postDtoList: List<MedicinePostDto>): List<PostResponseDto> {
+        medicineRepository.deleteAllByRegisteredUser(registeredUser)
         val postResponseDtoList = mutableListOf<PostResponseDto>()
-        medicinePostDtoList.forEach { medicinePostDto ->
+        postDtoList.forEach { medicinePostDto ->
             val newMedicine = medicinePostDto.toMedicineEntity(registeredUser)
             val savedMedicine = medicineRepository.save(newMedicine)
             val postResponseDto = PostResponseDto(localId = medicinePostDto.medicineLocalId, remoteId = savedMedicine.medicineId)

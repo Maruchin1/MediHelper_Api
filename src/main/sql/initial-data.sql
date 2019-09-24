@@ -1,5 +1,5 @@
 
-truncate times_of_taking,  medicines_plans, medicines, persons, registered_user restart identity;
+truncate planned_medicines, times_of_taking,  medicines_plans, medicines, persons, registered_user restart identity;
 
 insert into registered_user (registered_user_id, auth_token, email, password)
 values (1, 'aa', 'aa', 'aa');
