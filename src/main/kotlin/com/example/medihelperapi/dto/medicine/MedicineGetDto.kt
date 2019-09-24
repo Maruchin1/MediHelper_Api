@@ -6,8 +6,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class MedicineGetDto(
-        @JsonProperty(value = "medicineId")
-        val medicineId: Long,
+        @JsonProperty(value = "medicineRemoteId")
+        val medicineRemoteId: Long,
 
         @JsonProperty(value = "medicineName")
         val medicineName: String,
@@ -32,7 +32,7 @@ data class MedicineGetDto(
         val additionalInfo: String?
 ) {
         constructor(medicine: Medicine) : this(
-                medicineId = medicine.medicineId,
+                medicineRemoteId = medicine.medicineId,
                 medicineName = medicine.medicineName,
                 medicineUnit = medicine.medicineUnit,
                 expireDate = medicine.expireDate,
@@ -48,7 +48,7 @@ data class MedicineGetDto(
 
                 other as MedicineGetDto
 
-                if (medicineId != other.medicineId) return false
+                if (medicineRemoteId != other.medicineRemoteId) return false
                 if (medicineName != other.medicineName) return false
                 if (medicineUnit != other.medicineUnit) return false
                 if (expireDate != other.expireDate) return false
@@ -64,7 +64,7 @@ data class MedicineGetDto(
         }
 
         override fun hashCode(): Int {
-                var result = medicineId.hashCode()
+                var result = medicineRemoteId.hashCode()
                 result = 31 * result + medicineName.hashCode()
                 result = 31 * result + medicineUnit.hashCode()
                 result = 31 * result + (expireDate?.hashCode() ?: 0)

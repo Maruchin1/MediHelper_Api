@@ -1,9 +1,7 @@
 package com.example.medihelperapi.model
 
-import com.fasterxml.jackson.annotation.JsonIgnore
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
-import java.time.LocalDateTime
 import javax.persistence.*
 
 

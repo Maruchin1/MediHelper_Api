@@ -4,8 +4,8 @@ import com.example.medihelperapi.model.Person
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class PersonGetDto(
-        @JsonProperty(value = "personId")
-        val personId: Long,
+        @JsonProperty(value = "personRemoteId")
+        val personRemoteId: Long,
 
         @JsonProperty(value = "personName")
         val personName: String,
@@ -17,7 +17,7 @@ data class PersonGetDto(
         val mainPerson: Boolean
 ) {
     constructor(person: Person) : this(
-            personId = person.personId,
+            personRemoteId = person.personId,
             personName = person.personName,
             mainPerson = person.mainPerson,
             personColorResId = person.personColorResId

@@ -9,10 +9,10 @@ data class MedicinePlanPostDto(
         @JsonProperty(value = "medicinePlanLocalId")
         val medicinePlanLocalId: Int,
 
-        @JsonProperty(value = "medicineId")
+        @JsonProperty(value = "medicineRemoteId")
         val medicineRemoteId: Long,
 
-        @JsonProperty(value = "personId")
+        @JsonProperty(value = "personRemoteId")
         val personRemoteId: Long,
 
         @JsonProperty(value = "startDate")
