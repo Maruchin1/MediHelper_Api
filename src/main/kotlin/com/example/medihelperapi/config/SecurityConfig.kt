@@ -74,8 +74,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 AntPathRequestMatcher("/registered-users/**"),
                 AntPathRequestMatcher("/medicines/**"),
                 AntPathRequestMatcher("/persons/**"),
-                AntPathRequestMatcher("/medicines-plans/**"),
-                AntPathRequestMatcher("/overwrite/**")
+                AntPathRequestMatcher("/medicines-plans/**")
         )
     }
 }

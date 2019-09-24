@@ -15,7 +15,6 @@ class AuthenticationFilter(requiresAuth: RequestMatcher) : AbstractAuthenticatio
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         val token = request?.getHeader(AUTHORIZATION)
-        println("token = $token")
         val requestAuthentication = UsernamePasswordAuthenticationToken(token, token)
         return authenticationManager.authenticate(requestAuthentication)
     }

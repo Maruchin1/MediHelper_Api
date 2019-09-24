@@ -20,11 +20,7 @@ import java.util.*
 class AuthenticationProvider(private val registeredUserRepository: RegisteredUserRepository) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val token = authentication?.credentials
-        println("token = $token")
-        if (token == null) {
-            throw BadCredentialsException("No Authentication token passed in request")
-        }
+        val token = authentication?.credentials ?: throw BadCredentialsException("No Authentication token passed in request")
         return registeredUserRepository.findByAuthToken(token as String).map { registeredUser ->
             User(registeredUser.email, registeredUser.password, AuthorityUtils.createAuthorityList("USER"))
         }.orElseThrow {
