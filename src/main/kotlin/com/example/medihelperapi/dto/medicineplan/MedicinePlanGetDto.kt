@@ -48,6 +48,6 @@ data class MedicinePlanGetDto(
             daysOfWeek = medicinePlan.daysOfWeek,
             intervalOfDays = medicinePlan.intervalOfDays,
             daysType = medicinePlan.daysType,
-            timeOfTakingList = medicinePlan.timeOfTakingSet.map { TimeOfTakingDto(it) }
+            timeOfTakingList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) }
     )
 }

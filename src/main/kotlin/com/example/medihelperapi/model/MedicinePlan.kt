@@ -34,11 +34,11 @@ data class MedicinePlan(
 
         var daysType: String,
 
-        @OneToMany(cascade = [CascadeType.ALL], orphanRemoval = true)
+        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
         @JoinColumn(name = "medicinePlanId")
-        var timeOfTakingSet: Set<TimeOfTaking>
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        var timeOfTakingList: List<TimeOfTaking>
 ) {
-
     @Embeddable
     class DaysOfWeek(
           var monday: Boolean?,

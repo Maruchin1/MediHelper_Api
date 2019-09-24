@@ -38,19 +38,15 @@ data class MedicinePlanPostDto(
         @JsonProperty(value = "timeOfTakingList")
         val timeOfTakingList: List<TimeOfTakingDto>
 ) {
-    fun toMedicinePlanEntity(medicine: Medicine, person: Person): MedicinePlan {
-        val medicinePlan = MedicinePlan(
-                medicine = medicine,
-                person = person,
-                startDate = startDate,
-                endDate = endDate,
-                durationType = durationType,
-                daysOfWeek = daysOfWeek,
-                intervalOfDays = intervalOfDays,
-                daysType = daysType,
-                timeOfTakingSet = timeOfTakingList.map { it.toTimeOfTakingEntity() }.toSet()
-        )
-//        medicinePlan.timeOfTakingSet = timeOfTakingList.map { it.toTimeOfTakingEntity(medicinePlan) }.toSet()
-        return medicinePlan
-    }
+    fun toMedicinePlanEntity(medicine: Medicine, person: Person) = MedicinePlan(
+            medicine = medicine,
+            person = person,
+            startDate = startDate,
+            endDate = endDate,
+            durationType = durationType,
+            daysOfWeek = daysOfWeek,
+            intervalOfDays = intervalOfDays,
+            daysType = daysType,
+            timeOfTakingList = timeOfTakingList.map { it.toTimeOfTakingEntity() }
+    )
 }
