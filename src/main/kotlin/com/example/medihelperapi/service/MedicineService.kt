@@ -34,12 +34,13 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
             registeredUser: RegisteredUser,
             syncRequestDto: SyncRequestDto<MedicineDto>
     ): List<MedicineDto> {
-        val medicinesToInsert = syncRequestDto.insertUpdateDtoList.filter {
-            it.medicineLocalId != null && it.medicineRemoteId == null
-        }
-        val medicinesToUpdate = syncRequestDto.insertUpdateDtoList.filter {
-            it.medicineLocalId == null && it.medicineRemoteId != null
-        }
+        println("dtoList = ${syncRequestDto.insertUpdateDtoList}")
+
+        val medicinesToInsert = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId == null }
+        val medicinesToUpdate = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId != null }
+
+        println("medicinesToInsert = $medicinesToInsert")
+        println("medicinesToUpdate = $medicinesToUpdate")
 
         val localIdRemoteIdPairList = mutableListOf<LocalIdRemoteIdPair>()
         medicinesToInsert.forEach { medicineDto ->
