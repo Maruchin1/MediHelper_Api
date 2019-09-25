@@ -4,6 +4,8 @@ import com.example.medihelperapi.dto.medicineplan.TimeOfTakingDto
 import com.example.medihelperapi.model.MedicinePlan
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.PersonRepository
+import com.example.medihelperapi.service.MedicineNotFoundException
+import com.example.medihelperapi.service.PersonNotFoundException
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
@@ -56,8 +58,8 @@ data class MedicinePlanDto(
 
     fun toMedicinePlanEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
             medicinePlanId = medicinePlanRemoteId ?: 0,
-            medicine = medicineRepository.findById(medicineRemoteId).orElseThrow(),
-            person = personRepository.findById(personRemoteId).orElseThrow(),
+            medicine = medicineRepository.findById(medicineRemoteId).orElseThrow { MedicineNotFoundException() },
+            person = personRepository.findById(personRemoteId).orElseThrow { PersonNotFoundException() },
             startDate = startDate,
             endDate = endDate,
             durationType = durationType,
