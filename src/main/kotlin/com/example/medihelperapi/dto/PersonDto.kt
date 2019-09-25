@@ -1,14 +1,12 @@
-package com.example.medihelperapi.dto.person
+package com.example.medihelperapi.dto
 
 import com.example.medihelperapi.model.Person
 import com.example.medihelperapi.model.RegisteredUser
-import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty
-import java.time.LocalDateTime
 
-data class PersonPostDto(
-        @JsonProperty(value = "personLocalId")
-        val personLocalId: Int,
+data class PersonDto(
+        @JsonProperty(value = "personRemoteId")
+        val personRemoteId: Long?,
 
         @JsonProperty(value = "personName")
         val personName: String,
@@ -19,8 +17,15 @@ data class PersonPostDto(
         @JsonProperty(value = "mainPerson")
         val mainPerson: Boolean
 ) {
+    constructor(person: Person) : this(
+            personRemoteId = person.personId,
+            personName = person.personName,
+            personColorResId = person.personColorResId,
+            mainPerson = person.mainPerson
+    )
+
     fun toPersonEntity(registeredUser: RegisteredUser) = Person(
-            personId = 0,
+            personId = personRemoteId ?: 0,
             registeredUser = registeredUser,
             personName = personName,
             personColorResId = personColorResId,

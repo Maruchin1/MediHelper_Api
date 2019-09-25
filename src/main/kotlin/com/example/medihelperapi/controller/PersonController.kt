@@ -1,16 +1,15 @@
 package com.example.medihelperapi.controller
 
+import com.example.medihelperapi.dto.PersonDto
 import com.example.medihelperapi.dto.person.PersonGetDto
 import com.example.medihelperapi.dto.person.PersonPostDto
 import com.example.medihelperapi.dto.PostResponseDto
+import com.example.medihelperapi.dto.SyncRequestDto
 import com.example.medihelperapi.service.PersonService
 import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class PersonController(
@@ -28,5 +27,11 @@ class PersonController(
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun getAllPersons(): List<PersonGetDto> {
         return personService.getAllPersons(registeredUserService.getLoggedUser())
+    }
+
+    @PutMapping("/persons/synchronize")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun synchronizePersons(@RequestBody syncRequestDto: SyncRequestDto<PersonDto>): List<PersonDto> {
+        return personService.synchronizePersons(registeredUserService.getLoggedUser(), syncRequestDto)
     }
 }

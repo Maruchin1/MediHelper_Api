@@ -17,7 +17,7 @@ insert into times_of_taking (time_of_taking_id, dose_size, time, medicine_plan_i
 values (1, 3, '08:00', 1);
 
 insert into medicines (medicine_id, additional_info, curr_state, expire_date, image, medicine_name, medicine_unit, package_size, registered_user_id)
-values (10, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 1)
+values (10, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 2)
 
 
 

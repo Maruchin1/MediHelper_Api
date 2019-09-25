@@ -9,7 +9,7 @@ import javax.persistence.*
 @Table(name = "persons")
 data class Person(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val personId: Long = 0,
+        val personId: Long,
 
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "registeredUserId")

@@ -1,4 +1,4 @@
-package com.example.medihelperapi.dto.medicine
+package com.example.medihelperapi.dto
 
 import com.example.medihelperapi.model.Medicine
 import com.example.medihelperapi.model.RegisteredUser
@@ -54,8 +54,8 @@ data class MedicineDto(
             image = image
     )
 
-    fun toExistingMedicineEntity(registeredUser: RegisteredUser, existingMedicineId: Long) = Medicine(
-            medicineId = existingMedicineId,
+    fun toExistingMedicineEntity(registeredUser: RegisteredUser) = Medicine(
+            medicineId = medicineRemoteId!!,
             registeredUser = registeredUser,
             medicineName = medicineName,
             medicineUnit = medicineUnit,

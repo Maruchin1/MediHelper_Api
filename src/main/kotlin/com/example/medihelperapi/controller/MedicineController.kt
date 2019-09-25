@@ -4,7 +4,7 @@ import com.example.medihelperapi.dto.medicine.MedicineGetDto
 import com.example.medihelperapi.dto.medicine.MedicinePostDto
 import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.dto.SyncRequestDto
-import com.example.medihelperapi.dto.medicine.MedicineDto
+import com.example.medihelperapi.dto.MedicineDto
 import com.example.medihelperapi.service.MedicineService
 import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam
