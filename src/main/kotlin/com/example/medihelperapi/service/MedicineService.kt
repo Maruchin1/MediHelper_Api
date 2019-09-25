@@ -1,6 +1,5 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.LocalIdRemoteIdPair
 import com.example.medihelperapi.dto.PostResponseDto
 import com.example.medihelperapi.dto.SyncRequestDto
 import com.example.medihelperapi.dto.medicine.MedicineGetDto
@@ -34,42 +33,33 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
             registeredUser: RegisteredUser,
             syncRequestDto: SyncRequestDto<MedicineDto>
     ): List<MedicineDto> {
-        println("dtoList = ${syncRequestDto.insertUpdateDtoList}")
 
-        val medicinesToInsert = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId == null }
-        val medicinesToUpdate = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId != null }
-        val medicinesIdsToDelete = syncRequestDto.deleteRemoteIdList
+        val insertDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId == null }
+        val updateDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId != null }
+        val deleteIdList = syncRequestDto.deleteRemoteIdList
 
-        println("medicinesToInsert = $medicinesToInsert")
-        println("medicinesToUpdate = $medicinesToUpdate")
+        println("insertDtoList = $insertDtoList")
+        println("updateDtoList = $updateDtoList")
+        println("deleteRemoteIdList = $deleteIdList")
 
-        val localIdRemoteIdPairList = mutableListOf<LocalIdRemoteIdPair>()
-        medicinesToInsert.forEach { medicineDto ->
+        insertDtoList.forEach { medicineDto ->
             val newMedicine = medicineDto.toNewMedicineEntity(registeredUser)
-            val savedMedicine = medicineRepository.save(newMedicine)
-            val localIdRemoteIdPair = LocalIdRemoteIdPair(
-                    localId = medicineDto.medicineLocalId!!,
-                    remoteId = savedMedicine.medicineId
-            )
-            localIdRemoteIdPairList.add(localIdRemoteIdPair)
+            medicineRepository.save(newMedicine)
         }
 
-        medicinesToUpdate.forEach { medicineDto ->
+        updateDtoList.forEach { medicineDto ->
             if (medicineRepository.existsById(medicineDto.medicineRemoteId!!)) {
                 val updatedMedicine = medicineDto.toExistingMedicineEntity(registeredUser, medicineDto.medicineRemoteId)
                 medicineRepository.save(updatedMedicine)
             }
         }
 
-        medicinesIdsToDelete.forEach { medicineId ->
+        deleteIdList.forEach { medicineId ->
             if (medicineRepository.existsById(medicineId)) {
                 medicineRepository.deleteById(medicineId)
             }
         }
 
-        return medicineRepository.findAllByRegisteredUser(registeredUser).map { medicine ->
-            val localIdRemoteIdPair = localIdRemoteIdPairList.find { it.remoteId == medicine.medicineId }
-            MedicineDto(medicine, localIdRemoteIdPair?.localId)
-        }
+        return medicineRepository.findAllByRegisteredUser(registeredUser).map { medicine -> MedicineDto(medicine) }
     }
 }
