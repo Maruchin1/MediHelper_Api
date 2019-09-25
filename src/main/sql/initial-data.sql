@@ -16,8 +16,13 @@ values (1, null, null, null, null, null, null, null, 'codziennie', 'okres', '201
 insert into times_of_taking (time_of_taking_id, dose_size, time, medicine_plan_id)
 values (1, 3, '08:00', 1);
 
+--------------------------------------------------------------------
+
 insert into medicines (medicine_id, additional_info, curr_state, expire_date, image, medicine_name, medicine_unit, package_size, registered_user_id)
-values (10, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 2)
+values (10, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 2);
+
+insert into persons (person_id, main_person, person_color_res_id, person_name, registered_user_id)
+values (3, false, 2131099701, 'Pawel', 1)
 
 
 

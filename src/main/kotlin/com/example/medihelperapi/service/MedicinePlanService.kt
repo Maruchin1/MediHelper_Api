@@ -1,8 +1,10 @@
 package com.example.medihelperapi.service
 
+import com.example.medihelperapi.dto.MedicinePlanDto
 import com.example.medihelperapi.dto.medicineplan.MedicinePlanGetDto
 import com.example.medihelperapi.dto.medicineplan.MedicinePlanPostDto
 import com.example.medihelperapi.dto.PostResponseDto
+import com.example.medihelperapi.dto.SyncRequestDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicinePlanRepository
 import com.example.medihelperapi.repository.MedicineRepository
@@ -32,6 +34,30 @@ class MedicinePlanService(
     fun getAllMedicinesPlans(registeredUser: RegisteredUser): List<MedicinePlanGetDto> {
         val allMedicinesPlans = medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser)
         return allMedicinesPlans.map { medicinePlan -> MedicinePlanGetDto(medicinePlan) }
+    }
+
+    fun synchronizeMedicinesPlans(registeredUser: RegisteredUser, syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
+        val insertDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicinePlanRemoteId == null }
+        val updateDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicinePlanRemoteId != null }
+        val deleteIdList = syncRequestDto.deleteRemoteIdList
+
+        insertDtoList.forEach { medicinePlanDto ->
+            val newMedicinePlan = medicinePlanDto.toMedicinePlanEntity(medicineRepository, personRepository)
+            medicinePlanRepository.save(newMedicinePlan)
+        }
+        updateDtoList.forEach { medicinePlanDto ->
+            if (medicinePlanRepository.existsById(medicinePlanDto.medicinePlanRemoteId!!)) {
+                val updatedMedicinePlan = medicinePlanDto.toMedicinePlanEntity(medicineRepository, personRepository)
+                medicinePlanRepository.save(updatedMedicinePlan)
+            }
+        }
+        deleteIdList.forEach { medicinePlaId ->
+            if (medicinePlanRepository.existsById(medicinePlaId)) {
+                medicinePlanRepository.deleteById(medicinePlaId)
+            }
+        }
+
+        return medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser).map { MedicinePlanDto(it) }
     }
 
     private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow {

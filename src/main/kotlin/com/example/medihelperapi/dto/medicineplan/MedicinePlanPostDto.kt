@@ -39,6 +39,7 @@ data class MedicinePlanPostDto(
         val timeOfTakingList: List<TimeOfTakingDto>
 ) {
     fun toMedicinePlanEntity(medicine: Medicine, person: Person) = MedicinePlan(
+            medicinePlanId = 0,
             medicine = medicine,
             person = person,
             startDate = startDate,
