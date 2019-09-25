@@ -28,7 +28,7 @@ class MedicinePlanController(
         return medicinePlanService.getAllMedicinesPlans(registeredUserService.getLoggedUser())
     }
 
-    @PutMapping("/medicines-plans")
+    @PutMapping("/medicines-plans/synchronize")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizeMedicinesPlans(@RequestBody syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
         return medicinePlanService.synchronizeMedicinesPlans(registeredUserService.getLoggedUser(), syncRequestDto)
