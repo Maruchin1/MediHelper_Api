@@ -3,6 +3,8 @@ package com.example.medihelperapi.controller
 import com.example.medihelperapi.dto.medicine.MedicineGetDto
 import com.example.medihelperapi.dto.medicine.MedicinePostDto
 import com.example.medihelperapi.dto.PostResponseDto
+import com.example.medihelperapi.dto.SyncRequestDto
+import com.example.medihelperapi.dto.medicine.MedicineDto
 import com.example.medihelperapi.service.MedicineService
 import com.example.medihelperapi.service.RegisteredUserService
 import io.swagger.annotations.ApiImplicitParam
@@ -24,5 +26,11 @@ class MedicineController(
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun getAllMedicines(): List<MedicineGetDto> {
         return medicineService.getAllMedicines(registeredUserService.getLoggedUser())
+    }
+
+    @PutMapping("/medicines/synchronize")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun synchronizeMedicines(@RequestBody syncRequestDto: SyncRequestDto<MedicineDto>): List<MedicineDto> {
+        return medicineService.synchronizeMedicines(registeredUserService.getLoggedUser(), syncRequestDto)
     }
 }
