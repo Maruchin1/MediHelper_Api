@@ -38,6 +38,7 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
 
         val medicinesToInsert = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId == null }
         val medicinesToUpdate = syncRequestDto.insertUpdateDtoList.filter { it.medicineRemoteId != null }
+        val medicinesIdsToDelete = syncRequestDto.deleteRemoteIdList
 
         println("medicinesToInsert = $medicinesToInsert")
         println("medicinesToUpdate = $medicinesToUpdate")
@@ -57,6 +58,12 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
             if (medicineRepository.existsById(medicineDto.medicineRemoteId!!)) {
                 val updatedMedicine = medicineDto.toExistingMedicineEntity(registeredUser, medicineDto.medicineRemoteId)
                 medicineRepository.save(updatedMedicine)
+            }
+        }
+
+        medicinesIdsToDelete.forEach { medicineId ->
+            if (medicineRepository.existsById(medicineId)) {
+                medicineRepository.deleteById(medicineId)
             }
         }
 

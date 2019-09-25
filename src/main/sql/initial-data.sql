@@ -14,7 +14,10 @@ insert into medicines_plans (medicine_plan_id, friday, monday, saturday, sunday,
 values (1, null, null, null, null, null, null, null, 'codziennie', 'okres', '2019-09-23', null, '2019-09-24', 1, 1);
 
 insert into times_of_taking (time_of_taking_id, dose_size, time, medicine_plan_id)
-values (1, 3, '08:00', 1)
+values (1, 3, '08:00', 1);
+
+insert into medicines (medicine_id, additional_info, curr_state, expire_date, image, medicine_name, medicine_unit, package_size, registered_user_id)
+values (10, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 1)
 
 
 
