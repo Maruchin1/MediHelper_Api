@@ -34,4 +34,16 @@ class RegisteredUserController(
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
     }
+
+    @PutMapping("/synchronization/persons")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun synchronizePersons(@RequestBody syncRequestDto: SyncRequestDto<PersonDto>): List<PersonDto> {
+        println("synchronizePersons")
+        println(syncRequestDto.toString())
+        return personService.synchronizePersons(
+                registeredUser = registeredUserService.getLoggedUser(),
+                insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
+                deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
+        )
+    }
 }

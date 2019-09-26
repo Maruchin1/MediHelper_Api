@@ -33,10 +33,6 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
         val insertDtoList = insertUpdateDtoList.filter { it.medicineRemoteId == null }
         val updateDtoList = insertUpdateDtoList.filter { it.medicineRemoteId != null }
 
-        println("insertDtoList = $insertDtoList")
-        println("updateDtoList = $updateDtoList")
-        println("deleteRemoteIdList = $deleteRemoteIdList")
-
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicineDto ->
             val newMedicine = medicineDto.toEntity(registeredUser)

@@ -1,8 +1,6 @@
 package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.PersonDto
-import com.example.medihelperapi.dto.SyncRequestDto
-import com.example.medihelperapi.model.Person
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.PersonRepository
 import org.springframework.stereotype.Service
@@ -33,9 +31,11 @@ class PersonService(private val personRepository: PersonRepository) {
         val insertDtoList = insertUpdateDtoList.filter { it.personRemoteId == null }
         val updateDtoList = insertUpdateDtoList.filter { it.personRemoteId != null }
 
+        val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { personDto ->
             val newPerson = personDto.toPersonEntity(registeredUser)
-            personRepository.save(newPerson)
+            val savedPerson = personRepository.save(newPerson)
+            localIdRemoteIdPairList.add(Pair(personDto.personLocalId!!, savedPerson.personId))
         }
         updateDtoList.forEach { personDto ->
             if (personRepository.existsById(personDto.personRemoteId!!)) {
@@ -49,6 +49,9 @@ class PersonService(private val personRepository: PersonRepository) {
             }
         }
 
-        return personRepository.findAllByRegisteredUser(registeredUser).map { PersonDto(it) }
+        return personRepository.findAllByRegisteredUser(registeredUser).map { person ->
+            val personLocalId = localIdRemoteIdPairList.find { it.second == person.personId }?.first
+            PersonDto(person, personLocalId)
+        }
     }
 }
