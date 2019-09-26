@@ -18,11 +18,11 @@ values (1, 3, '08:00', 1);
 
 --------------------------------------------------------------------
 
-insert into medicines (medicine_id, additional_info, curr_state, expire_date, image, medicine_name, medicine_unit, package_size, registered_user_id)
-values (2, 'Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 1);
+insert into medicines (additional_info, curr_state, expire_date, image, medicine_name, medicine_unit, package_size, registered_user_id)
+values ('Niespodzianka', 10, '2019-10-15', null, 'Jakis lek', 'dropy', 20, 1);
 
-insert into persons (person_id, main_person, person_color_res_id, person_name, registered_user_id)
-values (3, false, 2131099701, 'Pawel', 1)
+insert into persons (main_person, person_color_res_id, person_name, registered_user_id)
+values (false, 2131099701, 'Pawel', 1)
 
 
 

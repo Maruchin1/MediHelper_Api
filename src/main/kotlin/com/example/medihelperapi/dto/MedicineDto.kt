@@ -7,6 +7,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 
 data class MedicineDto(
+        @JsonProperty(value = "medicineLocalId")
+        val medicineLocalId: Int?,
+
         @JsonProperty(value = "medicineRemoteId")
         val medicineRemoteId: Long?,
 
@@ -32,7 +35,8 @@ data class MedicineDto(
         @JsonProperty(value = "image")
         val image: ByteArray?
 ) {
-    constructor(medicine: Medicine) : this(
+    constructor(medicine: Medicine, medicineLocalId: Int?) : this(
+            medicineLocalId = medicineLocalId,
             medicineRemoteId = medicine.medicineId,
             medicineName = medicine.medicineName,
             medicineUnit = medicine.medicineUnit,

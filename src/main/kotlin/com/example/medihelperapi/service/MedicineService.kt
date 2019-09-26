@@ -37,9 +37,11 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
         println("updateDtoList = $updateDtoList")
         println("deleteRemoteIdList = $deleteRemoteIdList")
 
+        val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicineDto ->
             val newMedicine = medicineDto.toEntity(registeredUser)
-            medicineRepository.save(newMedicine)
+            val savedMedicine = medicineRepository.save(newMedicine)
+            localIdRemoteIdPairList.add(Pair(medicineDto.medicineLocalId!!, savedMedicine.medicineId))
         }
         updateDtoList.forEach { medicineDto ->
             if (medicineRepository.existsById(medicineDto.medicineRemoteId!!)) {
@@ -53,6 +55,9 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
             }
         }
 
-        return medicineRepository.findAllByRegisteredUser(registeredUser).map { medicine -> MedicineDto(medicine) }
+        return medicineRepository.findAllByRegisteredUser(registeredUser).map { medicine ->
+            val medicineLocalId = localIdRemoteIdPairList.find { it.second == medicine.medicineId }?.first
+            MedicineDto(medicine, medicineLocalId)
+        }
     }
 }
