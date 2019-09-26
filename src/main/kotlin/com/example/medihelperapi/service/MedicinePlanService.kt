@@ -37,13 +37,14 @@ class MedicinePlanService(
             insertUpdateDtoList: List<MedicinePlanDto>,
             deleteRemoteIdList: List<Long>
     ): List<MedicinePlanDto> {
-
         val insertDtoList = insertUpdateDtoList.filter { it.medicinePlanRemoteId == null }
         val updateDtoList = insertUpdateDtoList.filter { it.medicinePlanRemoteId != null }
 
+        val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicinePlanDto ->
             val newMedicinePlan = medicinePlanDto.toMedicinePlanEntity(medicineRepository, personRepository)
-            medicinePlanRepository.save(newMedicinePlan)
+            val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
+            localIdRemoteIdPairList.add(Pair(medicinePlanDto.medicinePlanLocalId!!, savedMedicinePlan.medicinePlanId))
         }
         updateDtoList.forEach { medicinePlanDto ->
             if (medicinePlanRepository.existsById(medicinePlanDto.medicinePlanRemoteId!!)) {
@@ -57,16 +58,9 @@ class MedicinePlanService(
             }
         }
 
-        return medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser).map { MedicinePlanDto(it) }
+        return medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser).map { medicinePlan ->
+            val medicinePlanLocalId = localIdRemoteIdPairList.find { it.second == medicinePlan.medicinePlanId }?.first
+            MedicinePlanDto(medicinePlan, medicinePlanLocalId)
+        }
     }
-
-//    private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow {
-//        println("MedicineNotFound")
-//        MedicineNotFoundException()
-//    }
-//
-//    private fun findPersonById(personId: Long) = personRepository.findById(personId).orElseThrow {
-//        println("PersonNotFound")
-//        PersonNotFoundException()
-//    }
 }

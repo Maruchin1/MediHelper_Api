@@ -46,4 +46,16 @@ class RegisteredUserController(
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
     }
+
+    @PutMapping("/synchronization/medicines-plans")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun synchronizeMedicinesPlans(@RequestBody syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
+        println("synchronizeMedicinesPlans")
+        println(syncRequestDto.toString())
+        return medicinePlanService.synchronizeMedicinesPlans(
+                registeredUser = registeredUserService.getLoggedUser(),
+                insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
+                deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
+        )
+    }
 }
