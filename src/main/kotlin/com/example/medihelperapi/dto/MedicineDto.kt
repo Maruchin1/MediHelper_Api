@@ -43,19 +43,8 @@ data class MedicineDto(
             image = medicine.image
     )
 
-    fun toNewMedicineEntity(registeredUser: RegisteredUser) = Medicine(
-            registeredUser = registeredUser,
-            medicineName = medicineName,
-            medicineUnit = medicineUnit,
-            expireDate = expireDate,
-            packageSize = packageSize,
-            currState = currState,
-            additionalInfo = additionalInfo,
-            image = image
-    )
-
-    fun toExistingMedicineEntity(registeredUser: RegisteredUser) = Medicine(
-            medicineId = medicineRemoteId!!,
+    fun toEntity(registeredUser: RegisteredUser) = Medicine(
+            medicineId = medicineRemoteId ?: 0,
             registeredUser = registeredUser,
             medicineName = medicineName,
             medicineUnit = medicineUnit,

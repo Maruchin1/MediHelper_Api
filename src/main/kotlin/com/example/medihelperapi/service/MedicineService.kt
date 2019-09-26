@@ -38,12 +38,12 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
         println("deleteRemoteIdList = $deleteRemoteIdList")
 
         insertDtoList.forEach { medicineDto ->
-            val newMedicine = medicineDto.toNewMedicineEntity(registeredUser)
+            val newMedicine = medicineDto.toEntity(registeredUser)
             medicineRepository.save(newMedicine)
         }
         updateDtoList.forEach { medicineDto ->
             if (medicineRepository.existsById(medicineDto.medicineRemoteId!!)) {
-                val updatedMedicine = medicineDto.toExistingMedicineEntity(registeredUser)
+                val updatedMedicine = medicineDto.toEntity(registeredUser)
                 medicineRepository.save(updatedMedicine)
             }
         }
