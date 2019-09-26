@@ -9,6 +9,9 @@ import java.time.LocalDate
 import java.time.LocalTime
 
 data class PlannedMedicineDto(
+        @JsonProperty(value = "plannedMedicineLocalId")
+        val plannedMedicineLocalId: Int?,
+
         @JsonProperty(value = "plannedMedicineRemoteId")
         val plannedMedicineRemoteId: Long?,
 
@@ -29,7 +32,8 @@ data class PlannedMedicineDto(
         @JsonProperty(value = "statusOfTaking")
         val statusOfTaking: String
 ) {
-    constructor(plannedMedicine: PlannedMedicine) : this(
+    constructor(plannedMedicine: PlannedMedicine, plannedMedicineLocalId: Int?) : this(
+            plannedMedicineLocalId = plannedMedicineLocalId,
             plannedMedicineRemoteId = plannedMedicine.plannedMedicineId,
             medicinePlanRemoteId = plannedMedicine.medicinePlan.medicinePlanId,
             plannedDate = plannedMedicine.plannedDate,

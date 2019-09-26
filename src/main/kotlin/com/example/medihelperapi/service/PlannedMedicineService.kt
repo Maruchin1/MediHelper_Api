@@ -19,9 +19,11 @@ class PlannedMedicineService(
         val insertDtoList = insertUpdateDtoList.filter { it.plannedMedicineRemoteId == null }
         val updateDtoList = insertUpdateDtoList.filter { it.plannedMedicineRemoteId != null }
 
+        val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { plannedMedicineDto ->
             val newPlannedMedicine = plannedMedicineDto.toPlannedMedicineEntity(medicinePlanRepository)
-            plannedMedicineRepository.save(newPlannedMedicine)
+            val savedPlannedMedicine = plannedMedicineRepository.save(newPlannedMedicine)
+            localIdRemoteIdPairList.add(Pair(plannedMedicineDto.plannedMedicineLocalId!!, savedPlannedMedicine.plannedMedicineId))
         }
         updateDtoList.forEach { plannedMedicineDto ->
             if (plannedMedicineRepository.existsById(plannedMedicineDto.plannedMedicineRemoteId!!)) {
@@ -35,6 +37,9 @@ class PlannedMedicineService(
             }
         }
 
-        return plannedMedicineRepository.findAllByMedicinePlanMedicineRegisteredUser(registeredUser).map { PlannedMedicineDto(it) }
+        return plannedMedicineRepository.findAllByMedicinePlanMedicineRegisteredUser(registeredUser).map { plannedMedicine ->
+            val plannedMedicineLocalId = localIdRemoteIdPairList.find { it.second == plannedMedicine.plannedMedicineId }?.first
+            PlannedMedicineDto(plannedMedicine, plannedMedicineLocalId)
+        }
     }
 }
