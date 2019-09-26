@@ -34,6 +34,8 @@ class RegisteredUserController(
 
     @PutMapping("/data")
     fun synchronizeData(@RequestBody syncRequestDto: SyncRequestDto): SyncResponseDto {
+        println("synchronizeData")
+        println(syncRequestDto.toString())
         val registeredUser = registeredUserService.getLoggedUser()
         val synchronizedMedicineDtoList = medicineService.synchronizeMedicines(
                 registeredUser = registeredUser,
