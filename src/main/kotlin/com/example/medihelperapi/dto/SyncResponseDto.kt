@@ -9,6 +9,9 @@ data class SyncResponseDto(
         @JsonProperty(value = "personDtoList")
         val personDtoList: List<PersonDto>,
 
-        @JsonProperty(value = "medicinePlanDto")
-        val medicinePlanDtoList: List<MedicinePlanDto>
+        @JsonProperty(value = "medicinePlanDtoList")
+        val medicinePlanDtoList: List<MedicinePlanDto>,
+
+        @JsonProperty(value = "plannedMedicineDtoList")
+        val plannedMedicineDtoList: List<PlannedMedicineDto>
 )

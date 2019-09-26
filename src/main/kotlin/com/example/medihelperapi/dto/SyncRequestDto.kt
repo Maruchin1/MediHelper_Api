@@ -12,6 +12,9 @@ data class SyncRequestDto(
         @JsonProperty(value = "insertUpdateMedicinePlanDtoList")
         val insertUpdateMedicinePlanDtoList: List<MedicinePlanDto>,
 
+        @JsonProperty(value = "insertUpdatePlannedMedicineDtoList")
+        val insertUpdatePlannedMedicineDtoList: List<PlannedMedicineDto>,
+
         @JsonProperty(value = "deleteMedicineRemoteIdList")
         val deleteMedicineRemoteIdList: List<Long>,
 
@@ -19,5 +22,8 @@ data class SyncRequestDto(
         val deletePersonRemoteIdList: List<Long>,
 
         @JsonProperty(value = "deleteMedicinePlanRemoteIdList")
-        val deleteMedicinePlanRemoteIdList: List<Long>
+        val deleteMedicinePlanRemoteIdList: List<Long>,
+
+        @JsonProperty(value = "deletePlannedMedicineRemoteIdList")
+        val deletePlannedMedicineRemoteIdList: List<Long>
 )

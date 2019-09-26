@@ -12,6 +12,9 @@ data class PlannedMedicineDto(
         @JsonProperty(value = "plannedMedicineRemoteId")
         val plannedMedicineRemoteId: Long?,
 
+        @JsonProperty(value = "medicinePlanRemoteId")
+        val medicinePlanRemoteId: Long,
+
         @JsonProperty(value = "plannedDate")
         @JsonFormat(pattern = "dd-MM-yyyy")
         val plannedDate: LocalDate,
@@ -28,14 +31,16 @@ data class PlannedMedicineDto(
 ) {
     constructor(plannedMedicine: PlannedMedicine) : this(
             plannedMedicineRemoteId = plannedMedicine.plannedMedicineId,
+            medicinePlanRemoteId = plannedMedicine.medicinePlan.medicinePlanId,
             plannedDate = plannedMedicine.plannedDate,
             plannedTime = plannedMedicine.plannedTime,
             plannedDoseSize = plannedMedicine.plannedDoseSize,
             statusOfTaking = plannedMedicine.statusOfTaking
     )
 
-    fun toPlannedMedicineEntity() = PlannedMedicine(
+    fun toPlannedMedicineEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicine(
             plannedMedicineId = plannedMedicineRemoteId ?: 0,
+            medicinePlan = medicinePlanRepository.findById(medicinePlanRemoteId).orElseThrow { MedicinePlanNotFoundException() },
             plannedDate = plannedDate,
             plannedTime = plannedTime,
             plannedDoseSize = plannedDoseSize,

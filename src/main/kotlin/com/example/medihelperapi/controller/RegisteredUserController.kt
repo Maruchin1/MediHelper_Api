@@ -4,10 +4,7 @@ import com.example.medihelperapi.dto.NewPasswordDto
 import com.example.medihelperapi.dto.SyncRequestDto
 import com.example.medihelperapi.dto.SyncResponseDto
 import com.example.medihelperapi.dto.UserCredentialsDto
-import com.example.medihelperapi.service.MedicinePlanService
-import com.example.medihelperapi.service.MedicineService
-import com.example.medihelperapi.service.PersonService
-import com.example.medihelperapi.service.RegisteredUserService
+import com.example.medihelperapi.service.*
 import io.swagger.annotations.ApiImplicitParam
 import io.swagger.annotations.ApiImplicitParams
 import org.springframework.web.bind.annotation.*
@@ -19,7 +16,8 @@ class RegisteredUserController(
         private val registeredUserService: RegisteredUserService,
         private val medicineService: MedicineService,
         private val personService: PersonService,
-        private val medicinePlanService: MedicinePlanService
+        private val medicinePlanService: MedicinePlanService,
+        private val plannedMedicineService: PlannedMedicineService
 ) {
 
     @PatchMapping("/password")
@@ -52,10 +50,16 @@ class RegisteredUserController(
                 insertUpdateDtoList = syncRequestDto.insertUpdateMedicinePlanDtoList,
                 deleteRemoteIdList = syncRequestDto.deleteMedicinePlanRemoteIdList
         )
+        val synchronizedPlannedMedicineDtoList = plannedMedicineService.synchronizePlannedMedicines(
+                registeredUser = registeredUser,
+                insertUpdateDtoList = syncRequestDto.insertUpdatePlannedMedicineDtoList,
+                deleteRemoteIdList = syncRequestDto.deletePlannedMedicineRemoteIdList
+        )
         return SyncResponseDto(
                 medicineDtoList = synchronizedMedicineDtoList,
                 personDtoList = synchronizedPersonsDtoList,
-                medicinePlanDtoList = synchronizedMedicinePlanDtoList
+                medicinePlanDtoList = synchronizedMedicinePlanDtoList,
+                plannedMedicineDtoList = synchronizedPlannedMedicineDtoList
         )
     }
 }

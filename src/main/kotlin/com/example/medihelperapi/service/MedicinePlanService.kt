@@ -51,9 +51,9 @@ class MedicinePlanService(
                 medicinePlanRepository.save(updatedMedicinePlan)
             }
         }
-        deleteRemoteIdList.forEach { medicinePlaId ->
-            if (medicinePlanRepository.existsById(medicinePlaId)) {
-                medicinePlanRepository.deleteById(medicinePlaId)
+        deleteRemoteIdList.forEach { medicinePlanId ->
+            if (medicinePlanRepository.existsById(medicinePlanId)) {
+                medicinePlanRepository.deleteById(medicinePlanId)
             }
         }
 

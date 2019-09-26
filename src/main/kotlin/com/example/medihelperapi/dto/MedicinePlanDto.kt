@@ -40,10 +40,7 @@ data class MedicinePlanDto(
         val daysType: String,
 
         @JsonProperty(value = "timeOfTakingDtoList")
-        val timeOfTakingDtoList: List<TimeOfTakingDto>,
-
-        @JsonProperty(value = "plannedMedicineDtoList")
-        val plannedMedicineDtoList: List<PlannedMedicineDto>
+        val timeOfTakingDtoList: List<TimeOfTakingDto>
 ) {
     constructor(medicinePlan: MedicinePlan) : this(
             medicinePlanRemoteId = medicinePlan.medicinePlanId,
@@ -55,8 +52,7 @@ data class MedicinePlanDto(
             daysOfWeek = medicinePlan.daysOfWeek,
             intervalOfDays = medicinePlan.intervalOfDays,
             daysType = medicinePlan.daysType,
-            timeOfTakingDtoList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) },
-            plannedMedicineDtoList = medicinePlan.plannedMedicineList.map { PlannedMedicineDto(it) }
+            timeOfTakingDtoList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) }
     )
 
     fun toMedicinePlanEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
@@ -69,7 +65,6 @@ data class MedicinePlanDto(
             daysOfWeek = daysOfWeek,
             intervalOfDays = intervalOfDays,
             daysType = daysType,
-            timeOfTakingList = timeOfTakingDtoList.map { it.toTimeOfTakingEntity() },
-            plannedMedicineList = plannedMedicineDtoList.map { it.toPlannedMedicineEntity() }
+            timeOfTakingList = timeOfTakingDtoList.map { it.toTimeOfTakingEntity() }
     )
 }
