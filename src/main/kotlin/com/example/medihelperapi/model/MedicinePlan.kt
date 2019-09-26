@@ -37,7 +37,12 @@ data class MedicinePlan(
         @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
         @JoinColumn(name = "medicinePlanId")
         @OnDelete(action = OnDeleteAction.CASCADE)
-        var timeOfTakingList: List<TimeOfTaking>
+        var timeOfTakingList: List<TimeOfTaking>,
+
+        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
+        @JoinColumn(name = "medicinePlanId")
+        @OnDelete(action = OnDeleteAction.CASCADE)
+        var plannedMedicineList: List<PlannedMedicine>
 ) {
     @Embeddable
     class DaysOfWeek(

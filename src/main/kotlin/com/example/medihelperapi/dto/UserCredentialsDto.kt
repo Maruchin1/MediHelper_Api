@@ -1,4 +1,4 @@
-package com.example.medihelperapi.dto.registereduser
+package com.example.medihelperapi.dto
 
 data class UserCredentialsDto(
         val email: String,

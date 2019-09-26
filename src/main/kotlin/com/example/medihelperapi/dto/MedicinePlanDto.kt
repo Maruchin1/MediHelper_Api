@@ -1,6 +1,5 @@
 package com.example.medihelperapi.dto
 
-import com.example.medihelperapi.dto.medicineplan.TimeOfTakingDto
 import com.example.medihelperapi.model.MedicinePlan
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.PersonRepository
@@ -40,8 +39,11 @@ data class MedicinePlanDto(
         @JsonProperty(value = "daysType")
         val daysType: String,
 
-        @JsonProperty(value = "timeOfTakingList")
-        val timeOfTakingList: List<TimeOfTakingDto>
+        @JsonProperty(value = "timeOfTakingDtoList")
+        val timeOfTakingDtoList: List<TimeOfTakingDto>,
+
+        @JsonProperty(value = "plannedMedicineDtoList")
+        val plannedMedicineDtoList: List<PlannedMedicineDto>
 ) {
     constructor(medicinePlan: MedicinePlan) : this(
             medicinePlanRemoteId = medicinePlan.medicinePlanId,
@@ -53,7 +55,8 @@ data class MedicinePlanDto(
             daysOfWeek = medicinePlan.daysOfWeek,
             intervalOfDays = medicinePlan.intervalOfDays,
             daysType = medicinePlan.daysType,
-            timeOfTakingList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) }
+            timeOfTakingDtoList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) },
+            plannedMedicineDtoList = medicinePlan.plannedMedicineList.map { PlannedMedicineDto(it) }
     )
 
     fun toMedicinePlanEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
@@ -66,6 +69,7 @@ data class MedicinePlanDto(
             daysOfWeek = daysOfWeek,
             intervalOfDays = intervalOfDays,
             daysType = daysType,
-            timeOfTakingList = timeOfTakingList.map { it.toTimeOfTakingEntity() }
+            timeOfTakingList = timeOfTakingDtoList.map { it.toTimeOfTakingEntity() },
+            plannedMedicineList = plannedMedicineDtoList.map { it.toPlannedMedicineEntity() }
     )
 }

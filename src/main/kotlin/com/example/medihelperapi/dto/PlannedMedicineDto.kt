@@ -1,4 +1,4 @@
-package com.example.medihelperapi.dto.plannedmedicine
+package com.example.medihelperapi.dto
 
 import com.example.medihelperapi.model.PlannedMedicine
 import com.example.medihelperapi.repository.MedicinePlanRepository
@@ -8,12 +8,9 @@ import com.fasterxml.jackson.annotation.JsonProperty
 import java.time.LocalDate
 import java.time.LocalTime
 
-data class PlannedMedicinePostDto(
-        @JsonProperty(value = "plannedMedicineLocalId")
-        val plannedMedicineLocalId: Int,
-
-        @JsonProperty(value = "medicinePlanRemoteId")
-        val medicinePlanRemoteId: Long,
+data class PlannedMedicineDto(
+        @JsonProperty(value = "plannedMedicineRemoteId")
+        val plannedMedicineRemoteId: Long?,
 
         @JsonProperty(value = "plannedDate")
         @JsonFormat(pattern = "dd-MM-yyyy")
@@ -29,8 +26,16 @@ data class PlannedMedicinePostDto(
         @JsonProperty(value = "statusOfTaking")
         val statusOfTaking: String
 ) {
-    fun toPlannedMedicineEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicine(
-            medicinePlan = medicinePlanRepository.findById(medicinePlanRemoteId).orElseThrow { MedicinePlanNotFoundException() },
+    constructor(plannedMedicine: PlannedMedicine) : this(
+            plannedMedicineRemoteId = plannedMedicine.plannedMedicineId,
+            plannedDate = plannedMedicine.plannedDate,
+            plannedTime = plannedMedicine.plannedTime,
+            plannedDoseSize = plannedMedicine.plannedDoseSize,
+            statusOfTaking = plannedMedicine.statusOfTaking
+    )
+
+    fun toPlannedMedicineEntity() = PlannedMedicine(
+            plannedMedicineId = plannedMedicineRemoteId ?: 0,
             plannedDate = plannedDate,
             plannedTime = plannedTime,
             plannedDoseSize = plannedDoseSize,

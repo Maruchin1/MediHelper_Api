@@ -1,10 +1,6 @@
 package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.MedicinePlanDto
-import com.example.medihelperapi.dto.medicineplan.MedicinePlanGetDto
-import com.example.medihelperapi.dto.medicineplan.MedicinePlanPostDto
-import com.example.medihelperapi.dto.PostResponseDto
-import com.example.medihelperapi.dto.SyncRequestDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicinePlanRepository
 import com.example.medihelperapi.repository.MedicineRepository
@@ -17,29 +13,33 @@ class MedicinePlanService(
         private val medicineRepository: MedicineRepository,
         private val personRepository: PersonRepository
 ) {
-    fun overWriteMedicinesPlans(registeredUser: RegisteredUser, postDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
-        medicinePlanRepository.deleteAllByMedicineRegisteredUser(registeredUser)
-        val postResponseDtoList = mutableListOf<PostResponseDto>()
-        postDtoList.forEach { medicinePlanPostDto ->
-            val newMedicinePlan = medicinePlanPostDto.toMedicinePlanEntity(
-                    medicine = findMedicineById(medicinePlanPostDto.medicineRemoteId),
-                    person = findPersonById(medicinePlanPostDto.personRemoteId)
-            )
-            val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
-            postResponseDtoList.add(PostResponseDto(localId = medicinePlanPostDto.medicinePlanLocalId, remoteId = savedMedicinePlan.medicinePlanId))
-        }
-        return postResponseDtoList
-    }
+//    fun overWriteMedicinesPlans(registeredUser: RegisteredUser, postDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
+//        medicinePlanRepository.deleteAllByMedicineRegisteredUser(registeredUser)
+//        val postResponseDtoList = mutableListOf<PostResponseDto>()
+//        postDtoList.forEach { medicinePlanPostDto ->
+//            val newMedicinePlan = medicinePlanPostDto.toMedicinePlanEntity(
+//                    medicine = findMedicineById(medicinePlanPostDto.medicineRemoteId),
+//                    person = findPersonById(medicinePlanPostDto.personRemoteId)
+//            )
+//            val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
+//            postResponseDtoList.add(PostResponseDto(localId = medicinePlanPostDto.medicinePlanLocalId, remoteId = savedMedicinePlan.medicinePlanId))
+//        }
+//        return postResponseDtoList
+//    }
+//
+//    fun getAllMedicinesPlans(registeredUser: RegisteredUser): List<MedicinePlanGetDto> {
+//        val allMedicinesPlans = medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser)
+//        return allMedicinesPlans.map { medicinePlan -> MedicinePlanGetDto(medicinePlan) }
+//    }
 
-    fun getAllMedicinesPlans(registeredUser: RegisteredUser): List<MedicinePlanGetDto> {
-        val allMedicinesPlans = medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser)
-        return allMedicinesPlans.map { medicinePlan -> MedicinePlanGetDto(medicinePlan) }
-    }
+    fun synchronizeMedicinesPlans(
+            registeredUser: RegisteredUser,
+            insertUpdateDtoList: List<MedicinePlanDto>,
+            deleteRemoteIdList: List<Long>
+    ): List<MedicinePlanDto> {
 
-    fun synchronizeMedicinesPlans(registeredUser: RegisteredUser, syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
-        val insertDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicinePlanRemoteId == null }
-        val updateDtoList = syncRequestDto.insertUpdateDtoList.filter { it.medicinePlanRemoteId != null }
-        val deleteIdList = syncRequestDto.deleteRemoteIdList
+        val insertDtoList = insertUpdateDtoList.filter { it.medicinePlanRemoteId == null }
+        val updateDtoList = insertUpdateDtoList.filter { it.medicinePlanRemoteId != null }
 
         insertDtoList.forEach { medicinePlanDto ->
             val newMedicinePlan = medicinePlanDto.toMedicinePlanEntity(medicineRepository, personRepository)
@@ -51,7 +51,7 @@ class MedicinePlanService(
                 medicinePlanRepository.save(updatedMedicinePlan)
             }
         }
-        deleteIdList.forEach { medicinePlaId ->
+        deleteRemoteIdList.forEach { medicinePlaId ->
             if (medicinePlanRepository.existsById(medicinePlaId)) {
                 medicinePlanRepository.deleteById(medicinePlaId)
             }
@@ -60,13 +60,13 @@ class MedicinePlanService(
         return medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser).map { MedicinePlanDto(it) }
     }
 
-    private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow {
-        println("MedicineNotFound")
-        MedicineNotFoundException()
-    }
-
-    private fun findPersonById(personId: Long) = personRepository.findById(personId).orElseThrow {
-        println("PersonNotFound")
-        PersonNotFoundException()
-    }
+//    private fun findMedicineById(medicineId: Long) = medicineRepository.findById(medicineId).orElseThrow {
+//        println("MedicineNotFound")
+//        MedicineNotFoundException()
+//    }
+//
+//    private fun findPersonById(personId: Long) = personRepository.findById(personId).orElseThrow {
+//        println("PersonNotFound")
+//        PersonNotFoundException()
+//    }
 }

@@ -1,6 +1,5 @@
-package com.example.medihelperapi.dto.medicineplan
+package com.example.medihelperapi.dto
 
-import com.example.medihelperapi.model.MedicinePlan
 import com.example.medihelperapi.model.TimeOfTaking
 import com.fasterxml.jackson.annotation.JsonFormat
 import com.fasterxml.jackson.annotation.JsonProperty

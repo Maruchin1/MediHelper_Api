@@ -1,7 +1,7 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.registereduser.NewPasswordDto
-import com.example.medihelperapi.dto.registereduser.UserCredentialsDto
+import com.example.medihelperapi.dto.NewPasswordDto
+import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.*
 import org.springframework.security.core.context.SecurityContextHolder

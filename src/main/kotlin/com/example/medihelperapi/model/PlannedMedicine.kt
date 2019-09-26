@@ -1,7 +1,5 @@
 package com.example.medihelperapi.model
 
-import org.hibernate.annotations.OnDelete
-import org.hibernate.annotations.OnDeleteAction
 import java.time.LocalDate
 import java.time.LocalTime
 import javax.persistence.*
@@ -10,12 +8,7 @@ import javax.persistence.*
 @Table(name = "planned_medicines")
 data class PlannedMedicine(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-        val plannedMedicineId: Long = 0,
-
-        @ManyToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "medicinePlanId")
-        @OnDelete(action = OnDeleteAction.CASCADE)
-        var medicinePlan: MedicinePlan,
+        val plannedMedicineId: Long,
 
         var plannedDate: LocalDate,
 
