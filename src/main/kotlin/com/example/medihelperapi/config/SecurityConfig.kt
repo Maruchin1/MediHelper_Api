@@ -30,8 +30,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     override fun configure(web: WebSecurity?) {
         web?.ignoring()?.antMatchers(
-                "/registered-users/register",
-                "/registered-users/login"
+
         )
     }
 
@@ -71,11 +70,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     companion object {
         private val PROTECTED_URLS = OrRequestMatcher(
-                AntPathRequestMatcher("/registered-users/**"),
-                AntPathRequestMatcher("/medicines/**"),
-                AntPathRequestMatcher("/persons/**"),
-                AntPathRequestMatcher("/medicines-plans/**"),
-                AntPathRequestMatcher("/planned-medicines/**")
+                AntPathRequestMatcher("/registered-users/**")
         )
     }
 }
