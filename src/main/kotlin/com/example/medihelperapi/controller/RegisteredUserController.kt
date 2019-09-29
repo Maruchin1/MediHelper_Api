@@ -70,4 +70,20 @@ class RegisteredUserController(
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
     }
+
+    @DeleteMapping("/data")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun deleteAllData() {
+        val loggedUser = registeredUserService.getLoggedUser()
+        medicineService.deleteAllData(loggedUser)
+        personService.deleteAllData(loggedUser)
+    }
+
+    @GetMapping("/data/available")
+    @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
+    fun isDataAvailable(): Boolean {
+        val loggedUser = registeredUserService.getLoggedUser()
+        return medicineService.isDataAvailable(loggedUser) ||
+                personService.isDataAvailable(loggedUser)
+    }
 }

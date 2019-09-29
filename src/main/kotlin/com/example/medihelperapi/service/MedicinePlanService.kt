@@ -13,25 +13,6 @@ class MedicinePlanService(
         private val medicineRepository: MedicineRepository,
         private val personRepository: PersonRepository
 ) {
-//    fun overWriteMedicinesPlans(registeredUser: RegisteredUser, postDtoList: List<MedicinePlanPostDto>): List<PostResponseDto> {
-//        medicinePlanRepository.deleteAllByMedicineRegisteredUser(registeredUser)
-//        val postResponseDtoList = mutableListOf<PostResponseDto>()
-//        postDtoList.forEach { medicinePlanPostDto ->
-//            val newMedicinePlan = medicinePlanPostDto.toMedicinePlanEntity(
-//                    medicine = findMedicineById(medicinePlanPostDto.medicineRemoteId),
-//                    person = findPersonById(medicinePlanPostDto.personRemoteId)
-//            )
-//            val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
-//            postResponseDtoList.add(PostResponseDto(localId = medicinePlanPostDto.medicinePlanLocalId, remoteId = savedMedicinePlan.medicinePlanId))
-//        }
-//        return postResponseDtoList
-//    }
-//
-//    fun getAllMedicinesPlans(registeredUser: RegisteredUser): List<MedicinePlanGetDto> {
-//        val allMedicinesPlans = medicinePlanRepository.findAllByMedicineRegisteredUser(registeredUser)
-//        return allMedicinesPlans.map { medicinePlan -> MedicinePlanGetDto(medicinePlan) }
-//    }
-
     fun synchronizeMedicinesPlans(
             registeredUser: RegisteredUser,
             insertUpdateDtoList: List<MedicinePlanDto>,

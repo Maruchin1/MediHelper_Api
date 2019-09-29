@@ -8,7 +8,4 @@ import org.springframework.stereotype.Repository
 @Repository
 interface MedicinePlanRepository : JpaRepository<MedicinePlan, Long> {
     fun findAllByMedicineRegisteredUser(registeredUser: RegisteredUser): List<MedicinePlan>
-
-    fun deleteAllByMedicineRegisteredUser(registeredUser: RegisteredUser)
-
 }

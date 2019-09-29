@@ -7,21 +7,6 @@ import org.springframework.stereotype.Service
 
 @Service
 class PersonService(private val personRepository: PersonRepository) {
-//    fun overwritePersons(registeredUser: RegisteredUser, postDtoList: List<PersonPostDto>): List<PostResponseDto> {
-//        personRepository.deleteAllByRegisteredUser(registeredUser)
-//        val postResponseDtoList = mutableListOf<PostResponseDto>()
-//        postDtoList.forEach { personPostDto ->
-//            val newPerson = personPostDto.toPersonEntity(registeredUser)
-//            val savedPerson = personRepository.save(newPerson)
-//            postResponseDtoList.add(PostResponseDto(localId = personPostDto.personLocalId, remoteId = savedPerson.personId))
-//        }
-//        return postResponseDtoList
-//    }
-//
-//    fun getAllPersons(registeredUser: RegisteredUser): List<PersonGetDto> {
-//        val allPersonList = personRepository.findAllByRegisteredUser(registeredUser)
-//        return allPersonList.map { person -> PersonGetDto(person) }
-//    }
 
     fun synchronizePersons(
             registeredUser: RegisteredUser,
@@ -54,4 +39,8 @@ class PersonService(private val personRepository: PersonRepository) {
             PersonDto(person, personLocalId)
         }
     }
+
+    fun deleteAllData(registeredUser: RegisteredUser) = personRepository.deleteAllByRegisteredUser(registeredUser)
+
+    fun isDataAvailable(registeredUser: RegisteredUser) = personRepository.countByRegisteredUser(registeredUser) > 0
 }

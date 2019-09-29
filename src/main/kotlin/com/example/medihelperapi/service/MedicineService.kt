@@ -8,23 +8,6 @@ import org.springframework.stereotype.Service
 @Service
 class MedicineService(private val medicineRepository: MedicineRepository) {
 
-//    fun overwriteMedicines(registeredUser: RegisteredUser, postDtoList: List<MedicinePostDto>): List<PostResponseDto> {
-//        medicineRepository.deleteAllByRegisteredUser(registeredUser)
-//        val postResponseDtoList = mutableListOf<PostResponseDto>()
-//        postDtoList.forEach { medicinePostDto ->
-//            val newMedicine = medicinePostDto.toMedicineEntity(registeredUser)
-//            val savedMedicine = medicineRepository.save(newMedicine)
-//            val postResponseDto = PostResponseDto(localId = medicinePostDto.medicineLocalId, remoteId = savedMedicine.medicineId)
-//            postResponseDtoList.add(postResponseDto)
-//        }
-//        return postResponseDtoList
-//    }
-//
-//    fun getAllMedicines(registeredUser: RegisteredUser): List<MedicineGetDto> {
-//        val allMedicineList = medicineRepository.findAllByRegisteredUser(registeredUser)
-//        return allMedicineList.map { medicine -> MedicineGetDto(medicine) }
-//    }
-
     fun synchronizeMedicines(
             registeredUser: RegisteredUser,
             insertUpdateDtoList: List<MedicineDto>,
@@ -56,4 +39,8 @@ class MedicineService(private val medicineRepository: MedicineRepository) {
             MedicineDto(medicine, medicineLocalId)
         }
     }
+
+    fun deleteAllData(registeredUser: RegisteredUser) = medicineRepository.deleteAllByRegisteredUser(registeredUser)
+
+    fun isDataAvailable(registeredUser: RegisteredUser) = medicineRepository.countByRegisteredUser(registeredUser) > 0
 }
