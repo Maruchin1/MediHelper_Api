@@ -20,7 +20,7 @@ data class MedicinePlanDto(
         val medicineRemoteId: Long,
 
         @JsonProperty(value = "personRemoteId")
-        val personRemoteId: Long,
+        val personRemoteId: Long?,
 
         @JsonProperty(value = "startDate")
         @JsonFormat(pattern = "dd-MM-yyyy")
@@ -49,7 +49,7 @@ data class MedicinePlanDto(
             medicinePlanLocalId = medicinePlanLocalId,
             medicinePlanRemoteId = medicinePlan.medicinePlanId,
             medicineRemoteId = medicinePlan.medicine.medicineId,
-            personRemoteId = medicinePlan.person.personId,
+            personRemoteId = medicinePlan.person?.personId,
             startDate = medicinePlan.startDate,
             endDate = medicinePlan.endDate,
             durationType = medicinePlan.durationType,
@@ -62,7 +62,7 @@ data class MedicinePlanDto(
     fun toEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
             medicinePlanId = medicinePlanRemoteId ?: 0,
             medicine = medicineRepository.findById(medicineRemoteId).orElseThrow { MedicineNotFoundException() },
-            person = personRepository.findById(personRemoteId).orElseThrow { PersonNotFoundException() },
+            person = personRemoteId?.let { personRepository.findById(it).orElseThrow { PersonNotFoundException() } },
             startDate = startDate,
             endDate = endDate,
             durationType = durationType,

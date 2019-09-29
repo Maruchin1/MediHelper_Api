@@ -18,7 +18,5 @@ data class Person(
 
         var personName: String,
 
-        var personColorResId: Int,
-
-        var mainPerson: Boolean
+        var personColorResId: Int
 )

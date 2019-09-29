@@ -19,7 +19,7 @@ data class MedicinePlan(
         @ManyToOne(fetch = FetchType.LAZY)
         @JoinColumn(name = "personId")
         @OnDelete(action = OnDeleteAction.CASCADE)
-        var person: Person,
+        var person: Person?,
 
         var startDate: LocalDate,
 
