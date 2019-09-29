@@ -9,18 +9,12 @@ import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/registered-users")
-class RegisteredUserController(
-        private val registeredUserService: RegisteredUserService,
-        private val medicineService: MedicineService,
-        private val personService: PersonService,
-        private val medicinePlanService: MedicinePlanService,
-        private val plannedMedicineService: PlannedMedicineService
-) {
+class RegisteredUserController(private val registeredUserService: RegisteredUserService) {
 
     @PatchMapping("/password")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun changeUserPassword(@RequestBody newPassword: NewPasswordDto) {
-        registeredUserService.changePassword(registeredUserService.getLoggedUser(), newPassword)
+        registeredUserService.changePassword(newPassword)
     }
 
     @PutMapping("/synchronization/medicines")
@@ -28,8 +22,7 @@ class RegisteredUserController(
     fun synchronizeMedicines(@RequestBody syncRequestDto: SyncRequestDto<MedicineDto>): List<MedicineDto> {
         println("synchronizeMedicines")
         println(syncRequestDto.toString())
-        return medicineService.synchronizeMedicines(
-                registeredUser = registeredUserService.getLoggedUser(),
+        return registeredUserService.synchronizeMedicines(
                 insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
@@ -40,8 +33,7 @@ class RegisteredUserController(
     fun synchronizePersons(@RequestBody syncRequestDto: SyncRequestDto<PersonDto>): List<PersonDto> {
         println("synchronizePersons")
         println(syncRequestDto.toString())
-        return personService.synchronizePersons(
-                registeredUser = registeredUserService.getLoggedUser(),
+        return registeredUserService.synchronizePersons(
                 insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
@@ -52,8 +44,7 @@ class RegisteredUserController(
     fun synchronizeMedicinesPlans(@RequestBody syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
         println("synchronizeMedicinesPlans")
         println(syncRequestDto.toString())
-        return medicinePlanService.synchronizeMedicinesPlans(
-                registeredUser = registeredUserService.getLoggedUser(),
+        return registeredUserService.synchronizeMedicinesPlans(
                 insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
@@ -62,10 +53,9 @@ class RegisteredUserController(
     @PutMapping("/synchronization/planned-medicines")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizePlannedMedicines(@RequestBody syncRequestDto: SyncRequestDto<PlannedMedicineDto>): List<PlannedMedicineDto> {
-        println("synchronizeMedicinesPlans")
+        println("synchronizePlannedMedicines")
         println(syncRequestDto.toString())
-        return plannedMedicineService.synchronizePlannedMedicines(
-                registeredUser = registeredUserService.getLoggedUser(),
+        return registeredUserService.synchronizePlannedMedicines(
                 insertUpdateDtoList = syncRequestDto.insertUpdateDtoList,
                 deleteRemoteIdList = syncRequestDto.deleteRemoteIdList
         )
@@ -74,16 +64,12 @@ class RegisteredUserController(
     @DeleteMapping("/data")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun deleteAllData() {
-        val loggedUser = registeredUserService.getLoggedUser()
-        medicineService.deleteAllData(loggedUser)
-        personService.deleteAllData(loggedUser)
+        registeredUserService.deleteAllData()
     }
 
     @GetMapping("/data/available")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun isDataAvailable(): Boolean {
-        val loggedUser = registeredUserService.getLoggedUser()
-        return medicineService.isDataAvailable(loggedUser) ||
-                personService.isDataAvailable(loggedUser)
+        return registeredUserService.isDataAvailable()
     }
 }

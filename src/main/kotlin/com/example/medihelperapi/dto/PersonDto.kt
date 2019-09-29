@@ -28,7 +28,7 @@ data class PersonDto(
             mainPerson = person.mainPerson
     )
 
-    fun toPersonEntity(registeredUser: RegisteredUser) = Person(
+    fun toEntity(registeredUser: RegisteredUser) = Person(
             personId = personRemoteId ?: 0,
             registeredUser = registeredUser,
             personName = personName,

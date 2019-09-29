@@ -59,7 +59,7 @@ data class MedicinePlanDto(
             timeOfTakingDtoList = medicinePlan.timeOfTakingList.map { TimeOfTakingDto(it) }
     )
 
-    fun toMedicinePlanEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
+    fun toEntity(medicineRepository: MedicineRepository, personRepository: PersonRepository) = MedicinePlan(
             medicinePlanId = medicinePlanRemoteId ?: 0,
             medicine = medicineRepository.findById(medicineRemoteId).orElseThrow { MedicineNotFoundException() },
             person = personRepository.findById(personRemoteId).orElseThrow { PersonNotFoundException() },

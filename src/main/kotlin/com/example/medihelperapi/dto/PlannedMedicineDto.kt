@@ -42,7 +42,7 @@ data class PlannedMedicineDto(
             statusOfTaking = plannedMedicine.statusOfTaking
     )
 
-    fun toPlannedMedicineEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicine(
+    fun toEntity(medicinePlanRepository: MedicinePlanRepository) = PlannedMedicine(
             plannedMedicineId = plannedMedicineRemoteId ?: 0,
             medicinePlan = medicinePlanRepository.findById(medicinePlanRemoteId).orElseThrow { MedicinePlanNotFoundException() },
             plannedDate = plannedDate,
