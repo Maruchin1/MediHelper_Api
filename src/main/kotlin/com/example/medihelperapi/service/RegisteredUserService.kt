@@ -39,6 +39,22 @@ class RegisteredUserService(
                 personRepository.countByRegisteredUser(currUser) > 0
     }
 
+    fun getPersonTempKey(personId: Long): String {
+        //todo tutaj dobrze by było żeby tempKey się usuwał po jakimś czasie
+        val person = personRepository.findById(personId).orElseThrow { PersonNotFoundException() }
+        if (person.registeredUser != currUser) {
+            throw NoPermissionToEditPerson()
+        }
+        val randomTempKey = StringBuilder().apply {
+            for (i in 0..5) {
+                val randomNumber = (0..9).shuffled().first()
+                this.append(randomNumber)
+            }
+        }.toString()
+        val savedPerson = personRepository.save(person.copy(tempKey = randomTempKey))
+        return savedPerson.tempKey
+    }
+
     @Transactional
     fun synchronizeMedicines(
             insertUpdateDtoList: List<MedicineDto>,

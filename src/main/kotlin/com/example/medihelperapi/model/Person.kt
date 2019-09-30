@@ -18,5 +18,9 @@ data class Person(
 
         var personName: String,
 
-        var personColorResId: Int
+        var personColorResId: Int,
+
+        var authToken: String = "",
+
+        var tempKey: String = ""
 )

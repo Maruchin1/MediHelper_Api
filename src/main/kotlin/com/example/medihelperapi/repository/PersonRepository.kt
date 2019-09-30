@@ -4,10 +4,13 @@ import com.example.medihelperapi.model.Person
 import com.example.medihelperapi.model.RegisteredUser
 import org.springframework.data.jpa.repository.JpaRepository
 import org.springframework.stereotype.Repository
+import java.util.*
 
 @Repository
 interface PersonRepository : JpaRepository<Person, Long> {
     fun findAllByRegisteredUser(registeredUser: RegisteredUser): List<Person>
+
+    fun findByTempKey(tempKey: String): Optional<Person>
 
     fun deleteAllByRegisteredUser(registeredUser: RegisteredUser)
 
