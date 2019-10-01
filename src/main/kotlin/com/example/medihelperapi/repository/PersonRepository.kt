@@ -10,7 +10,9 @@ import java.util.*
 interface PersonRepository : JpaRepository<Person, Long> {
     fun findAllByRegisteredUser(registeredUser: RegisteredUser): List<Person>
 
-    fun findByTempKey(tempKey: String): Optional<Person>
+    fun findByConnectionKey(connectionKey: String): Optional<Person>
+
+    fun existsByConnectionKey(connectionKey: String): Boolean
 
     fun deleteAllByRegisteredUser(registeredUser: RegisteredUser)
 

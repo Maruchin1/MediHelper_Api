@@ -7,8 +7,8 @@ import java.util.*
 @Service
 class PersonService(private val personRepository: PersonRepository) {
 
-    fun getAuthToken(personTempKey: String): String {
-        val person = personRepository.findByTempKey(personTempKey).orElseThrow { PersonNotFoundException() }
+    fun getAuthToken(connectionKey: String): String {
+        val person = personRepository.findByConnectionKey(connectionKey).orElseThrow { PersonNotFoundException() }
         person.authToken = UUID.randomUUID().toString()
         val savedPerson = personRepository.save(person)
         return savedPerson.authToken

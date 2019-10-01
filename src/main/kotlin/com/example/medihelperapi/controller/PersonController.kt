@@ -8,7 +8,7 @@ import org.springframework.web.bind.annotation.*
 class PersonController(private val personService: PersonService) {
 
     @GetMapping("/auth-token")
-    fun getAuthToken(@RequestParam personTempKey: String): String {
-        return personService.getAuthToken(personTempKey)
+    fun getAuthToken(@RequestParam connectionKey: String): String {
+        return personService.getAuthToken(connectionKey)
     }
 }

@@ -15,13 +15,17 @@ data class PersonDto(
         val personName: String,
 
         @JsonProperty(value = "personColorResId")
-        val personColorResId: Int
+        val personColorResId: Int,
+
+        @JsonProperty(value = "connectionKey")
+        val connectionKey: String?
 ) {
     constructor(person: Person, personLocalId: Int?) : this(
             personLocalId = personLocalId,
             personRemoteId = person.personId,
             personName = person.personName,
-            personColorResId = person.personColorResId
+            personColorResId = person.personColorResId,
+            connectionKey = person.connectionKey
     )
 
     fun toEntity(registeredUser: RegisteredUser) = Person(

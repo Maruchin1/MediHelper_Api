@@ -72,9 +72,4 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
     fun isDataAvailable(): Boolean {
         return registeredUserService.isDataAvailable()
     }
-
-    @GetMapping("/persons/{id}/temp-key")
-    fun getPersonTempKey(@PathVariable("id") personRemoteId: Long): String {
-        return registeredUserService.getPersonTempKey(personRemoteId)
-    }
 }
