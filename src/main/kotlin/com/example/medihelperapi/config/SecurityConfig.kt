@@ -13,7 +13,6 @@ import org.springframework.security.config.http.SessionCreationPolicy
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
-import org.springframework.security.web.authentication.AnonymousAuthenticationFilter
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
@@ -44,7 +43,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                     .authenticationProvider(authenticationProvider)
                     .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
                     .authorizeRequests()
-                    .requestMatchers(PROTECTED_URLS).hasAuthority("USER")
+                    .antMatchers(PROTECTED_URL_REGISTERED_USERS).hasAuthority("USER")
+                    .antMatchers(PROTECTED_URL_PERSONS_DATA).hasAuthority("PERSON")
                     .and()
                     .csrf().disable()
                     .formLogin().disable()
@@ -64,13 +64,17 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
         return BCryptPasswordEncoder()
     }
 
-    private fun authenticationFilter() = AuthenticationFilter(PROTECTED_URLS).apply {
+    private fun authenticationFilter() = AuthenticationFilter(
+            OrRequestMatcher(
+                    AntPathRequestMatcher(PROTECTED_URL_REGISTERED_USERS),
+                    AntPathRequestMatcher(PROTECTED_URL_PERSONS_DATA)
+            )
+    ).apply {
         setAuthenticationManager(authenticationManager())
     }
 
     companion object {
-        private val PROTECTED_URLS = OrRequestMatcher(
-                AntPathRequestMatcher("/registered-users/**")
-        )
+        private const val PROTECTED_URL_REGISTERED_USERS = "/registered-users/**"
+        private const val PROTECTED_URL_PERSONS_DATA = "/connected-persons/**"
     }
 }

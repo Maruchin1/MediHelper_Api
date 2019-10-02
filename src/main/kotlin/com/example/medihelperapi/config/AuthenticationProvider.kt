@@ -1,5 +1,6 @@
 package com.example.medihelperapi.config
 
+import com.example.medihelperapi.repository.PersonRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
 import com.example.medihelperapi.service.RegisteredUserService
 import org.springframework.http.HttpStatus
@@ -17,12 +18,20 @@ import java.util.*
 
 
 @Component
-class AuthenticationProvider(private val registeredUserRepository: RegisteredUserRepository) : AbstractUserDetailsAuthenticationProvider() {
+class AuthenticationProvider(
+        private val registeredUserRepository: RegisteredUserRepository,
+        private val personRepository: PersonRepository
+) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val token = authentication?.credentials ?: throw BadCredentialsException("No Authentication token passed in request")
+        val token = authentication?.credentials
+                ?: throw BadCredentialsException("No Authentication token passed in request")
         return registeredUserRepository.findByAuthToken(token as String).map { registeredUser ->
             User(registeredUser.email, registeredUser.password, AuthorityUtils.createAuthorityList("USER"))
+        }.or {
+            personRepository.findByAuthToken(token as String).map { person ->
+                User(person.personId.toString(), person.connectionKey, AuthorityUtils.createAuthorityList("PERSON"))
+            }
         }.orElseThrow {
             UsernameNotFoundException("Cannot find user with authentication token = $token")
         }

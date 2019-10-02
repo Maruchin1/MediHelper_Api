@@ -12,6 +12,8 @@ interface PersonRepository : JpaRepository<Person, Long> {
 
     fun findByConnectionKey(connectionKey: String): Optional<Person>
 
+    fun findByAuthToken(authToken: String): Optional<Person>
+
     fun existsByConnectionKey(connectionKey: String): Boolean
 
     fun deleteAllByRegisteredUser(registeredUser: RegisteredUser)

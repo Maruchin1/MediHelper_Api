@@ -17,7 +17,7 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         registeredUserService.changePassword(newPassword)
     }
 
-    @PutMapping("/synchronization/medicines")
+    @PutMapping("/data/medicines")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizeMedicines(@RequestBody syncRequestDto: SyncRequestDto<MedicineDto>): List<MedicineDto> {
         println("synchronizeMedicines")
@@ -28,7 +28,7 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         )
     }
 
-    @PutMapping("/synchronization/persons")
+    @PutMapping("/data/persons")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizePersons(@RequestBody syncRequestDto: SyncRequestDto<PersonDto>): List<PersonDto> {
         println("synchronizePersons")
@@ -39,7 +39,7 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         )
     }
 
-    @PutMapping("/synchronization/medicines-plans")
+    @PutMapping("/data/medicines-plans")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizeMedicinesPlans(@RequestBody syncRequestDto: SyncRequestDto<MedicinePlanDto>): List<MedicinePlanDto> {
         println("synchronizeMedicinesPlans")
@@ -50,7 +50,7 @@ class RegisteredUserController(private val registeredUserService: RegisteredUser
         )
     }
 
-    @PutMapping("/synchronization/planned-medicines")
+    @PutMapping("/data/planned-medicines")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun synchronizePlannedMedicines(@RequestBody syncRequestDto: SyncRequestDto<PlannedMedicineDto>): List<PlannedMedicineDto> {
         println("synchronizePlannedMedicines")
