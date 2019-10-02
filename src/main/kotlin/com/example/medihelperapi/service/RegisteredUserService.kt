@@ -21,7 +21,7 @@ class RegisteredUserService(
     private val currUser: RegisteredUser
         get() {
             val user = SecurityContextHolder.getContext().authentication.principal as User
-            return registeredUserRepository.findByEmail(user.username).orElseThrow { UserNotFoundException() }
+            return registeredUserRepository.findById(user.username.toLong()).orElseThrow { UserNotFoundException() }
         }
 
     fun changePassword(newPassword: NewPasswordDto) = registeredUserRepository.save(

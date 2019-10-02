@@ -27,10 +27,10 @@ class AuthenticationProvider(
         val token = authentication?.credentials
                 ?: throw BadCredentialsException("No Authentication token passed in request")
         return registeredUserRepository.findByAuthToken(token as String).map { registeredUser ->
-            User(registeredUser.email, registeredUser.password, AuthorityUtils.createAuthorityList("USER"))
+            User(registeredUser.registeredUserId.toString(), "", AuthorityUtils.createAuthorityList("USER"))
         }.or {
-            personRepository.findByAuthToken(token as String).map { person ->
-                User(person.personId.toString(), person.connectionKey, AuthorityUtils.createAuthorityList("PERSON"))
+            personRepository.findByAuthToken(token).map { person ->
+                User(person.personId.toString(), "", AuthorityUtils.createAuthorityList("PERSON"))
             }
         }.orElseThrow {
             UsernameNotFoundException("Cannot find user with authentication token = $token")
