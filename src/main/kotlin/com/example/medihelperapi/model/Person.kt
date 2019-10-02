@@ -20,9 +20,7 @@ data class Person(
 
         var personColorResId: Int,
 
-        @Column(unique = true)
         var authToken: String = "",
 
-        @Column(unique = true)
         var connectionKey: String = ""
 )
