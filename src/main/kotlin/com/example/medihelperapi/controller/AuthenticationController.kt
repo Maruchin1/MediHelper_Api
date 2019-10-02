@@ -15,7 +15,7 @@ class AuthenticationController(private val authenticationService: Authentication
         authenticationService.register(userCredentialsDto)
     }
 
-    @GetMapping("/login")
+    @PostMapping("/login")
     fun loginUser(@RequestBody userCredentialsDto: UserCredentialsDto): String {
         return authenticationService.login(userCredentialsDto)
     }
