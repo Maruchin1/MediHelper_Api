@@ -20,7 +20,8 @@ class AuthenticationService(
         }
         val newRegisteredUser = RegisteredUser(
                 email = userCredentials.email,
-                password = passwordEncoder.encode(userCredentials.password)
+                password = passwordEncoder.encode(userCredentials.password),
+                authToken = UUID.randomUUID().toString()
         )
         registeredUserRepository.save(newRegisteredUser)
     }
@@ -30,10 +31,7 @@ class AuthenticationService(
         if (!passwordEncoder.matches(userCredentials.password, registeredUser.password)) {
             throw IncorrectCredentialsException()
         }
-        val newAuthToken = UUID.randomUUID().toString()
-        registeredUser.authToken = newAuthToken
-        registeredUserRepository.save(registeredUser)
-        return newAuthToken
+        return registeredUser.authToken
     }
 
     private fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }
