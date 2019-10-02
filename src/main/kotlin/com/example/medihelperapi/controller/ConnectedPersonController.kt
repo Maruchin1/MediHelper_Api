@@ -16,7 +16,6 @@ class ConnectedPersonController(private val connectedPersonService: ConnectedPer
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun getMedicines(): List<MedicineDto> = connectedPersonService.getMedicines()
 
-
     @GetMapping("/data/medicines-plans")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
     fun getMedicinesPlans(): List<MedicinePlanDto> = connectedPersonService.getMedicinesPlans()

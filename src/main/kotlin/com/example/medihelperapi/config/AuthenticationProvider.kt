@@ -24,16 +24,20 @@ class AuthenticationProvider(
 ) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val token = authentication?.credentials
-                ?: throw BadCredentialsException("No Authentication token passed in request")
-        return registeredUserRepository.findByAuthToken(token as String).map { registeredUser ->
-            User(registeredUser.registeredUserId.toString(), "", AuthorityUtils.createAuthorityList("USER"))
-        }.or {
-            personRepository.findByAuthToken(token).map { person ->
-                User(person.personId.toString(), "", AuthorityUtils.createAuthorityList("PERSON"))
+        val token = authentication?.credentials as String
+        if (token.isEmpty()) {
+            throw BadCredentialsException("No Authentication token passed in request")
+        }
+        val registeredUser = registeredUserRepository.findByAuthToken(token)
+        return if (registeredUser.isPresent) {
+            User(registeredUser.get().registeredUserId.toString(), "", AuthorityUtils.createAuthorityList("USER"))
+        } else {
+            val person = personRepository.findByAuthToken(token)
+            if (person.isPresent) {
+                User(person.get().personId.toString(), "", AuthorityUtils.createAuthorityList("PERSON"))
+            } else {
+                throw UsernameNotFoundException("Cannot find user with authentication token = $token")
             }
-        }.orElseThrow {
-            UsernameNotFoundException("Cannot find user with authentication token = $token")
         }
     }
 
