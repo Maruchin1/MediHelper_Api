@@ -22,5 +22,5 @@ class ConnectedPersonController(private val connectedPersonService: ConnectedPer
 
     @PutMapping("/data/planned-medicines")
     @ApiImplicitParams(ApiImplicitParam(name = "Authorization", value = "token autoryzacji", required = true, paramType = "header"))
-    fun synchronizePlannedMedicines(updateDtoList: List<PlannedMedicineDto>): List<PlannedMedicineDto> = connectedPersonService.synchronizePlannedMedicines(updateDtoList)
+    fun synchronizePlannedMedicines(@RequestBody updateDtoList: List<PlannedMedicineDto>): List<PlannedMedicineDto> = connectedPersonService.synchronizePlannedMedicines(updateDtoList)
 }
