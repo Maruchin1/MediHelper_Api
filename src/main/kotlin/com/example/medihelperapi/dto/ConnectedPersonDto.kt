@@ -3,7 +3,7 @@ package com.example.medihelperapi.dto
 import com.example.medihelperapi.model.Person
 import com.fasterxml.jackson.annotation.JsonProperty
 
-data class PersonProfileDataDto(
+data class ConnectedPersonDto(
         @JsonProperty(value = "personName")
         val personName: String,
 

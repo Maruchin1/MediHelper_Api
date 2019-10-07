@@ -2,7 +2,6 @@ package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.MedicineDto
 import com.example.medihelperapi.dto.MedicinePlanDto
-import com.example.medihelperapi.dto.PersonProfileDataDto
 import com.example.medihelperapi.dto.PlannedMedicineDto
 import com.example.medihelperapi.model.Person
 import com.example.medihelperapi.repository.MedicinePlanRepository
@@ -12,8 +11,6 @@ import com.example.medihelperapi.repository.PlannedMedicineRepository
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
 import org.springframework.stereotype.Service
-import org.springframework.transaction.annotation.Transactional
-import java.util.*
 
 @Service
 class ConnectedPersonService(

@@ -1,12 +1,10 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.PersonProfileDataDto
+import com.example.medihelperapi.dto.ConnectedPersonDto
 import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.PersonRepository
 import com.example.medihelperapi.repository.RegisteredUserRepository
-import org.springframework.security.core.context.SecurityContextHolder
-import org.springframework.security.core.userdetails.User
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -37,11 +35,11 @@ class AuthenticationService(
         return registeredUser.authToken
     }
 
-    fun patronConnect(connectionKey: String): PersonProfileDataDto {
+    fun patronConnect(connectionKey: String): ConnectedPersonDto {
         val person = personRepository.findByConnectionKey(connectionKey).orElseThrow { PersonNotFoundException() }
         person.authToken = UUID.randomUUID().toString()
         val savedPerson = personRepository.save(person)
-        return PersonProfileDataDto(savedPerson)
+        return ConnectedPersonDto(savedPerson)
     }
 
     private fun findByEmail(email: String): RegisteredUser = registeredUserRepository.findByEmail(email).orElseThrow { UserNotFoundException() }

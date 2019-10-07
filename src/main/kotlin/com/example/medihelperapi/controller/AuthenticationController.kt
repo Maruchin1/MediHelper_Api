@@ -1,9 +1,8 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.dto.PersonProfileDataDto
+import com.example.medihelperapi.dto.ConnectedPersonDto
 import com.example.medihelperapi.dto.UserCredentialsDto
 import com.example.medihelperapi.service.AuthenticationService
-import com.example.medihelperapi.service.RegisteredUserService
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -21,5 +20,5 @@ class AuthenticationController(private val authenticationService: Authentication
     }
 
     @GetMapping("/patron-connect")
-    fun patronConnect(@RequestParam connectionKey: String): PersonProfileDataDto = authenticationService.patronConnect(connectionKey)
+    fun patronConnect(@RequestParam connectionKey: String): ConnectedPersonDto = authenticationService.patronConnect(connectionKey)
 }
