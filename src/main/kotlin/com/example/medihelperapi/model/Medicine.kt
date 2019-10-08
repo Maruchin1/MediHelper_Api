@@ -32,6 +32,7 @@ data class Medicine(
         var image: ByteArray?
 ) {
     @OneToMany(mappedBy = "medicine")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     var medicinePlanList: List<MedicinePlan> = emptyList()
 
     override fun equals(other: Any?): Boolean {
