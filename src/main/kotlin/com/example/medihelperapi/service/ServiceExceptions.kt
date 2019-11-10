@@ -20,6 +20,3 @@ class PersonNotFoundException : RuntimeException()
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "MedicinePlan not found in database")
 class MedicinePlanNotFoundException : RuntimeException()
-
-@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "User has no access to selected Person entity")
-class NoPermissionToEditPerson : RuntimeException()

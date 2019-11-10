@@ -27,26 +27,15 @@ data class MedicinePlan(
 
         var durationType: String,
 
-        @Embedded
-        var daysOfWeek: DaysOfWeek?,
+        @OneToOne(mappedBy = "medicinePlan", cascade = [CascadeType.ALL])
+        var daysOfWeek: DaysOfWeek? = null,
 
         var intervalOfDays: Int?,
 
-        var daysType: String,
+        var daysType: String?,
 
         @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
         @JoinColumn(name = "medicinePlanId")
         @OnDelete(action = OnDeleteAction.CASCADE)
-        var timeOfTakingList: List<TimeOfTaking>
-) {
-    @Embeddable
-    class DaysOfWeek(
-          var monday: Boolean?,
-          var tuesday: Boolean?,
-          var wednesday: Boolean?,
-          var thursday: Boolean?,
-          var friday: Boolean?,
-          var saturday: Boolean?,
-          var sunday: Boolean?
-    )
-}
+        var timeDoseList: List<TimeDose>
+)

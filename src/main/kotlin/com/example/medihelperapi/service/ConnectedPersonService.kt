@@ -17,7 +17,8 @@ class ConnectedPersonService(
         private val personRepository: PersonRepository,
         private val medicineRepository: MedicineRepository,
         private val medicinePlanRepository: MedicinePlanRepository,
-        private val plannedMedicineRepository: PlannedMedicineRepository
+        private val plannedMedicineRepository: PlannedMedicineRepository,
+        private val mapper: EntityDtoMapper
 ) {
     private val currPerson: Person
         get() {
@@ -26,21 +27,27 @@ class ConnectedPersonService(
         }
 
     fun getMedicines(): List<MedicineDto> {
-        return medicineRepository.findAllByPersonId(currPerson.personId).map { MedicineDto(it, null) }
+        return medicineRepository.findAllByPersonId(currPerson.personId).map {
+            mapper.medicineEntityToDto(it, null)
+        }
     }
 
     fun getMedicinesPlans(): List<MedicinePlanDto> {
-        return medicinePlanRepository.findAllByPerson(currPerson).map { MedicinePlanDto(it, null) }
+        return medicinePlanRepository.findAllByPerson(currPerson).map {
+            mapper.medicinePlanEntityToDto(it, null)
+        }
     }
 
     fun synchronizePlannedMedicines(updateDtoList: List<PlannedMedicineDto>): List<PlannedMedicineDto> {
         updateDtoList.forEach { plannedMedicineDto ->
             if (plannedMedicineRepository.existsById(plannedMedicineDto.plannedMedicineRemoteId!!)) {
-                val updatedPlannedMedicine = plannedMedicineDto.toEntity(medicinePlanRepository)
+                val updatedPlannedMedicine = mapper.plannedMedicineDtoToEntity(plannedMedicineDto)
                 plannedMedicineRepository.save(updatedPlannedMedicine)
             }
         }
 
-        return plannedMedicineRepository.findAllByMedicinePlanPerson(currPerson).map { PlannedMedicineDto(it, null) }
+        return plannedMedicineRepository.findAllByMedicinePlanPerson(currPerson).map {
+            mapper.plannedMedicineEntityToDto(it, null)
+        }
     }
 }

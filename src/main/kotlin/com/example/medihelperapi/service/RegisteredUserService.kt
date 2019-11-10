@@ -16,7 +16,8 @@ class RegisteredUserService(
         private val medicineRepository: MedicineRepository,
         private val personRepository: PersonRepository,
         private val medicinePlanRepository: MedicinePlanRepository,
-        private val plannedMedicineRepository: PlannedMedicineRepository
+        private val plannedMedicineRepository: PlannedMedicineRepository,
+        private val mapper: EntityDtoMapper
 ) {
     private val currUser: RegisteredUser
         get() {
@@ -34,11 +35,6 @@ class RegisteredUserService(
         personRepository.deleteAllByRegisteredUser(currUser)
     }
 
-    fun isDataAvailable(): Boolean {
-        return medicineRepository.countByRegisteredUser(currUser) > 0 ||
-                personRepository.countByRegisteredUser(currUser) > 0
-    }
-
     @Transactional
     fun synchronizeMedicines(
             insertUpdateDtoList: List<MedicineDto>,
@@ -49,13 +45,13 @@ class RegisteredUserService(
 
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicineDto ->
-            val newMedicine = medicineDto.toEntity(currUser)
+            val newMedicine = mapper.medicineDtoToEntity(medicineDto, currUser)
             val savedMedicine = medicineRepository.save(newMedicine)
             localIdRemoteIdPairList.add(Pair(medicineDto.medicineLocalId!!, savedMedicine.medicineId))
         }
         updateDtoList.forEach { medicineDto ->
             if (medicineRepository.existsById(medicineDto.medicineRemoteId!!)) {
-                val updatedMedicine = medicineDto.toEntity(currUser)
+                val updatedMedicine = mapper.medicineDtoToEntity(medicineDto, currUser)
                 medicineRepository.save(updatedMedicine)
             }
         }
@@ -67,7 +63,7 @@ class RegisteredUserService(
 
         return medicineRepository.findAllByRegisteredUser(currUser).map { medicine ->
             val medicineLocalId = localIdRemoteIdPairList.find { it.second == medicine.medicineId }?.first
-            MedicineDto(medicine, medicineLocalId)
+            mapper.medicineEntityToDto(medicine, medicineLocalId)
         }
     }
 
@@ -81,7 +77,7 @@ class RegisteredUserService(
 
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { personDto ->
-            val newPerson = personDto.toEntity(currUser).apply {
+            val newPerson = mapper.personDtoToEntity(personDto, currUser).apply {
                 connectionKey = generateRandomUniqueKey()
             }
             val savedPerson = personRepository.save(newPerson)
@@ -89,7 +85,7 @@ class RegisteredUserService(
         }
         updateDtoList.forEach { personDto ->
             if (personRepository.existsById(personDto.personRemoteId!!)) {
-                val updatedPerson = personDto.toEntity(currUser)
+                val updatedPerson = mapper.personDtoToEntity(personDto, currUser)
                 personRepository.save(updatedPerson)
             }
         }
@@ -101,7 +97,7 @@ class RegisteredUserService(
 
         return personRepository.findAllByRegisteredUser(currUser).map { person ->
             val personLocalId = localIdRemoteIdPairList.find { it.second == person.personId }?.first
-            PersonDto(person, personLocalId)
+            mapper.personEntityToDto(person, personLocalId)
         }
     }
 
@@ -115,13 +111,13 @@ class RegisteredUserService(
 
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicinePlanDto ->
-            val newMedicinePlan = medicinePlanDto.toEntity(medicineRepository, personRepository)
+            val newMedicinePlan = mapper.medicinePlanDtoToEntity(medicinePlanDto)
             val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
             localIdRemoteIdPairList.add(Pair(medicinePlanDto.medicinePlanLocalId!!, savedMedicinePlan.medicinePlanId))
         }
         updateDtoList.forEach { medicinePlanDto ->
             if (medicinePlanRepository.existsById(medicinePlanDto.medicinePlanRemoteId!!)) {
-                val updatedMedicinePlan = medicinePlanDto.toEntity(medicineRepository, personRepository)
+                val updatedMedicinePlan = mapper.medicinePlanDtoToEntity(medicinePlanDto)
                 medicinePlanRepository.save(updatedMedicinePlan)
             }
         }
@@ -133,7 +129,7 @@ class RegisteredUserService(
 
         return medicinePlanRepository.findAllByMedicineRegisteredUser(currUser).map { medicinePlan ->
             val medicinePlanLocalId = localIdRemoteIdPairList.find { it.second == medicinePlan.medicinePlanId }?.first
-            MedicinePlanDto(medicinePlan, medicinePlanLocalId)
+            mapper.medicinePlanEntityToDto(medicinePlan, medicinePlanLocalId)
         }
     }
 
@@ -147,13 +143,13 @@ class RegisteredUserService(
 
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { plannedMedicineDto ->
-            val newPlannedMedicine = plannedMedicineDto.toEntity(medicinePlanRepository)
+            val newPlannedMedicine = mapper.plannedMedicineDtoToEntity(plannedMedicineDto)
             val savedPlannedMedicine = plannedMedicineRepository.save(newPlannedMedicine)
             localIdRemoteIdPairList.add(Pair(plannedMedicineDto.plannedMedicineLocalId!!, savedPlannedMedicine.plannedMedicineId))
         }
         updateDtoList.forEach { plannedMedicineDto ->
             if (plannedMedicineRepository.existsById(plannedMedicineDto.plannedMedicineRemoteId!!)) {
-                val updatedPlannedMedicine = plannedMedicineDto.toEntity(medicinePlanRepository)
+                val updatedPlannedMedicine = mapper.plannedMedicineDtoToEntity(plannedMedicineDto)
                 plannedMedicineRepository.save(updatedPlannedMedicine)
             }
         }
@@ -165,7 +161,7 @@ class RegisteredUserService(
 
         return plannedMedicineRepository.findAllByMedicinePlanMedicineRegisteredUser(currUser).map { plannedMedicine ->
             val plannedMedicineLocalId = localIdRemoteIdPairList.find { it.second == plannedMedicine.plannedMedicineId }?.first
-            PlannedMedicineDto(plannedMedicine, plannedMedicineLocalId)
+            mapper.plannedMedicineEntityToDto(plannedMedicine, plannedMedicineLocalId)
         }
     }
 

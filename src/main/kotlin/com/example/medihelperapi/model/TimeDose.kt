@@ -5,7 +5,7 @@ import javax.persistence.*
 
 @Entity
 @Table(name = "times_of_taking")
-data class TimeOfTaking(
+data class TimeDose(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val timeOfTakingId: Long = 0,
 
