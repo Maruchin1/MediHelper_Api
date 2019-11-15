@@ -9,6 +9,9 @@ data class TimeDose(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         val timeOfTakingId: Long = 0,
 
+        @ManyToOne
+        var medicinePlan: MedicinePlan,
+
         var doseSize: Float,
 
         var time: LocalTime

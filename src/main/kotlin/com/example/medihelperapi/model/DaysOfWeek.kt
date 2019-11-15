@@ -1,16 +1,18 @@
 package com.example.medihelperapi.model
 
+import org.hibernate.annotations.OnDelete
+import org.hibernate.annotations.OnDeleteAction
 import javax.persistence.*
 
 @Entity
 @Table(name = "days_of_week")
 data class DaysOfWeek(
-        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+        @Id
+        @GeneratedValue(strategy = GenerationType.IDENTITY)
         var daysOfWeekId: Long = 0,
 
-        @OneToOne(fetch = FetchType.LAZY)
-        @JoinColumn(name = "daysOfWeek")
-        var medicinePlan: MedicinePlan? = null,
+        @OneToOne(mappedBy = "daysOfWeek")
+        var medicinePlan: MedicinePlan,
 
         var monday: Boolean,
 

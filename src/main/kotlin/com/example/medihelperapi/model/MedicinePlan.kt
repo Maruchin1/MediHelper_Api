@@ -27,15 +27,13 @@ data class MedicinePlan(
 
         var durationType: String,
 
-        @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "medicinePlan")
-        var daysOfWeek: DaysOfWeek? = null,
-
         var intervalOfDays: Int?,
 
-        var daysType: String?,
+        var daysType: String?
+) {
+        @OneToOne(cascade = [CascadeType.ALL], orphanRemoval = true)
+        var daysOfWeek: DaysOfWeek? = null
 
-        @OneToMany(fetch = FetchType.LAZY, cascade = [CascadeType.ALL])
-        @JoinColumn(name = "medicinePlanId")
-        @OnDelete(action = OnDeleteAction.CASCADE)
-        var timeDoseList: List<TimeDose>
-)
+        @OneToMany(mappedBy = "medicinePlan", cascade = [CascadeType.ALL], orphanRemoval = true)
+        var timeDoseList: List<TimeDose> = emptyList()
+}

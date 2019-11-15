@@ -82,10 +82,8 @@ class EntityDtoMapper(
             startDate = dto.startDate,
             endDate = dto.endDate,
             durationType = dto.durationType,
-            daysOfWeek = dto.daysOfWeekDto?.let { daysOfWeekDtoToEntity(it) },
             intervalOfDays = dto.intervalOfDays,
-            daysType = dto.daysType,
-            timeDoseList = dto.timeDoseDtoList.map { timeDoseDtoToEntity(it) }
+            daysType = dto.daysType
     )
 
     fun plannedMedicineEntityToDto(entity: PlannedMedicine, localId: Int?) = PlannedMedicineDto(
@@ -107,7 +105,7 @@ class EntityDtoMapper(
             statusOfTaking = dto.statusOfTaking
     )
 
-    private fun daysOfWeekEntityToDto(entity: DaysOfWeek) = DaysOfWeekDto(
+    fun daysOfWeekEntityToDto(entity: DaysOfWeek) = DaysOfWeekDto(
             monday = entity.monday,
             tuesday = entity.tuesday,
             wednesday = entity.wednesday,
@@ -117,7 +115,8 @@ class EntityDtoMapper(
             sunday = entity.sunday
     )
 
-    private fun daysOfWeekDtoToEntity(dto: DaysOfWeekDto) = DaysOfWeek(
+    fun daysOfWeekDtoToEntity(dto: DaysOfWeekDto, medicinePlan: MedicinePlan) = DaysOfWeek(
+            medicinePlan = medicinePlan,
             monday = dto.monday,
             tuesday = dto.tuesday,
             wednesday = dto.wednesday,
@@ -127,13 +126,14 @@ class EntityDtoMapper(
             sunday = dto.sunday
     )
 
-    private fun timeDoseEntityToDto(entity: TimeDose) = TimeDoseDto(
+    fun timeDoseEntityToDto(entity: TimeDose) = TimeDoseDto(
             doseSize = entity.doseSize,
             time = entity.time
     )
 
-    private fun timeDoseDtoToEntity(dto: TimeDoseDto) = TimeDose(
+    fun timeDoseDtoToEntity(dto: TimeDoseDto, medicinePlan: MedicinePlan) = TimeDose(
             doseSize = dto.doseSize,
-            time = dto.time
+            time = dto.time,
+            medicinePlan = medicinePlan
     )
 }

@@ -17,6 +17,8 @@ class RegisteredUserService(
         private val personRepository: PersonRepository,
         private val medicinePlanRepository: MedicinePlanRepository,
         private val plannedMedicineRepository: PlannedMedicineRepository,
+        private val timeDoseRepository: TimeDoseRepository,
+        private val daysOfWeekRepository: DaysOfWeekRepository,
         private val mapper: EntityDtoMapper
 ) {
     private val currUser: RegisteredUser
@@ -112,12 +114,38 @@ class RegisteredUserService(
         val localIdRemoteIdPairList = mutableListOf<Pair<Int, Long>>()
         insertDtoList.forEach { medicinePlanDto ->
             val newMedicinePlan = mapper.medicinePlanDtoToEntity(medicinePlanDto)
+            newMedicinePlan.daysOfWeek = medicinePlanDto.daysOfWeekDto?.let {
+                mapper.daysOfWeekDtoToEntity(it, newMedicinePlan)
+            }
+            newMedicinePlan.timeDoseList = medicinePlanDto.timeDoseDtoList.map {
+                mapper.timeDoseDtoToEntity(it, newMedicinePlan)
+            }
             val savedMedicinePlan = medicinePlanRepository.save(newMedicinePlan)
             localIdRemoteIdPairList.add(Pair(medicinePlanDto.medicinePlanLocalId!!, savedMedicinePlan.medicinePlanId))
         }
         updateDtoList.forEach { medicinePlanDto ->
             if (medicinePlanRepository.existsById(medicinePlanDto.medicinePlanRemoteId!!)) {
                 val updatedMedicinePlan = mapper.medicinePlanDtoToEntity(medicinePlanDto)
+                var daysOfWeek = updatedMedicinePlan.daysOfWeek
+                var timeDoseList = updatedMedicinePlan.timeDoseList
+
+                if (daysOfWeek != null) {
+                    daysOfWeekRepository.delete(daysOfWeek)
+                }
+                if (timeDoseList.isNotEmpty()) {
+                    timeDoseRepository.deleteAll(timeDoseList)
+                }
+
+                daysOfWeek = medicinePlanDto.daysOfWeekDto?.let {
+                    mapper.daysOfWeekDtoToEntity(it, updatedMedicinePlan)
+                }
+                timeDoseList = medicinePlanDto.timeDoseDtoList.map {
+                    mapper.timeDoseDtoToEntity(it, updatedMedicinePlan)
+                }
+
+                updatedMedicinePlan.daysOfWeek = daysOfWeek
+                updatedMedicinePlan.timeDoseList = timeDoseList
+
                 medicinePlanRepository.save(updatedMedicinePlan)
             }
         }
