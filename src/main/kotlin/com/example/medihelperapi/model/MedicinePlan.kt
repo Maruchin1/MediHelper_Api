@@ -28,7 +28,6 @@ data class MedicinePlan(
         var durationType: String,
 
         @OneToOne(mappedBy = "medicinePlan", cascade = [CascadeType.ALL])
-        @OnDelete(action = OnDeleteAction.CASCADE)
         var daysOfWeek: DaysOfWeek? = null,
 
         var intervalOfDays: Int?,
