@@ -8,8 +8,8 @@ data class DaysOfWeek(
         @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var daysOfWeekId: Long = 0,
 
-        @OneToOne(fetch = FetchType.LAZY, optional = false)
-        @JoinColumn(name = "daysOfWeek", nullable = false)
+        @OneToOne(fetch = FetchType.LAZY)
+        @JoinColumn(name = "daysOfWeek")
         var medicinePlan: MedicinePlan? = null,
 
         var monday: Boolean,
