@@ -30,6 +30,6 @@ data class MedicineDto(
         @JsonProperty(value = "additionalInfo")
         val additionalInfo: String?,
 
-        @JsonProperty(value = "image_name")
+        @JsonProperty(value = "imageName")
         val imageName: String?
 )
