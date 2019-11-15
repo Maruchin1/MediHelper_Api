@@ -27,7 +27,7 @@ data class MedicinePlan(
 
         var durationType: String,
 
-        @OneToOne(mappedBy = "medicinePlan", cascade = [CascadeType.ALL])
+        @OneToOne(fetch = FetchType.LAZY, cascade = [CascadeType.ALL], mappedBy = "medicinePlan")
         var daysOfWeek: DaysOfWeek? = null,
 
         var intervalOfDays: Int?,

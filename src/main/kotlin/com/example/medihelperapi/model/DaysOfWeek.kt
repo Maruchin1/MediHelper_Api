@@ -5,11 +5,11 @@ import javax.persistence.*
 @Entity
 @Table(name = "days_of_week")
 data class DaysOfWeek(
-        @Id
+        @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
         var daysOfWeekId: Long = 0,
 
-        @OneToOne
-        @MapsId
+        @OneToOne(fetch = FetchType.LAZY, optional = false)
+        @JoinColumn(name = "daysOfWeek", nullable = false)
         var medicinePlan: MedicinePlan? = null,
 
         var monday: Boolean,
