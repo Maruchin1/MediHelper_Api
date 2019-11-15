@@ -1,7 +1,5 @@
 package com.example.medihelperapi.dto
 
-import com.example.medihelperapi.model.Person
-import com.example.medihelperapi.model.RegisteredUser
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class PersonDto(

@@ -57,7 +57,8 @@ class EntityDtoMapper(
             personId = dto.personRemoteId ?: 0,
             registeredUser = user,
             personName = dto.personName,
-            personColorResId = dto.personColorResId
+            personColorResId = dto.personColorResId,
+            connectionKey = dto.connectionKey!!
     )
 
     fun medicinePlanEntityToDto(entity: MedicinePlan, localId: Int?) = MedicinePlanDto(
