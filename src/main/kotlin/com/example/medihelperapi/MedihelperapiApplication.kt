@@ -1,12 +1,16 @@
 package com.example.medihelperapi
 
+import org.springframework.boot.SpringApplication
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-import org.springframework.web.bind.annotation.RequestMapping
+import org.springframework.scheduling.annotation.EnableScheduling
+
+
 
 @SpringBootApplication
+@EnableScheduling
 class MedihelperapiApplication
 
 fun main(args: Array<String>) {
-	runApplication<MedihelperapiApplication>(*args)
+	SpringApplication.run(MedihelperapiApplication::class.java)
 }
