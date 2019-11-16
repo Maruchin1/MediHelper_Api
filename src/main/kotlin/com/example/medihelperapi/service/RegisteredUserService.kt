@@ -33,6 +33,10 @@ class RegisteredUserService(
 
     @Transactional
     fun deleteAllData() {
+        timeDoseRepository.deleteAll()
+        daysOfWeekRepository.deleteAll()
+        plannedMedicineRepository.deleteAll()
+        medicinePlanRepository.deleteAll()
         medicineRepository.deleteAllByRegisteredUser(currUser)
         personRepository.deleteAllByRegisteredUser(currUser)
     }
