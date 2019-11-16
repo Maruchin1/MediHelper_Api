@@ -1,7 +1,10 @@
 package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.*
+import com.example.medihelperapi.model.DaysOfWeek
+import com.example.medihelperapi.model.PlannedMedicine
 import com.example.medihelperapi.model.RegisteredUser
+import com.example.medihelperapi.model.TimeDose
 import com.example.medihelperapi.repository.*
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.core.userdetails.User
@@ -33,12 +36,25 @@ class RegisteredUserService(
 
     @Transactional
     fun deleteAllData() {
-        timeDoseRepository.deleteAll()
-        daysOfWeekRepository.deleteAll()
-        plannedMedicineRepository.deleteAll()
-        medicinePlanRepository.deleteAll()
-        medicineRepository.deleteAllByRegisteredUser(currUser)
-        personRepository.deleteAllByRegisteredUser(currUser)
+        val persons = personRepository.findAllByRegisteredUser(currUser)
+        val medicines = medicineRepository.findAllByRegisteredUser(currUser)
+        val medicinesPlans = medicinePlanRepository.findAllByMedicineRegisteredUser(currUser)
+        val timesDoses = mutableListOf<TimeDose>()
+        val daysOfWeek = mutableListOf<DaysOfWeek>()
+        medicinesPlans.forEach {
+            timesDoses.addAll(it.timeDoseList)
+            if (it.daysOfWeek != null) {
+                daysOfWeek.add(it.daysOfWeek!!)
+            }
+        }
+        val plannedMedicines = plannedMedicineRepository.findAllByMedicinePlanMedicineRegisteredUser(currUser)
+
+        timeDoseRepository.deleteAll(timesDoses)
+        daysOfWeekRepository.deleteAll(daysOfWeek)
+        plannedMedicineRepository.deleteAll(plannedMedicines)
+        medicinePlanRepository.deleteAll(medicinesPlans)
+        medicineRepository.deleteAll(medicines)
+        personRepository.deleteAll(persons)
     }
 
     @Transactional
