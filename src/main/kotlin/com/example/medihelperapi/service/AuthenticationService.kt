@@ -1,8 +1,9 @@
 package com.example.medihelperapi.service
 
 import com.example.medihelperapi.dto.ConnectedPersonDto
+import com.example.medihelperapi.dto.LoginInputDto
 import com.example.medihelperapi.dto.LoginResponseDto
-import com.example.medihelperapi.dto.UserCredentialsDto
+import com.example.medihelperapi.dto.RegisterInputDto
 import com.example.medihelperapi.model.RegisteredUser
 import com.example.medihelperapi.repository.MedicineRepository
 import com.example.medihelperapi.repository.PersonRepository
@@ -19,22 +20,23 @@ class AuthenticationService(
         private val passwordEncoder: PasswordEncoder,
         private val mapper: EntityDtoMapper
 ) {
-    fun register(userCredentials: UserCredentialsDto) {
-        if (registeredUserRepository.existsByEmail(userCredentials.email)) {
+    fun register(registerInputDto: RegisterInputDto) {
+        if (registeredUserRepository.existsByEmail(registerInputDto.email)) {
             throw RegisteredUserExistsException()
         }
         val newRegisteredUser = RegisteredUser(
-                email = userCredentials.email,
-                password = passwordEncoder.encode(userCredentials.password),
+                userName = registerInputDto.userName,
+                email = registerInputDto.email,
+                password = passwordEncoder.encode(registerInputDto.password),
                 authToken = UUID.randomUUID().toString()
         )
         registeredUserRepository.save(newRegisteredUser)
     }
 
-    fun login(userCredentials: UserCredentialsDto): LoginResponseDto {
-        val registeredUser = registeredUserRepository.findByEmail(userCredentials.email)
+    fun login(loginInputDto: LoginInputDto): LoginResponseDto {
+        val registeredUser = registeredUserRepository.findByEmail(loginInputDto.email)
                 .orElseThrow { UserNotFoundException() }
-        if (!passwordEncoder.matches(userCredentials.password, registeredUser.password)) {
+        if (!passwordEncoder.matches(loginInputDto.password, registeredUser.password)) {
             throw IncorrectCredentialsException()
         }
         return LoginResponseDto(

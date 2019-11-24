@@ -1,12 +1,12 @@
 package com.example.medihelperapi.controller
 
 import com.example.medihelperapi.dto.ConnectedPersonDto
+import com.example.medihelperapi.dto.LoginInputDto
 import com.example.medihelperapi.dto.LoginResponseDto
-import com.example.medihelperapi.dto.UserCredentialsDto
+import com.example.medihelperapi.dto.RegisterInputDto
 import com.example.medihelperapi.service.AuthenticationService
 import io.swagger.annotations.ApiResponse
 import io.swagger.annotations.ApiResponses
-import org.springframework.http.HttpStatus
 import org.springframework.web.bind.annotation.*
 
 @RestController
@@ -15,8 +15,8 @@ class AuthenticationController(private val authenticationService: Authentication
 
     @ApiResponses(ApiResponse(code = 409, message = "User with given email already exists in database"))
     @PostMapping("/register")
-    fun registerNewUser(@RequestBody userCredentialsDto: UserCredentialsDto) {
-        authenticationService.register(userCredentialsDto)
+    fun registerNewUser(@RequestBody registerInputDto: RegisterInputDto) {
+        authenticationService.register(registerInputDto)
     }
 
     @ApiResponses(
@@ -24,8 +24,8 @@ class AuthenticationController(private val authenticationService: Authentication
             ApiResponse(code = 322, message = "Incorrect user credentials")
     )
     @PostMapping("/login")
-    fun loginUser(@RequestBody userCredentialsDto: UserCredentialsDto): LoginResponseDto {
-        return authenticationService.login(userCredentialsDto)
+    fun loginUser(@RequestBody loginInputDto: LoginInputDto): LoginResponseDto {
+        return authenticationService.login(loginInputDto)
     }
 
     @ApiResponses(ApiResponse(code = 404, message = "Person not found in database"))

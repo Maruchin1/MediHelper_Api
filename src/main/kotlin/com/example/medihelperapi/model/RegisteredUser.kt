@@ -9,6 +9,8 @@ data class RegisteredUser(
         @Column(name = "registered_user_id")
         val registeredUserId: Long = 0,
 
+        var userName: String,
+
         var email: String,
 
         var password: String,
