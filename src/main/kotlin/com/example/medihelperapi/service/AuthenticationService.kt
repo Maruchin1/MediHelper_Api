@@ -40,6 +40,7 @@ class AuthenticationService(
             throw IncorrectCredentialsException()
         }
         return LoginResponseDto(
+                userName = registeredUser.userName,
                 authToken = registeredUser.authToken,
                 isDataAvailable = isDataAvailable(registeredUser)
         )
