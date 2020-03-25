@@ -2,14 +2,14 @@ package com.example.medihelperapi.model
 
 import org.hibernate.annotations.OnDelete
 import org.hibernate.annotations.OnDeleteAction
-import java.time.LocalDate
 import javax.persistence.*
 
+
 @Entity
-@Table(name = "medicines")
-data class Medicine(
+@Table(name = "children")
+data class Child(
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
-    val medicineId: Long = 0,
+    val childId: Long = 0,
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "parentId")
@@ -18,11 +18,7 @@ data class Medicine(
 
     var name: String,
 
-    var unit: String,
+    var authToken: String = "",
 
-    var expireDate: LocalDate?,
-
-    var packageSize: Float?,
-
-    var currState: Float?
+    var connectionKey: String = ""
 )
