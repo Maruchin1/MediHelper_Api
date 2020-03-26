@@ -23,4 +23,8 @@ class MedicinesService(
             GetMedicineDto(it)
         }
     }
+
+    fun delete(id: Long) {
+        medicinesRepo.deleteById(id)
+    }
 }

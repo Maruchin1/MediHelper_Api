@@ -33,4 +33,8 @@ class ChildrenService (
             GetChildDto(it)
         }
     }
+
+    fun delete(id: Long) {
+        childrenRepo.deleteById(id)
+    }
 }

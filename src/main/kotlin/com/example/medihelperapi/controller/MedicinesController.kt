@@ -19,4 +19,9 @@ class MedicinesController(
     fun getAllMedicines(): List<GetMedicineDto> {
         return medicinesService.getAll()
     }
+
+    @DeleteMapping("/medicines/{id}")
+    fun deleteMedicine(@PathVariable("id") id: Long) {
+        medicinesService.delete(id)
+    }
 }

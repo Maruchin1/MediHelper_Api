@@ -4,10 +4,7 @@ import com.example.medihelperapi.dto.GetChildDto
 import com.example.medihelperapi.dto.LoginChildDto
 import com.example.medihelperapi.dto.PostChildDto
 import com.example.medihelperapi.service.ChildrenService
-import org.springframework.web.bind.annotation.GetMapping
-import org.springframework.web.bind.annotation.PostMapping
-import org.springframework.web.bind.annotation.RequestBody
-import org.springframework.web.bind.annotation.RestController
+import org.springframework.web.bind.annotation.*
 
 @RestController
 class ChildrenController(
@@ -20,12 +17,17 @@ class ChildrenController(
     }
 
     @PostMapping("/children")
-    fun addNewPerson(@RequestBody postChildDto: PostChildDto) {
+    fun addNewChild(@RequestBody postChildDto: PostChildDto) {
         childrenService.addNew(postChildDto)
     }
 
     @GetMapping("/children")
-    fun getAllPersons(): List<GetChildDto> {
+    fun getAllChildren(): List<GetChildDto> {
         return childrenService.getAll()
+    }
+
+    @DeleteMapping("/children/{id}")
+    fun deleteChild(@PathVariable("id") id: Long) {
+        childrenService.delete(id)
     }
 }
