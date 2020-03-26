@@ -36,20 +36,24 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
             http.sessionManagement()
-                    .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                    .and()
-                    .exceptionHandling()
-                    .and()
-                    .authenticationProvider(authenticationProvider)
-                    .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
-                    .authorizeRequests()
-                    .antMatchers(PROTECTED_URL_REGISTERED_USERS).hasAuthority("USER")
-                    .antMatchers(PROTECTED_URL_PERSONS_DATA).hasAuthority("PERSON")
-                    .and()
-                    .csrf().disable()
-                    .formLogin().disable()
-                    .httpBasic().disable()
-                    .logout().disable()
+                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
+                .and()
+                .exceptionHandling()
+                .and()
+                .authenticationProvider(authenticationProvider)
+                .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
+                .authorizeRequests()
+                .antMatchers(
+                    PROTECTED_URL_REGISTERED_USERS
+                ).hasAuthority(UserRole.PARENT.toString())
+                .antMatchers(
+                    PROTECTED_URL_PERSONS_DATA
+                ).hasAuthority(UserRole.CHILD.toString())
+                .and()
+                .csrf().disable()
+                .formLogin().disable()
+                .httpBasic().disable()
+                .logout().disable()
 
         }
     }
@@ -65,10 +69,10 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
     }
 
     private fun authenticationFilter() = AuthenticationFilter(
-            OrRequestMatcher(
-                    AntPathRequestMatcher(PROTECTED_URL_REGISTERED_USERS),
-                    AntPathRequestMatcher(PROTECTED_URL_PERSONS_DATA)
-            )
+        OrRequestMatcher(
+            AntPathRequestMatcher(PROTECTED_URL_REGISTERED_USERS),
+            AntPathRequestMatcher(PROTECTED_URL_PERSONS_DATA)
+        )
     ).apply {
         setAuthenticationManager(authenticationManager())
     }

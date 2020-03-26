@@ -15,7 +15,7 @@ class ChildrenService (
 
     fun login(dto: LoginChildDto): String {
         val child = childrenRepo.findByConnectionKey(dto.connectionKey)
-            .orElseThrow { ChildNotFoundException() }
+            .orElseThrow { ChildNotFound() }
         child.authToken = UUID.randomUUID().toString()
         val savedChild = childrenRepo.save(child)
         return savedChild.authToken

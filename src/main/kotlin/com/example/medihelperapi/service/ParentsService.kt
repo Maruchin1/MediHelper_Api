@@ -15,7 +15,7 @@ class ParentsService(
 ) {
     fun register(dto: RegisterParentDto): String {
         if (parentsRepo.existsByEmail(dto.email)) {
-            throw ParentExistsException()
+            throw ParentExists()
         }
         val newParent = Parent(
             userName = dto.userName,
@@ -29,9 +29,9 @@ class ParentsService(
 
     fun login(dto: LoginParentDto): String {
         val parent = parentsRepo.findByEmail(dto.email)
-            .orElseThrow { UserNotFoundException() }
+            .orElseThrow { UserNotFound() }
         if (!passwordEncoder.matches(dto.password, parent.password)) {
-            throw IncorrectCredentialsException()
+            throw IncorrectCredentials()
         }
         return parent.authToken
     }

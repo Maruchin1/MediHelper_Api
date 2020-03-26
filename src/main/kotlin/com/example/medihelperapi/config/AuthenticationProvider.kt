@@ -19,7 +19,6 @@ class AuthenticationProvider(
 ) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        //todo role powinny być w jakimś enumie, trzeba też dostosować konfigurację do nich
         val authToken = authentication?.credentials as String
         if (authToken.isEmpty()) {
             throw BadCredentialsException("No Authentication token passed in request")
@@ -27,13 +26,13 @@ class AuthenticationProvider(
         val parent = parentsRepo.findByAuthToken(authToken)
         if (parent.isPresent) {
             val id = parent.get().parentId.toString()
-            val role = "PARENT"
+            val role = UserRole.PARENT.toString()
             return createUser(id, role)
         }
         val child = childrenRepo.findByAuthToken(authToken)
         if (child.isPresent) {
             val id = child.get().childId.toString()
-            val role = "CHILD"
+            val role = UserRole.CHILD.toString()
             return createUser(id, role)
         }
         throw UsernameNotFoundException("Cannot find user with authentication token = $authToken")

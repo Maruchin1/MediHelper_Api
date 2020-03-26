@@ -18,13 +18,13 @@ class CurrUserService(
     fun expectParent(): Parent {
         val userId = getCurrUserId()
         val parent = parentsRepo.findByIdOrNull(userId)
-        return parent ?: throw ForbiddenException()
+        return parent ?: throw Forbidden()
     }
 
     fun expectChild(): Child {
         val userId = getCurrUserId()
         val child = childrenRepo.findByIdOrNull(userId)
-        return child ?: throw ForbiddenException()
+        return child ?: throw Forbidden()
     }
 
     private fun getCurrUserId(): Long {
