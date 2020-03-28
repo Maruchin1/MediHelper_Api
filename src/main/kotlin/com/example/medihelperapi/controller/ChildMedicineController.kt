@@ -5,18 +5,17 @@ import com.example.medihelperapi.service.ChildMedicineService
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("/childMedicines")
 class ChildMedicineController(
     private val childMedicineService: ChildMedicineService
 ) {
 
-//    @CrossOrigin(origins = ["http://localhost:4200"])
-    @PostMapping("/childMedicines")
+    @PostMapping
     fun assignMedicineToChild(@RequestBody dto: PostChildMedicineDto) {
         childMedicineService.assignMedicineToChild(dto)
     }
 
-//    @CrossOrigin(origins = ["http://localhost:4200"])
-    @DeleteMapping("/childMedicines/{id}")
+    @DeleteMapping("/{id}")
     fun deleteChildMedicine(@PathVariable("id") id: Long) {
         childMedicineService.delete(id)
     }

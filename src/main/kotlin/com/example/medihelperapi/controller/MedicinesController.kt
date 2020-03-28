@@ -6,24 +6,22 @@ import com.example.medihelperapi.service.MedicinesService
 import org.springframework.web.bind.annotation.*
 
 @RestController
+@RequestMapping("medicines")
 class MedicinesController(
     private val medicinesService: MedicinesService
 ) {
 
-//    @CrossOrigin(origins = ["http://localhost:4200"])
-    @PostMapping("/medicines")
+    @PostMapping
     fun addNewMedicine(@RequestBody postMedicineDto: PostMedicineDto) {
         medicinesService.addNew(postMedicineDto)
     }
 
-//    @CrossOrigin(origins = ["http://localhost:4200"])
-    @GetMapping("/medicines")
+    @GetMapping
     fun getAllMedicines(): List<GetMedicineDto> {
         return medicinesService.getAll()
     }
 
-//    @CrossOrigin(origins = ["http://localhost:4200"])
-    @DeleteMapping("/medicines/{id}")
+    @DeleteMapping("/{id}")
     fun deleteMedicine(@PathVariable("id") id: Long) {
         medicinesService.delete(id)
     }
