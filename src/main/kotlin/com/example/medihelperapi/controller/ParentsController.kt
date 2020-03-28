@@ -13,13 +13,13 @@ class ParentsController(
     private val parentsService: ParentsService
 ) {
 
-    @CrossOrigin(origins = ["http://localhost:4200"])
+//    @CrossOrigin(origins = ["http://localhost:4200"])
     @PostMapping("/parents/register")
     fun registerParent(@RequestBody registerParentDto: RegisterParentDto): String {
         return parentsService.register(registerParentDto)
     }
 
-    @CrossOrigin(origins = ["http://localhost:4200"])
+//    @CrossOrigin(origins = ["http://localhost:4200"])
     @PostMapping("/parents/login")
     fun loginParent(@RequestBody loginParentDto: LoginParentDto): String {
         return parentsService.login(loginParentDto)
