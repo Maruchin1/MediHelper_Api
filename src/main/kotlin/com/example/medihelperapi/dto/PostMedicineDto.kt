@@ -9,10 +9,10 @@ data class PostMedicineDto(
     @JsonProperty(value = "medicineId")
     val medicineId: Long,
 
-    @JsonProperty(value = "medicineName")
+    @JsonProperty(value = "name")
     val name: String,
 
-    @JsonProperty(value = "medicineUnit")
+    @JsonProperty(value = "unit")
     val unit: String,
 
     @JsonProperty(value = "expireDate")

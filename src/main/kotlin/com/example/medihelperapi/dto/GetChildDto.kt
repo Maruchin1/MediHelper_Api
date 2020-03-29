@@ -4,10 +4,10 @@ import com.example.medihelperapi.model.Child
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class GetChildDto(
-    @JsonProperty(value = "personId")
+    @JsonProperty(value = "childId")
     val childId: Long,
 
-    @JsonProperty(value = "personName")
+    @JsonProperty(value = "name")
     val name: String,
 
     @JsonProperty(value = "connectionKey")

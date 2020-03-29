@@ -5,7 +5,7 @@ import com.example.medihelperapi.model.Parent
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class PostChildDto(
-    @JsonProperty(value = "personName")
+    @JsonProperty(value = "name")
     val name: String
 ) {
     fun toEntity(parent: Parent) = Child(

@@ -3,8 +3,8 @@ package com.example.medihelperapi.dto
 import com.fasterxml.jackson.annotation.JsonProperty
 
 data class RegisterParentDto(
-    @JsonProperty("userName")
-    val userName: String,
+    @JsonProperty("name")
+    val name: String,
 
     @JsonProperty("email")
     val email: String,

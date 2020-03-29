@@ -5,7 +5,6 @@ import com.example.medihelperapi.dto.LoginParentDto
 import com.example.medihelperapi.dto.RegisterParentDto
 import com.example.medihelperapi.model.Parent
 import com.example.medihelperapi.repository.ParentsRepo
-import org.hibernate.annotations.NotFound
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -20,7 +19,7 @@ class ParentsService(
             throw ParentExists()
         }
         val newParent = Parent(
-            userName = dto.userName,
+            userName = dto.name,
             email = dto.email,
             password = passwordEncoder.encode(dto.password),
             authToken = UUID.randomUUID().toString()
