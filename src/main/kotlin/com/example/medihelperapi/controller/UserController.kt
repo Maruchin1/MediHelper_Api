@@ -1,29 +1,27 @@
 package com.example.medihelperapi.controller
 
 import com.example.medihelperapi.config.UserRole
-import com.example.medihelperapi.service.CurrUserService
-import com.example.medihelperapi.service.Forbidden
+import com.example.medihelperapi.repository.ChildrenRepo
+import com.example.medihelperapi.repository.ParentsRepo
 import org.springframework.web.bind.annotation.*
 
 @RestController
 @RequestMapping("/user")
 class UserController(
-        private val currUserService: CurrUserService
-) {
+        private val parentsRepo: ParentsRepo,
+        private val childrenRepo: ChildrenRepo) {
 
-    @GetMapping("/{token}")
-    fun getUserRole(@PathVariable("token") id: String): String {
+    @GetMapping("/role")
+    fun getUserRole(@RequestHeader(name = "Authorization") authToken: String): String {
 
-        try {
-            currUserService.expectParent()
+        val parent = parentsRepo.findByAuthToken(authToken)
+        if (parent.isPresent) {
             return UserRole.PARENT.toString()
-        } catch (e: Forbidden){}
-
-        try {
-            currUserService.expectChild()
-            return UserRole.CHILD.toString()
-        } catch (e: Forbidden) {}
-
+        }
+        val child = childrenRepo.findByAuthToken(authToken)
+        if (child.isPresent) {
+           return UserRole.CHILD.toString()
+        }
         return UserRole.GUEST.toString()
     }
 
