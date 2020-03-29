@@ -6,12 +6,11 @@ import com.example.medihelperapi.repository.ParentsRepo
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("/user")
 class UserController(
         private val parentsRepo: ParentsRepo,
         private val childrenRepo: ChildrenRepo) {
 
-    @GetMapping("/role")
+    @GetMapping("/user/role")
     fun getUserRole(@RequestHeader(name = "Authorization") authToken: String): String {
 
         val parent = parentsRepo.findByAuthToken(authToken)
