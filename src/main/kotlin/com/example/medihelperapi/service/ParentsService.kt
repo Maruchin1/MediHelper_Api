@@ -1,9 +1,11 @@
 package com.example.medihelperapi.service
 
+import com.example.medihelperapi.dto.GetParentDto
 import com.example.medihelperapi.dto.LoginParentDto
 import com.example.medihelperapi.dto.RegisterParentDto
 import com.example.medihelperapi.model.Parent
 import com.example.medihelperapi.repository.ParentsRepo
+import org.hibernate.annotations.NotFound
 import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.stereotype.Service
 import java.util.*
@@ -34,5 +36,13 @@ class ParentsService(
             throw IncorrectCredentials()
         }
         return parent.authToken
+    }
+
+    fun getParent(authToken : String): GetParentDto{
+        val parent = parentsRepo.findByAuthToken(authToken)
+        if (parent.isPresent) {
+            return GetParentDto(parent.get())
+        }
+        throw UserNotFound()
     }
 }

@@ -1,5 +1,6 @@
 package com.example.medihelperapi.controller
 
+import com.example.medihelperapi.dto.GetParentDto
 import com.example.medihelperapi.dto.LoginParentDto
 import com.example.medihelperapi.dto.RegisterParentDto
 import com.example.medihelperapi.service.ParentsService
@@ -19,5 +20,10 @@ class ParentsController(
     @PostMapping("/parents/login")
     fun loginParent(@RequestBody loginParentDto: LoginParentDto): String {
         return parentsService.login(loginParentDto)
+    }
+
+    @GetMapping("/parents/byAuthToken")
+    fun getLoggedParent(@RequestHeader(name = "Authorization") authToken: String): GetParentDto {
+        return parentsService.getParent(authToken)
     }
 }

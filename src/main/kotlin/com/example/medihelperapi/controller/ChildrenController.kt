@@ -1,8 +1,6 @@
 package com.example.medihelperapi.controller
 
-import com.example.medihelperapi.dto.GetChildDto
-import com.example.medihelperapi.dto.LoginChildDto
-import com.example.medihelperapi.dto.PostChildDto
+import com.example.medihelperapi.dto.*
 import com.example.medihelperapi.service.ChildrenService
 import org.springframework.web.bind.annotation.*
 
@@ -25,6 +23,11 @@ class ChildrenController(
     @GetMapping("/children")
     fun getAllChildren(): List<GetChildDto> {
         return childrenService.getAll()
+    }
+
+    @GetMapping("/children/byAuthToken")
+    fun getLoggedChildren(@RequestHeader(name = "Authorization") authToken: String): GetChildWithParentDto {
+        return childrenService.getChildAndParentPair(authToken)
     }
 
     @DeleteMapping("/children/{id}")

@@ -1,8 +1,6 @@
 package com.example.medihelperapi.service
 
-import com.example.medihelperapi.dto.GetChildDto
-import com.example.medihelperapi.dto.LoginChildDto
-import com.example.medihelperapi.dto.PostChildDto
+import com.example.medihelperapi.dto.*
 import com.example.medihelperapi.repository.ChildrenRepo
 import org.springframework.stereotype.Service
 import java.util.*
@@ -36,5 +34,14 @@ class ChildrenService (
 
     fun delete(id: Long) {
         childrenRepo.deleteById(id)
+    }
+
+    fun getChildAndParentPair (authToken: String): GetChildWithParentDto {
+        val child = childrenRepo.findByAuthToken(authToken)
+
+        if (child.isPresent) {
+            return GetChildWithParentDto(child.get())
+        }
+        throw UserNotFound()
     }
 }
