@@ -6,7 +6,7 @@ import com.example.medihelperapi.service.ParentsService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("parents")
+@RequestMapping("/parents")
 class ParentsController(
     private val parentsService: ParentsService
 ) {

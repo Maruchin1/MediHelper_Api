@@ -6,7 +6,7 @@ import com.example.medihelperapi.service.MedicinesService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-@RequestMapping("medicines")
+@RequestMapping("/medicines")
 class MedicinesController(
     private val medicinesService: MedicinesService
 ) {

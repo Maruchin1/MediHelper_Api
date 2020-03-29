@@ -27,7 +27,7 @@ class ChildrenController(
         return childrenService.getAll()
     }
 
-    @DeleteMapping("/children/{id}")
+    @DeleteMapping("/{id}")
     fun deleteChild(@PathVariable("id") id: Long) {
         childrenService.delete(id)
     }
