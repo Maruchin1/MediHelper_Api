@@ -6,22 +6,22 @@ import com.example.medihelperapi.service.MedicinesService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-//@RequestMapping("/medicines")
+@RequestMapping("/medicines")
 class MedicinesController(
     private val medicinesService: MedicinesService
 ) {
 
-    @PostMapping("/medicines")
+    @PostMapping
     fun addNewMedicine(@RequestBody postMedicineDto: PostMedicineDto) {
         medicinesService.addNew(postMedicineDto)
     }
 
-    @GetMapping("/medicines")
+    @GetMapping
     fun getAllMedicines(): List<GetMedicineDto> {
         return medicinesService.getAll()
     }
 
-    @DeleteMapping("/medicines/{id}")
+    @DeleteMapping("/{id}")
     fun deleteMedicine(@PathVariable("id") id: Long) {
         medicinesService.delete(id)
     }

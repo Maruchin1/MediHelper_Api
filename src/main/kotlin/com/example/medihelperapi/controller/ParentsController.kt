@@ -6,17 +6,17 @@ import com.example.medihelperapi.service.ParentsService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-//@RequestMapping("/parents")
+@RequestMapping("/parents")
 class ParentsController(
     private val parentsService: ParentsService
 ) {
 
-    @PostMapping("/parents/register")
+    @PostMapping("/register")
     fun registerParent(@RequestBody registerParentDto: RegisterParentDto): String {
         return parentsService.register(registerParentDto)
     }
 
-    @PostMapping("/parents/login")
+    @PostMapping("/login")
     fun loginParent(@RequestBody loginParentDto: LoginParentDto): String {
         return parentsService.login(loginParentDto)
     }

@@ -5,17 +5,17 @@ import com.example.medihelperapi.service.ChildMedicineService
 import org.springframework.web.bind.annotation.*
 
 @RestController
-//@RequestMapping("/childMedicines")
+@RequestMapping("/childMedicines")
 class ChildMedicineController(
     private val childMedicineService: ChildMedicineService
 ) {
 
-    @PostMapping("/childMedicines")
+    @PostMapping
     fun assignMedicineToChild(@RequestBody dto: PostChildMedicineDto) {
         childMedicineService.assignMedicineToChild(dto)
     }
 
-    @DeleteMapping("/childMedicines/{id}")
+    @DeleteMapping("/{id}")
     fun deleteChildMedicine(@PathVariable("id") id: Long) {
         childMedicineService.delete(id)
     }
