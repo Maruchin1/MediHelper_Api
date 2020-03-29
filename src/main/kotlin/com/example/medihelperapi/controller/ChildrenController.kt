@@ -6,6 +6,7 @@ import com.example.medihelperapi.dto.PostChildDto
 import com.example.medihelperapi.service.ChildrenService
 import org.springframework.web.bind.annotation.*
 
+@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 3600)
 @RestController
 class ChildrenController(
     private val childrenService: ChildrenService

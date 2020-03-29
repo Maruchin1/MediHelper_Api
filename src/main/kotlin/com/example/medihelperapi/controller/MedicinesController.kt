@@ -5,6 +5,7 @@ import com.example.medihelperapi.dto.PostMedicineDto
 import com.example.medihelperapi.service.MedicinesService
 import org.springframework.web.bind.annotation.*
 
+@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 3600)
 @RestController
 class MedicinesController(
     private val medicinesService: MedicinesService
