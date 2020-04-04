@@ -6,12 +6,12 @@ import com.example.medihelperapi.dto.RegisterParentDto
 import com.example.medihelperapi.service.ParentsService
 import org.springframework.web.bind.annotation.*
 
-@CrossOrigin(origins = ["http://localhost:4200"], maxAge = 3600)
 @RestController
 class ParentsController(
     private val parentsService: ParentsService
 ) {
 
+    @CrossOrigin(origins = ["http://localhost:4200"])
     @GetMapping("/parents/byAuthToken")
     fun getLoggedParent(): GetParentDto {
         return parentsService.getParent()
