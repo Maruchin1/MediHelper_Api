@@ -10,11 +10,6 @@ class ChildrenController(
     private val childrenService: ChildrenService
 ) {
 
-    @PostMapping("/children/login")
-    fun loginChild(@RequestBody loginChildDto: LoginChildDto): String {
-        return childrenService.login(loginChildDto)
-    }
-
     @PostMapping("/children")
     fun addNewChild(@RequestBody postChildDto: PostChildDto) {
         childrenService.addNew(postChildDto)
@@ -26,8 +21,8 @@ class ChildrenController(
     }
 
     @GetMapping("/children/byAuthToken")
-    fun getLoggedChildren(@RequestHeader(name = "Authorization") authToken: String): GetChildWithParentDto {
-        return childrenService.getChildAndParentPair(authToken)
+    fun getLoggedChildren(): GetChildWithParentDto {
+        return childrenService.getChildAndParentPair()
     }
 
     @DeleteMapping("/children/{id}")

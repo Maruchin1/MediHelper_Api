@@ -8,17 +8,17 @@ import org.springframework.stereotype.Service
 @Service
 class MedicinesService(
     private val medicinesRepo: MedicinesRepo,
-    private val currUserService: CurrUserService
+    private val userService: UserService
 ) {
 
     fun addNew(dto: PostMedicineDto) {
-        val parent = currUserService.expectParent()
+        val parent = userService.expectParent()
         val newMedicine = dto.toEntity(parent)
         medicinesRepo.save(newMedicine)
     }
 
     fun getAll(): List<GetMedicineDto> {
-        val parent = currUserService.expectParent()
+        val parent = userService.expectParent()
         return medicinesRepo.findAllByParent(parent).map {
             GetMedicineDto(it)
         }

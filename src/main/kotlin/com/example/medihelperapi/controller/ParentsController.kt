@@ -12,18 +12,8 @@ class ParentsController(
     private val parentsService: ParentsService
 ) {
 
-    @PostMapping("/parents/register")
-    fun registerParent(@RequestBody registerParentDto: RegisterParentDto): String {
-        return parentsService.register(registerParentDto)
-    }
-
-    @PostMapping("/parents/login")
-    fun loginParent(@RequestBody loginParentDto: LoginParentDto): String {
-        return parentsService.login(loginParentDto)
-    }
-
     @GetMapping("/parents/byAuthToken")
-    fun getLoggedParent(@RequestHeader(name = "Authorization") authToken: String): GetParentDto {
-        return parentsService.getParent(authToken)
+    fun getLoggedParent(): GetParentDto {
+        return parentsService.getParent()
     }
 }

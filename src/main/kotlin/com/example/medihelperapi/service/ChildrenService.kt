@@ -6,27 +6,19 @@ import org.springframework.stereotype.Service
 import java.util.*
 
 @Service
-class ChildrenService (
+class ChildrenService(
     private val childrenRepo: ChildrenRepo,
-    private val currUserService: CurrUserService
+    private val userService: UserService
 ) {
 
-    fun login(dto: LoginChildDto): String {
-        val child = childrenRepo.findByConnectionKey(dto.connectionKey)
-            .orElseThrow { ChildNotFound() }
-        child.authToken = UUID.randomUUID().toString()
-        val savedChild = childrenRepo.save(child)
-        return savedChild.authToken
-    }
-
     fun addNew(dto: PostChildDto) {
-        val parent = currUserService.expectParent()
+        val parent = userService.expectParent()
         val newChild = dto.toEntity(parent)
         childrenRepo.save(newChild)
     }
 
     fun getAll(): List<GetChildDto> {
-        val parent = currUserService.expectParent()
+        val parent = userService.expectParent()
         return childrenRepo.findAllByParent(parent).map {
             GetChildDto(it)
         }
@@ -36,12 +28,8 @@ class ChildrenService (
         childrenRepo.deleteById(id)
     }
 
-    fun getChildAndParentPair (authToken: String): GetChildWithParentDto {
-        val child = childrenRepo.findByAuthToken(authToken)
-
-        if (child.isPresent) {
-            return GetChildWithParentDto(child.get())
-        }
-        throw UserNotFound()
+    fun getChildAndParentPair(): GetChildWithParentDto {
+        val child = userService.expectChild()
+        return GetChildWithParentDto(child)
     }
 }

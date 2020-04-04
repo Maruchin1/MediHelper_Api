@@ -44,11 +44,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
                 .authorizeRequests()
                 .antMatchers(
-                    PROTECTED_URL_REGISTERED_USERS
-                ).hasAuthority(UserRole.PARENT.toString())
-                .antMatchers(
-                    PROTECTED_URL_PERSONS_DATA
-                ).hasAuthority(UserRole.CHILD.toString())
+                    "/"
+                ).permitAll()
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
@@ -70,15 +67,13 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     private fun authenticationFilter() = AuthenticationFilter(
         OrRequestMatcher(
-            AntPathRequestMatcher(PROTECTED_URL_REGISTERED_USERS),
-            AntPathRequestMatcher(PROTECTED_URL_PERSONS_DATA)
+            AntPathRequestMatcher("/childMedicines/**"),
+            AntPathRequestMatcher("/children/**"),
+            AntPathRequestMatcher("/medicines/**"),
+            AntPathRequestMatcher("/parents/**"),
+            AntPathRequestMatcher("/users/role")
         )
     ).apply {
         setAuthenticationManager(authenticationManager())
-    }
-
-    companion object {
-        private const val PROTECTED_URL_REGISTERED_USERS = "/registered-users/**"
-        private const val PROTECTED_URL_PERSONS_DATA = "/connected-persons/**"
     }
 }
