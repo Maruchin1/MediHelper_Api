@@ -1,5 +1,6 @@
 package com.example.medihelperapi.service
 
+import com.example.medihelperapi.dto.GetMedicineDto
 import com.example.medihelperapi.dto.PostChildMedicineDto
 import com.example.medihelperapi.model.ChildMedicine
 import com.example.medihelperapi.repository.ChildMedicinesRepo
@@ -12,8 +13,9 @@ import org.springframework.stereotype.Service
 class ChildMedicineService(
     private val childMedicinesRepo: ChildMedicinesRepo,
     private val childrenRepo: ChildrenRepo,
-    private val medicinesRepo: MedicinesRepo
-    ) {
+    private val medicinesRepo: MedicinesRepo,
+    private val userService: UserService
+) {
 
     fun assignMedicineToChild(dto: PostChildMedicineDto) {
         val child = childrenRepo.findByIdOrNull(dto.childId) ?: throw ChildNotFound()
@@ -24,5 +26,13 @@ class ChildMedicineService(
 
     fun delete(id: Long) {
         childMedicinesRepo.deleteById(id)
+    }
+
+    fun getChildMedicines(): List<GetMedicineDto> {
+        val child = userService.expectChild()
+        val childMedicines = childMedicinesRepo.findAllByChild(child)
+        return childMedicines.map {
+            GetMedicineDto(it.medicine)
+        }
     }
 }

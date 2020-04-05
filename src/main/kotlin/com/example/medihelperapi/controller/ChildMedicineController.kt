@@ -1,5 +1,6 @@
 package com.example.medihelperapi.controller
 
+import com.example.medihelperapi.dto.GetMedicineDto
 import com.example.medihelperapi.dto.PostChildMedicineDto
 import com.example.medihelperapi.service.ChildMedicineService
 import org.springframework.web.bind.annotation.*
@@ -17,5 +18,10 @@ class ChildMedicineController(
     @DeleteMapping("/childMedicines/{id}")
     fun deleteChildMedicine(@PathVariable("id") id: Long) {
         childMedicineService.delete(id)
+    }
+
+    @GetMapping("/childMedicines")
+    fun getChildMedicines(): List<GetMedicineDto> {
+        return childMedicineService.getChildMedicines()
     }
 }
