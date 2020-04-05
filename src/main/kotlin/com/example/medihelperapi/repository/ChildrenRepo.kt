@@ -14,4 +14,6 @@ interface ChildrenRepo : JpaRepository<Child, Long> {
     fun findByAuthToken(authToken: String): Optional<Child>
 
     fun findAllByParent(parent: Parent): List<Child>
+
+    fun existsByConnectionKey(key: String): Boolean
 }

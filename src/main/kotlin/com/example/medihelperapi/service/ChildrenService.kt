@@ -13,7 +13,10 @@ class ChildrenService(
 
     fun addNew(dto: PostChildDto) {
         val parent = userService.expectParent()
-        val newChild = dto.toEntity(parent)
+        val newChild = dto.toEntity(parent).apply {
+            connectionKey = generateRandomUniqueKey()
+            authToken = UUID.randomUUID().toString()
+        }
         childrenRepo.save(newChild)
     }
 
@@ -31,5 +34,18 @@ class ChildrenService(
     fun getChildAndParentPair(): GetChildWithParentDto {
         val child = userService.expectChild()
         return GetChildWithParentDto(child)
+    }
+
+    private fun generateRandomUniqueKey(): String {
+        var randomUniqueKey = ""
+        do {
+            randomUniqueKey = StringBuilder().apply {
+                for (i in (0..5)) {
+                    val randomNumber = (0..9).shuffled().first()
+                    this.append(randomNumber)
+                }
+            }.toString()
+        } while (childrenRepo.existsByConnectionKey(randomUniqueKey))
+        return randomUniqueKey
     }
 }
