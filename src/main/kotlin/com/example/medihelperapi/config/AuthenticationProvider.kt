@@ -19,32 +19,28 @@ class AuthenticationProvider(
 ) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val authToken = try {
-            authentication?.credentials as String
-        } catch (e: Exception) {
-            throw BadCredentialsException("No Authentication token passed in request")
+        if (authentication?.credentials is String) {
+            val authToken = authentication.credentials as String
+            val parent = parentsRepo.findByAuthToken(authToken)
+            if (parent.isPresent) {
+                val id = parent.get().parentId.toString()
+                return createUser(id, UserRole.PARENT)
+            }
+            val child = childrenRepo.findByAuthToken(authToken)
+            if (child.isPresent) {
+                val id = child.get().childId.toString()
+                return createUser(id, UserRole.CHILD)
+            }
         }
-        val parent = parentsRepo.findByAuthToken(authToken)
-        if (parent.isPresent) {
-            val id = parent.get().parentId.toString()
-            val role = UserRole.PARENT.toString()
-            return createUser(id, role)
-        }
-        val child = childrenRepo.findByAuthToken(authToken)
-        if (child.isPresent) {
-            val id = child.get().childId.toString()
-            val role = UserRole.CHILD.toString()
-            return createUser(id, role)
-        }
-        throw UsernameNotFoundException("Cannot find user with authentication token = $authToken")
+        return createUser("guest", UserRole.GUEST)
     }
 
     override fun additionalAuthenticationChecks(userDetails: UserDetails?, authentication: UsernamePasswordAuthenticationToken?) {
 
     }
 
-    private fun createUser(id: String, role: String): User {
-        val authList = AuthorityUtils.createAuthorityList(role)
+    private fun createUser(id: String, role: UserRole): User {
+        val authList = AuthorityUtils.createAuthorityList(role.toString())
         return User(id, "", authList)
     }
 }

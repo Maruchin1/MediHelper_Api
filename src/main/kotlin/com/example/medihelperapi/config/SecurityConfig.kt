@@ -2,6 +2,7 @@ package com.example.medihelperapi.config
 
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
+import org.springframework.http.HttpMethod
 import org.springframework.http.HttpStatus
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity
@@ -26,6 +27,15 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 class SecurityConfig(private val authenticationProvider: AuthenticationProvider) : WebSecurityConfigurerAdapter() {
 
+    private val parentAuth: String
+        get() = UserRole.PARENT.toString()
+
+    private val childAuth: String
+        get() = UserRole.CHILD.toString()
+
+    private val guestAuth: String
+        get() = UserRole.GUEST.toString()
+
     override fun configure(auth: AuthenticationManagerBuilder?) {
         auth?.authenticationProvider(authenticationProvider)
     }
@@ -48,9 +58,14 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .authenticationProvider(authenticationProvider)
                 .addFilterBefore(authenticationFilter(), BasicAuthenticationFilter::class.java)
                 .authorizeRequests()
-                .antMatchers(
-                    "/"
-                ).permitAll()
+                .antMatchers(HttpMethod.GET, "/childMedicines").hasAuthority(childAuth)
+                .antMatchers("/childMedicines/**").hasAuthority(parentAuth)
+                .antMatchers("/children/byAuthToken").hasAuthority(childAuth)
+                .antMatchers("/children/**").hasAuthority(parentAuth)
+                .antMatchers("/medicines/**").hasAuthority(parentAuth)
+                .antMatchers("/parents/**").hasAuthority(parentAuth)
+                .antMatchers("/users/role").authenticated()
+                .antMatchers("/users/**").hasAuthority(guestAuth)
                 .and()
                 .csrf().disable()
                 .formLogin().disable()
@@ -90,7 +105,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
             AntPathRequestMatcher("/children/**"),
             AntPathRequestMatcher("/medicines/**"),
             AntPathRequestMatcher("/parents/**"),
-            AntPathRequestMatcher("/users/role")
+            AntPathRequestMatcher("/users/**")
         )
     ).apply {
         setAuthenticationManager(authenticationManager())
