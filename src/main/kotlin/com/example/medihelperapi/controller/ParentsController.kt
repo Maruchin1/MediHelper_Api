@@ -11,7 +11,6 @@ class ParentsController(
     private val parentsService: ParentsService
 ) {
 
-    @CrossOrigin(origins = ["http://localhost:4200"])
     @GetMapping("/parents/byAuthToken")
     fun getLoggedParent(): GetParentDto {
         return parentsService.getParent()

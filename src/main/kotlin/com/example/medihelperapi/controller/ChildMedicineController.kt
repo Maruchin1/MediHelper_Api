@@ -9,13 +9,11 @@ class ChildMedicineController(
     private val childMedicineService: ChildMedicineService
 ) {
 
-    @CrossOrigin(origins = ["http://localhost:4200"])
     @PostMapping("/childMedicines")
     fun assignMedicineToChild(@RequestBody dto: PostChildMedicineDto) {
         childMedicineService.assignMedicineToChild(dto)
     }
 
-    @CrossOrigin(origins = ["http://localhost:4200"])
     @DeleteMapping("/childMedicines/{id}")
     fun deleteChildMedicine(@PathVariable("id") id: Long) {
         childMedicineService.delete(id)

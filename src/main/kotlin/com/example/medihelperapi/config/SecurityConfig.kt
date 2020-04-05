@@ -17,6 +17,9 @@ import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
+import org.springframework.web.cors.CorsConfiguration
+import org.springframework.web.cors.CorsConfigurationSource
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource
 
 @Configuration
 @EnableWebSecurity
@@ -35,7 +38,9 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
-            http.sessionManagement()
+            http.cors().configurationSource(corsConfigurationSource())
+                .and()
+                .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
                 .exceptionHandling()
@@ -52,6 +57,20 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .httpBasic().disable()
                 .logout().disable()
 
+        }
+    }
+
+    fun corsConfigurationSource(): CorsConfigurationSource {
+        val config = CorsConfiguration().apply {
+            allowedOrigins = listOf("http://localhost:4200")
+            allowedMethods = listOf("*")
+            allowCredentials = true
+            addAllowedOrigin("http://localhost:4200")
+            addAllowedHeader("*")
+            addAllowedMethod("*")
+        }
+        return UrlBasedCorsConfigurationSource().apply {
+            registerCorsConfiguration("/**", config)
         }
     }
 

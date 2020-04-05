@@ -19,8 +19,9 @@ class AuthenticationProvider(
 ) : AbstractUserDetailsAuthenticationProvider() {
 
     override fun retrieveUser(username: String?, authentication: UsernamePasswordAuthenticationToken?): UserDetails {
-        val authToken = authentication?.credentials as String
-        if (authToken.isEmpty()) {
+        val authToken = try {
+            authentication?.credentials as String
+        } catch (e: Exception) {
             throw BadCredentialsException("No Authentication token passed in request")
         }
         val parent = parentsRepo.findByAuthToken(authToken)
