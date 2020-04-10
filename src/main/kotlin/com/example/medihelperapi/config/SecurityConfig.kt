@@ -77,10 +77,14 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     fun corsConfigurationSource(): CorsConfigurationSource {
         val config = CorsConfiguration().apply {
-            allowedOrigins = listOf("http://localhost:4200")
+            allowedOrigins = listOf(
+                "http://localhost:4200",
+                "https://demo-web-security.herokuapp.com"
+            )
             allowedMethods = listOf("*")
             allowCredentials = true
             addAllowedOrigin("http://localhost:4200")
+            addAllowedOrigin("https://demo-web-security.herokuapp.com")
             addAllowedHeader("*")
             addAllowedMethod("*")
         }
