@@ -23,13 +23,11 @@ class AuthenticationProvider(
             val authToken = authentication.credentials as String
             val parent = parentsRepo.findByAuthToken(authToken)
             if (parent.isPresent) {
-                val id = parent.get().parentId.toString()
-                return createUser(id, UserRole.PARENT)
+                return createUser(authToken, UserRole.PARENT)
             }
             val child = childrenRepo.findByAuthToken(authToken)
             if (child.isPresent) {
-                val id = child.get().childId.toString()
-                return createUser(id, UserRole.CHILD)
+                return createUser(authToken, UserRole.CHILD)
             }
         }
         return createUser("guest", UserRole.GUEST)

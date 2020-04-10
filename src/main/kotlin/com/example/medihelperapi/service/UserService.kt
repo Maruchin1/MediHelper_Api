@@ -48,18 +48,16 @@ class UserService(
     fun login(dto: LoginChildDto): String {
         val child = childrenRepo.findByConnectionKey(dto.connectionKey)
             .orElseThrow { ChildNotFound() }
-        child.authToken = UUID.randomUUID().toString()
-        val savedChild = childrenRepo.save(child)
-        return savedChild.authToken
+        return child.authToken
     }
 
     fun getRole(): UserRole {
-        val userId = getCurrUserId()
-        val parent = parentsRepo.findById(userId)
+        val token = getCurrUserToken()
+        val parent = parentsRepo.findByAuthToken(token)
         if (parent.isPresent) {
             return UserRole.PARENT
         }
-        val child = childrenRepo.findById(userId)
+        val child = childrenRepo.findByAuthToken(token)
         if (child.isPresent) {
             return UserRole.CHILD
         }
@@ -67,21 +65,21 @@ class UserService(
     }
 
     fun expectParent(): Parent {
-        val userId = getCurrUserId()
-        val parent = parentsRepo.findByIdOrNull(userId)
-        return parent ?: throw Forbidden()
+        val token = getCurrUserToken()
+        val parent = parentsRepo.findByAuthToken(token)
+        return parent.orElseThrow { Forbidden() }
     }
 
     fun expectChild(): Child {
-        val userId = getCurrUserId()
-        val child = childrenRepo.findByIdOrNull(userId)
-        return child ?: throw Forbidden()
+        val token = getCurrUserToken()
+        val child = childrenRepo.findByAuthToken(token)
+        return child.orElseThrow { Forbidden() }
     }
 
-    private fun getCurrUserId(): Long {
+    private fun getCurrUserToken(): String {
         val context = SecurityContextHolder.getContext()
         val principal = context.authentication.principal
         val user = principal as User
-        return user.username.toLong()
+        return user.username
     }
 }
