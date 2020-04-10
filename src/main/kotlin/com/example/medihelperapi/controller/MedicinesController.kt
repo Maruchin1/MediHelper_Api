@@ -24,4 +24,14 @@ class MedicinesController(
     fun deleteMedicine(@PathVariable("id") id: Long) {
         medicinesService.delete(id)
     }
+
+    @GetMapping("/medicines/safeByName/{name}")
+    fun getMedicinesByNameSafeVersion(@PathVariable("name") name: String): List<GetMedicineDto> {
+       return medicinesService.getByNameSafe(name)
+    }
+
+    @GetMapping("medicines/unsafeByName/{name}")
+    fun getMedicinesByNameUnsafeVersion(@PathVariable("name") name: String): List<GetMedicineDto> {
+        return medicinesService.getByNameUnsafe(name)
+    }
 }
