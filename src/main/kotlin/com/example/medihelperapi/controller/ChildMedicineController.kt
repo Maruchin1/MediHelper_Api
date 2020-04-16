@@ -24,4 +24,9 @@ class ChildMedicineController(
     fun getChildMedicines(): List<GetMedicineDto> {
         return childMedicineService.getChildMedicines()
     }
+
+    @GetMapping("/childMedicines/{childId}")
+    fun getChildMedicinesByParent(@PathVariable("childId") childId: Long): List<GetMedicineDto> {
+        return childMedicineService.getChildMedicinesByParent(childId)
+    }
 }

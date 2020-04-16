@@ -35,4 +35,16 @@ class ChildMedicineService(
             GetMedicineDto(it.medicine)
         }
     }
+
+    fun getChildMedicinesByParent(childId: Long): List<GetMedicineDto> {
+        val parent = userService.expectParent()
+        val child = childrenRepo.findByIdOrNull(childId) ?: throw ChildNotFound()
+        if (!parent.parentId.equals(child.parent.parentId)) {
+            throw NoAccessToTheChild()
+        }
+        val childMedicines = childMedicinesRepo.findAllByChild(child)
+        return childMedicines.map {
+            GetMedicineDto(it.medicine)
+        }
+    }
 }

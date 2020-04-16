@@ -20,3 +20,6 @@ class MedicineNotFound : RuntimeException()
 
 @ResponseStatus(value = HttpStatus.NOT_FOUND, reason = "Child not found in database")
 class ChildNotFound : RuntimeException()
+
+@ResponseStatus(value = HttpStatus.FORBIDDEN, reason = "User has no access to this child medicines")
+class NoAccessToTheChild : RuntimeException()
