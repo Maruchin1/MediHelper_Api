@@ -1,5 +1,6 @@
 package com.example.medihelperapi.controller
 
+import com.example.medihelperapi.dto.GetChildMedicineDto
 import com.example.medihelperapi.dto.GetMedicineDto
 import com.example.medihelperapi.dto.PostChildMedicineDto
 import com.example.medihelperapi.service.ChildMedicineService
@@ -26,7 +27,7 @@ class ChildMedicineController(
     }
 
     @GetMapping("/childMedicines/{childId}")
-    fun getChildMedicinesByParent(@PathVariable("childId") childId: Long): List<GetMedicineDto> {
+    fun getChildMedicinesByParent(@PathVariable("childId") childId: Long): List<GetChildMedicineDto> {
         return childMedicineService.getChildMedicinesByParent(childId)
     }
 }

@@ -1,5 +1,6 @@
 package com.example.medihelperapi.service
 
+import com.example.medihelperapi.dto.GetChildMedicineDto
 import com.example.medihelperapi.dto.GetMedicineDto
 import com.example.medihelperapi.dto.PostChildMedicineDto
 import com.example.medihelperapi.model.ChildMedicine
@@ -36,7 +37,7 @@ class ChildMedicineService(
         }
     }
 
-    fun getChildMedicinesByParent(childId: Long): List<GetMedicineDto> {
+    fun getChildMedicinesByParent(childId: Long): List<GetChildMedicineDto> {
         val parent = userService.expectParent()
         val child = childrenRepo.findByIdOrNull(childId) ?: throw ChildNotFound()
         if (!parent.parentId.equals(child.parent.parentId)) {
@@ -44,7 +45,7 @@ class ChildMedicineService(
         }
         val childMedicines = childMedicinesRepo.findAllByChild(child)
         return childMedicines.map {
-            GetMedicineDto(it.medicine)
+            GetChildMedicineDto(it)
         }
     }
 }
