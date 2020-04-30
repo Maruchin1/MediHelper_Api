@@ -1,12 +1,11 @@
 package com.example.medihelperapi.config
 
-import org.springframework.http.HttpHeaders.AUTHORIZATION
+import com.example.medihelperapi.utils.CookieUtil
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter
 import org.springframework.security.web.util.matcher.RequestMatcher
-import java.util.*
 import javax.servlet.FilterChain
 import javax.servlet.http.HttpServletRequest
 import javax.servlet.http.HttpServletResponse
@@ -14,7 +13,10 @@ import javax.servlet.http.HttpServletResponse
 class AuthenticationFilter(requiresAuth: RequestMatcher) : AbstractAuthenticationProcessingFilter(requiresAuth) {
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
-        val token = request?.getHeader(AUTHORIZATION)
+        var token = ""
+        if (request != null) {
+            token = CookieUtil.getValue(request)
+        }
         val requestAuthentication = UsernamePasswordAuthenticationToken(token, token)
         return authenticationManager.authenticate(requestAuthentication)
     }
