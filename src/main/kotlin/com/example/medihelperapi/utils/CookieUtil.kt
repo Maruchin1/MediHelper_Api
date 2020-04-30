@@ -9,6 +9,7 @@ object CookieUtil {
 
     private const val COOKIE_NAME = "JWT-TOKEN"
     private const val COOKIE_PATH = "/"
+//    private const val COOKIE_DOMAIN = "localhost"
     private const val COOKIE_DOMAIN = "medihelper-api.herokuapp.com"
 
     fun create(httpServletResponse: HttpServletResponse, value: String) {
