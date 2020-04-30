@@ -16,6 +16,7 @@ import org.springframework.security.crypto.password.PasswordEncoder
 import org.springframework.security.web.AuthenticationEntryPoint
 import org.springframework.security.web.authentication.HttpStatusEntryPoint
 import org.springframework.security.web.authentication.www.BasicAuthenticationFilter
+import org.springframework.security.web.csrf.CookieCsrfTokenRepository
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher
 import org.springframework.security.web.util.matcher.OrRequestMatcher
 import org.springframework.web.cors.CorsConfiguration
@@ -48,7 +49,19 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
-            http.cors().configurationSource(corsConfigurationSource())
+            http.csrf()
+                .ignoringAntMatchers(
+                    "/users/register-parent",
+                    "/users/login-parent",
+                    "/users/login-child"
+                )
+                .csrfTokenRepository(
+                    CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
+                        cookiePath = "/"
+                    }
+                )
+                .and()
+                .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
@@ -68,7 +81,6 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .antMatchers("/users/logout").authenticated()
                 .antMatchers("/users/**").hasAuthority(guestAuth)
                 .and()
-                .csrf().disable()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable()
