@@ -70,9 +70,6 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .antMatchers("/users/**").hasAuthority(guestAuth)
                 .and()
                 .csrf()
-                .ignoringAntMatchers(
-                    "/users/login-parent"
-                )
                 .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
                     cookiePath = "/"
                     setCookieHttpOnly(false)
