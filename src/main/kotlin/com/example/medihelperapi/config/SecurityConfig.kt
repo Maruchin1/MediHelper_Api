@@ -50,18 +50,17 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
             http.csrf()
-                .disable()
-//                .ignoringAntMatchers(
-//                    "/users/register-parent",
-//                    "/users/login-parent",
-//                    "/users/login-child"
-//                )
-//                .csrfTokenRepository(
-//                    CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
-//                        cookiePath = "/"
-//                    }
-//                )
-//                .and()
+                .ignoringAntMatchers(
+                    "/users/register-parent",
+                    "/users/login-parent",
+                    "/users/login-child"
+                )
+                .csrfTokenRepository(
+                    CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
+                        cookiePath = "/"
+                    }
+                )
+                .and()
                 .cors().configurationSource(corsConfigurationSource())
                 .and()
                 .sessionManagement()
