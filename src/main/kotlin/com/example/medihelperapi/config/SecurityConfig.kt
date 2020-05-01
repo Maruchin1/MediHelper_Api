@@ -84,13 +84,15 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
             allowedOrigins = listOf(
                 "http://localhost:4200",
                 "http://localhost:4201",
-                "https://demo-web-security.herokuapp.com"
+                "https://demo-web-security.herokuapp.com",
+                "https://fake-web-security.herokuapp.com"
             )
             allowedMethods = listOf("*")
             allowCredentials = true
             addAllowedOrigin("http://localhost:4200")
             addAllowedOrigin("http://localhost:4201")
             addAllowedOrigin("https://demo-web-security.herokuapp.com")
+            addAllowedOrigin("https://fake-web-security.herokuapp.com")
             addAllowedHeader("*")
             addAllowedMethod("*")
         }
