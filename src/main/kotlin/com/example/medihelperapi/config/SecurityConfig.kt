@@ -73,7 +73,10 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .ignoringAntMatchers(
                     "/users/login-parent"
                 )
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
+                    cookiePath = "/"
+                    setCookieHttpOnly(false)
+                })
                 .and()
                 .formLogin().disable()
                 .httpBasic().disable()
