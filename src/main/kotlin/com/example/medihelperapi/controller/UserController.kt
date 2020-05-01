@@ -54,4 +54,13 @@ class UserController(
         return userService.getRole().toString()
     }
 
+    @GetMapping("/users/csrf")
+    fun getCsrfTokenEnabled(): Boolean {
+        return CsrfTokenUtil.isCsrfEnabled()
+    }
+
+    @PostMapping("/users/csrf/{enabled}")
+    fun switchCsrfToken(@PathVariable("enabled") enabled: Boolean) {
+        CsrfTokenUtil.switchCsrfEnabled(enabled)
+    }
 }
