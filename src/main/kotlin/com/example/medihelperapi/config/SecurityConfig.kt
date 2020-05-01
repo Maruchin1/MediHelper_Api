@@ -70,12 +70,12 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .antMatchers("/users/logout").authenticated()
                 .antMatchers("/users/**").hasAuthority(guestAuth)
                 .and()
-                .csrf()
-                .ignoringAntMatchers(
-                    "/users/login-parent"
-                )
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
-                .and()
+                .csrf().disable()
+//                .ignoringAntMatchers(
+//                    "/users/login-parent"
+//                )
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse())
+//                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable()
