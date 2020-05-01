@@ -1,6 +1,7 @@
 package com.example.medihelperapi.config
 
 import com.example.medihelperapi.utils.CookieUtil
+import com.example.medihelperapi.utils.CsrfTokenUtil
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken
 import org.springframework.security.core.Authentication
 import org.springframework.security.core.context.SecurityContextHolder
@@ -14,7 +15,7 @@ class AuthenticationFilter(requiresAuth: RequestMatcher) : AbstractAuthenticatio
 
     override fun attemptAuthentication(request: HttpServletRequest?, response: HttpServletResponse?): Authentication {
         var token = ""
-        if (request != null) {
+        if (request != null && CsrfTokenUtil.isRequestValid(request)) {
             token = CookieUtil.getValue(request)
         }
         val requestAuthentication = UsernamePasswordAuthenticationToken(token, token)

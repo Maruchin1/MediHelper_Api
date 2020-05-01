@@ -71,11 +71,6 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .and()
                 .csrf()
                 .disable()
-//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
-//                    cookiePath = "/"
-//                    setCookieHttpOnly(false)
-//                })
-//                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable()
@@ -87,11 +82,13 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
         val config = CorsConfiguration().apply {
             allowedOrigins = listOf(
                 "http://localhost:4200",
+                "http://localhost:4201",
                 "https://demo-web-security.herokuapp.com"
             )
             allowedMethods = listOf("*")
             allowCredentials = true
             addAllowedOrigin("http://localhost:4200")
+            addAllowedOrigin("http://localhost:4201")
             addAllowedOrigin("https://demo-web-security.herokuapp.com")
             addAllowedHeader("*")
             addAllowedMethod("*")
