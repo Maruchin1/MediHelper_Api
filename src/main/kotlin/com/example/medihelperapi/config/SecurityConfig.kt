@@ -49,9 +49,7 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 
     override fun configure(http: HttpSecurity?) {
         if (http != null) {
-            http.cors().configurationSource(corsConfigurationSource())
-                .and()
-                .csrf()
+            http.csrf()
                 .disable()
 //                .ignoringAntMatchers(
 //                    "/users/register-parent",
@@ -64,6 +62,8 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
 //                    }
 //                )
 //                .and()
+                .cors().configurationSource(corsConfigurationSource())
+                .and()
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
