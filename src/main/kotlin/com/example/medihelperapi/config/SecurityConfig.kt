@@ -70,11 +70,12 @@ class SecurityConfig(private val authenticationProvider: AuthenticationProvider)
                 .antMatchers("/users/**").hasAuthority(guestAuth)
                 .and()
                 .csrf()
-                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
-                    cookiePath = "/"
-                    setCookieHttpOnly(false)
-                })
-                .and()
+                .disable()
+//                .csrfTokenRepository(CookieCsrfTokenRepository.withHttpOnlyFalse().apply {
+//                    cookiePath = "/"
+//                    setCookieHttpOnly(false)
+//                })
+//                .and()
                 .formLogin().disable()
                 .httpBasic().disable()
                 .logout().disable()
